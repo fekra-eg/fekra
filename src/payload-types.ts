@@ -394,7 +394,8 @@ export interface Post {
   slug: string;
   excerpt?: string | null;
   heroImage?: (number | null) | Media;
-  content: {
+  contentFormat?: ('richText' | 'html') | null;
+  content?: {
     root: {
       type: string;
       children: {
@@ -408,7 +409,8 @@ export interface Post {
       version: number;
     };
     [k: string]: unknown;
-  };
+  } | null;
+  htmlContent?: string | null;
   /**
    * CTA, FAQ or related blocks under the article body.
    */
@@ -2278,7 +2280,9 @@ export interface PostsSelect<T extends boolean = true> {
   slug?: T;
   excerpt?: T;
   heroImage?: T;
+  contentFormat?: T;
   content?: T;
+  htmlContent?: T;
   layout?:
     | T
     | {

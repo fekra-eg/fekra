@@ -5,6 +5,7 @@ import { allBlocks } from '../blocks'
 import { slugField } from '../fields/slug'
 import { revalidateDocument, revalidateOnDelete } from '../hooks/revalidate'
 import { previewUrl } from '../preview'
+import { MAX_BLOG_HTML_LENGTH } from '@/lib/blog-html'
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
@@ -52,7 +53,28 @@ export const Posts: CollectionConfig = {
           fields: [
             { name: 'excerpt', type: 'textarea', localized: true, maxLength: 320 },
             { name: 'heroImage', type: 'upload', relationTo: 'media' },
-            { name: 'content', type: 'richText', localized: true, required: true },
+            {
+              name: 'contentFormat', type: 'select', localized: true, defaultValue: 'richText',
+              options: [{ label: 'Rich text editor', value: 'richText' }, { label: 'Import / paste HTML', value: 'html' }],
+            },
+            {
+              name: 'content', type: 'richText', localized: true,
+              admin: { condition: (_, siblingData) => siblingData.contentFormat !== 'html' },
+              validate: (value, { siblingData }) =>
+                (siblingData as { contentFormat?: string }).contentFormat === 'html' || value ? true : 'Please add article content.',
+            },
+            {
+              name: 'htmlContent', type: 'textarea', localized: true, maxLength: MAX_BLOG_HTML_LENGTH,
+              admin: {
+                condition: (_, siblingData) => siblingData.contentFormat === 'html',
+                components: { Field: '@/components/admin/BlogHtmlField#BlogHtmlField' },
+              },
+              validate: (value, { siblingData }) => {
+                if ((siblingData as { contentFormat?: string }).contentFormat !== 'html') return true
+                if (!value?.trim()) return 'Please paste HTML or import an HTML file.'
+                return value.length <= MAX_BLOG_HTML_LENGTH || 'HTML must be smaller than 500 KB.'
+              },
+            },
             {
               name: 'layout',
               type: 'blocks',

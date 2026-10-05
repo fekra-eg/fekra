@@ -92,6 +92,7 @@ export function MobileNav({
                     >
                       <Link
                         href={item.link.href}
+                        prefetch={item.link.external ? false : true}
                         aria-current={isActive(item.link.activeHref ?? item.link.href) ? 'page' : undefined}
                         className={cn(
                           'flex items-center justify-between gap-4 py-4 font-display text-lg font-bold',

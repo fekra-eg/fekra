@@ -324,7 +324,7 @@ export function HeroSection({
       // 1440x982 screen — the whole hero fits one screen by default there.
       data-motion="hero"
       className={cn(
-        'relative isolate mt-[calc(var(--header-block)*-1)] flex flex-col overflow-hidden pt-[calc(var(--header-block)+clamp(1.25rem,5.2vw,4.75rem))] pb-8 md:pb-12 dark:bg-background',
+        'relative isolate mt-[calc(var(--header-block)*-1)] flex flex-col overflow-hidden pt-[calc(var(--header-block)+clamp(1.25rem,3vw,2.5rem))] pb-8 md:pb-12 dark:bg-background',
         // The copy-only hero carries the comp's 136px of air under the nav;
         // the collage hero cannot afford it and keeps the tighter default.
         // 26px under the badges is the comp's own clearance (pills end 758,

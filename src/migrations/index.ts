@@ -19,6 +19,7 @@ import * as migration_20260826_145238_stats_item_icon from './20260826_145238_st
 import * as migration_20260829_202349_fika_page_blocks from './20260829_202349_fika_page_blocks';
 import * as migration_20260831_133059_shared_section_block from './20260831_133059_shared_section_block';
 import * as migration_20260927_225525_shared_section_testimonials from './20260927_225525_shared_section_testimonials';
+import * as migration_20261005_204118_blog_html_content from './20261005_204118_blog_html_content';
 
 export const migrations = [
   {
@@ -124,6 +125,11 @@ export const migrations = [
   {
     up: migration_20260927_225525_shared_section_testimonials.up,
     down: migration_20260927_225525_shared_section_testimonials.down,
-    name: '20260927_225525_shared_section_testimonials'
+    name: '20260927_225525_shared_section_testimonials',
+  },
+  {
+    up: migration_20261005_204118_blog_html_content.up,
+    down: migration_20261005_204118_blog_html_content.down,
+    name: '20261005_204118_blog_html_content'
   },
 ];

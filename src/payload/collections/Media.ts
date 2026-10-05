@@ -1,9 +1,11 @@
 import type { CollectionConfig } from 'payload'
 
 import { anyone, authenticated } from '../access'
+import { revalidateRelatedDocument, revalidateRelatedDelete } from '../hooks/revalidate'
 
 export const Media: CollectionConfig = {
   slug: 'media',
+  hooks: { afterChange: [revalidateRelatedDocument], afterDelete: [revalidateRelatedDelete] },
   admin: { group: 'Content', useAsTitle: 'filename' },
   access: { read: anyone, create: authenticated, update: authenticated, delete: authenticated },
   upload: {
