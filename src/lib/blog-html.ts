@@ -19,7 +19,11 @@ export function cleanBlogHtml(source: string): string {
     allowVulnerableTags: true, // CSS is confined to a sandboxed iframe, never the host page.
     parseStyleAttributes: false,
     transformTags: {
-      a: (tagName, attribs) => ({ tagName, attribs: { ...attribs, rel: 'noopener noreferrer' } }),
+      // Links leave the sandboxed frame instead of loading inside it; #anchors are scrolled by HtmlArticle.
+      a: (tagName, attribs) => ({
+        tagName,
+        attribs: attribs.href?.startsWith('#') ? attribs : { ...attribs, target: '_blank', rel: 'noopener noreferrer' },
+      }),
     },
   })
 }
