@@ -586,7 +586,7 @@ export function HeroSection({
   )
 }
 
-export function LogoCloudSection({ block, locale }: { block: BlockProps; locale: Locale }) {
+export function LogoCloudSection({ block }: { block: BlockProps; locale: Locale }) {
   /* Figma 1:11600 — the same logo array, presented as a centred badge row
      under a gradient heading instead of beside a statement. */
   if (block.variant === 'badges') {
@@ -665,18 +665,12 @@ export function LogoCloudSection({ block, locale }: { block: BlockProps; locale:
        */}
       <div className="container-site mx-auto flex flex-col items-center gap-10 lg:flex-row lg:justify-center lg:gap-10 xl:gap-14">
         {hasStatement ? (
-          /* 458px / 32px / 48px line-height, Space Grotesk Medium in the comp —
-             not bold, which is what made it read heavier than the design. */
-          <p className="mx-auto max-w-md text-center font-display text-2xl leading-[1.35] font-semibold text-navy-800 lg:mx-0 lg:my-auto lg:w-[430px] lg:max-w-none lg:shrink-0 lg:text-start lg:text-[30px] dark:text-foreground">
-            {locale === 'en' && statement?.before === '50+ companies rely on our' ? <>
-              <span className="lg:block">50+ companies rely on our</span>{' '}
-              <span className="lg:block"><span className="text-primary">top 3%</span> talent to scale their</span>{' '}
-              <span className="lg:block">dev teams.</span>
-            </> : <>{statement?.before}{' '}
+          <p className="mx-auto max-w-md text-center font-display text-[28px] leading-[1.3] font-semibold text-navy-800 sm:text-[32px] lg:mx-0 lg:my-auto lg:w-[430px] lg:max-w-none lg:shrink-0 lg:text-start lg:text-[36px] dark:text-foreground">
+            {statement?.before}{' '}
             {statement?.highlight ? (
               <span className="text-primary">{statement.highlight}</span>
             ) : null}{' '}
-            {statement?.after}</>}
+            {statement?.after}
           </p>
         ) : block.heading ? (
           <p className="text-sm text-muted-foreground">{block.heading}</p>

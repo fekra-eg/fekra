@@ -79,6 +79,10 @@ export async function RenderBlocks({
   // service pages. Remove old copies so the shared section is rendered once.
   if (context?.servicePage || blocks.some((block) => block.blockType === 'serviceHero')) {
     const home = await findDoc<{ layout?: BlockProps[] }>('pages', 'home', locale)
+    const faq = findSharedSection('faq', home?.layout)
+    if (faq) layout = layout.map((block) =>
+      block.blockType === 'faq' ? { ...faq, id: block.id ?? faq.id, anchor: block.anchor ?? faq.anchor } : block,
+    )
     const testimonials = home?.layout?.find((block) => block.blockType === 'testimonials')
     if (testimonials) layout = layout.filter((block) => block.blockType !== 'testimonials').flatMap((block) =>
       block.blockType === 'industries' ? [block, { ...testimonials, id: 'shared-industry-leaders' }] : [block],

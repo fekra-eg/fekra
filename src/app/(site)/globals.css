@@ -160,13 +160,13 @@
   --header-block: 5rem; /* pt-4 (1rem) + h-16 (4rem) */
 
   /*
-   * The one section rhythm — 56px desktop, 40px phones. Applied top and bottom,
-   * so neighbours sit 112px apart. Every section reads it, including the few
+   * The one section rhythm — 32px desktop, 24px phones. Applied top and bottom,
+   * so neighbours sit 64px apart. Every section reads it, including the few
    * that cannot use the `.section` class (the logo band, the navy CTA band and
    * the hiring-models block, which pad asymmetrically), so the page has a
    * single spacing knob rather than five that drift apart.
    */
-  --section-y: clamp(2.5rem, 4vw, 3.5rem);
+  --section-y: clamp(1.5rem, 2.5vw, 2rem);
 }
 
 @media (min-width: 40rem) {
