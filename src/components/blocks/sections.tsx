@@ -621,7 +621,9 @@ export function LogoCloudSection({ block }: { block: BlockProps; locale: Locale 
                       mixes a wide lockup with four round seals. */}
                   <Image
                     src={certificationSource(image)}
-                    alt={badge.name}
+                    // `name` isn't localized, so a translated save leaks into every
+                    // locale; the media alt is per-locale with English fallback.
+                    alt={image.alt || badge.name}
                     width={296}
                     height={125}
                     style={{ width: 'auto' }}
