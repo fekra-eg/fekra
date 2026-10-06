@@ -909,7 +909,7 @@ export function CardGridSection({ block, locale }: { block: BlockProps; locale: 
                 <li
                   key={card.title}
                   className={cn(
-                    'relative isolate overflow-hidden rounded-card border border-panel-grey bg-card px-7 py-6 dark:border-border',
+                    'relative isolate overflow-hidden rounded-card border border-panel-grey bg-card px-5 py-5 sm:px-7 sm:py-6 dark:border-border',
                     index < 2 ? 'md:col-span-3' : 'md:col-span-2',
                   )}
                 >
@@ -948,7 +948,7 @@ export function CardGridSection({ block, locale }: { block: BlockProps; locale: 
                       {card.title}
                     </h3>
                     {card.body ? (
-                      <p className="text-lg/[1.35] whitespace-pre-line text-ink-500 dark:text-muted-foreground">
+                      <p className="text-base/[1.55] whitespace-pre-line text-ink-500 sm:text-lg/[1.35] dark:text-muted-foreground">
                         {card.body}
                       </p>
                     ) : null}
@@ -1069,14 +1069,14 @@ export function IndustriesSection({ block }: { block: BlockProps }) {
          * exactly seven per row, so twenty items land 7/7/6 — three balanced
          * rows with no orphan. Still a wrap, so it reflows normally below lg.
          */}
-        <ul className="flex flex-wrap justify-center gap-6 lg:max-w-[1264px]">
+        <ul className="grid w-full grid-cols-3 gap-3 sm:flex sm:w-auto sm:flex-wrap sm:justify-center sm:gap-6 lg:max-w-[1264px]">
           {items.map((item) => {
             const icon = item.icon as MediaDoc | undefined
             return (
               <li
                 key={item.label}
                 style={{ '--fk-tint': INDUSTRY_TONE[item.tone ?? 'teal'] } as React.CSSProperties}
-                className="fk-tint-bg fk-tint-border flex w-[132px] flex-col items-center gap-4 rounded-tl-industry rounded-br-industry border px-4 py-4 sm:w-[160px]"
+                className="fk-tint-bg fk-tint-border flex min-w-0 flex-col items-center gap-2 rounded-tl-industry rounded-br-industry border px-2 py-3 sm:w-[160px] sm:gap-4 sm:px-4 sm:py-4"
               >
                 <span className="flex size-8 items-center justify-center">
                   {icon?.url ? (
@@ -1090,7 +1090,7 @@ export function IndustriesSection({ block }: { block: BlockProps }) {
                     />
                   ) : null}
                 </span>
-                <span className="text-center text-base leading-6 font-semibold text-ink-900 dark:text-foreground">
+                <span className="text-center text-sm leading-5 font-semibold [overflow-wrap:anywhere] text-ink-900 sm:text-base sm:leading-6 dark:text-foreground">
                   {item.label}
                 </span>
               </li>

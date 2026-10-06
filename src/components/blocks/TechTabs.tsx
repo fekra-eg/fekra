@@ -85,12 +85,12 @@ export function TechTabs({ groups }: { groups: TechGroup[] }) {
         id={`${id}-panel-${active}`}
         aria-labelledby={`${id}-tab-${active}`}
         tabIndex={0}
-        className="rounded-b-3xl bg-tab-panel px-5 py-14 dark:bg-card"
+        className="rounded-b-3xl bg-tab-panel px-3 py-8 sm:px-5 sm:py-14 dark:bg-card"
       >
         {group.items.length ? (
-          <ul className="grid grid-cols-2 gap-x-10 gap-y-10 sm:grid-cols-3 lg:grid-cols-4">
+          <ul className="grid grid-cols-3 gap-x-3 gap-y-6 sm:gap-x-10 sm:gap-y-10 lg:grid-cols-4">
             {group.items.map((item) => (
-              <li key={item.name} className="flex flex-col items-center gap-4 text-center">
+              <li key={item.name} className="flex min-w-0 flex-col items-center gap-2 text-center sm:gap-4">
                 {/*
                  * TS-3 — a fixed square cell with every mark sized to equal AREA
                  * (see lib/logo-size).
@@ -110,7 +110,7 @@ export function TechTabs({ groups }: { groups: TechGroup[] }) {
                  * outline, so the cell is not simply empty.
                  */}
                 {item.src ? (
-                  <span className="fk-art-surface flex size-[104px] items-center justify-center rounded-2xl bg-white p-3 ring-1 ring-navy-800/10 dark:ring-white/15">
+                  <span className="fk-art-surface flex size-[84px] sm:size-[104px] items-center justify-center rounded-2xl bg-white p-3 ring-1 ring-navy-800/10 dark:ring-white/15">
                     <span
                       className="relative block"
                       style={logoMarkSize(item.width, item.height, 1) ?? { width: '100%', height: '100%' }}
@@ -119,12 +119,12 @@ export function TechTabs({ groups }: { groups: TechGroup[] }) {
                     </span>
                   </span>
                 ) : (
-                  <span className="fk-art-surface flex size-[104px] items-center justify-center rounded-2xl bg-white px-3 text-center text-sm font-semibold text-navy-800 ring-1 ring-navy-800/10 dark:text-navy-800 dark:ring-white/15">
+                  <span className="fk-art-surface flex size-[84px] sm:size-[104px] items-center justify-center rounded-2xl bg-white px-3 text-center text-sm font-semibold text-navy-800 ring-1 ring-navy-800/10 dark:text-navy-800 dark:ring-white/15">
                     {item.name}
                   </span>
                 )}
                 {item.src ? (
-                  <span className="text-lg/7 text-ink-700 dark:text-muted-foreground">{item.name}</span>
+                  <span className="text-sm/5 [overflow-wrap:anywhere] text-ink-700 sm:text-lg/7 dark:text-muted-foreground">{item.name}</span>
                 ) : null}
               </li>
             ))}

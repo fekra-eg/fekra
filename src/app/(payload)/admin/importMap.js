@@ -29,6 +29,7 @@ import { MetaDescriptionComponent as MetaDescriptionComponent_a8a977ebc872c5d5ea
 import { MetaImageComponent as MetaImageComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { PreviewComponent as PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { BlogHtmlField as BlogHtmlField_a264ef7141d44beda5267da065347006 } from '@/components/admin/BlogHtmlField'
+import { TranslateButton as TranslateButton_2b20f02041d8ff74ea7cde5845aeaee1 } from '@/components/admin/TranslateButton'
 import { Icon as Icon_2ec3e47bf0d2c1bcec071e0c669a53fc } from '@/payload/admin/Logo'
 import { Logo as Logo_2ec3e47bf0d2c1bcec071e0c669a53fc } from '@/payload/admin/Logo'
 import { S3ClientUploadHandler as S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24 } from '@payloadcms/storage-s3/client'
@@ -67,6 +68,7 @@ export const importMap = {
   "@payloadcms/plugin-seo/client#MetaImageComponent": MetaImageComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/plugin-seo/client#PreviewComponent": PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@/components/admin/BlogHtmlField#BlogHtmlField": BlogHtmlField_a264ef7141d44beda5267da065347006,
+  "@/components/admin/TranslateButton#TranslateButton": TranslateButton_2b20f02041d8ff74ea7cde5845aeaee1,
   "@/payload/admin/Logo#Icon": Icon_2ec3e47bf0d2c1bcec071e0c669a53fc,
   "@/payload/admin/Logo#Logo": Logo_2ec3e47bf0d2c1bcec071e0c669a53fc,
   "@payloadcms/storage-s3/client#S3ClientUploadHandler": S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24,

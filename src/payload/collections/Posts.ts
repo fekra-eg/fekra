@@ -6,6 +6,8 @@ import { slugField } from '../fields/slug'
 import { revalidateDocument, revalidateOnDelete } from '../hooks/revalidate'
 import { previewUrl } from '../preview'
 import { MAX_BLOG_HTML_LENGTH } from '@/lib/blog-html'
+import { LOCALES, type Locale } from '@/i18n/routing'
+import { translatePost, type TranslatablePost } from '@/lib/translate-post'
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
@@ -31,6 +33,47 @@ export const Posts: CollectionConfig = {
    *   pages ~9000ms (a version touches 94 tables), posts ~3400ms, services ~1800ms.
    */
   versions: { drafts: { autosave: { interval: 10_000 } }, maxPerDoc: 25 },
+  endpoints: [
+    {
+      // POST /api/posts/:id/translate — English -> every other locale, saved as a draft for review.
+      path: '/:id/translate',
+      method: 'post',
+      handler: async (req) => {
+        if (!req.user) return Response.json({ error: 'Unauthorized' }, { status: 401 })
+        const id = String(req.routeParams?.id ?? '')
+        const post = await req.payload.findByID({
+          collection: 'posts', id, locale: 'en', fallbackLocale: false, draft: true, depth: 0,
+        })
+        const targets = LOCALES.filter((locale): locale is Exclude<Locale, 'en'> => locale !== 'en')
+        // Translate in parallel, save one at a time: concurrent draft saves on one document would race.
+        const results = await Promise.allSettled(targets.map((locale) => translatePost(post as TranslatablePost, locale)))
+        const translated: string[] = []
+        const failed: { locale: string; error: string }[] = []
+        for (const [i, result] of results.entries()) {
+          const locale = targets[i]!
+          if (result.status === 'rejected') {
+            failed.push({ locale, error: String(result.reason instanceof Error ? result.reason.message : result.reason) })
+            continue
+          }
+          try {
+            await req.payload.update({ collection: 'posts', id, locale, draft: true, data: result.value })
+            translated.push(locale)
+          } catch (error) {
+            failed.push({ locale, error: error instanceof Error ? error.message : String(error) })
+          }
+        }
+        if (translated.length) {
+          const available = new Set([...(post.availableLocales ?? ['en']), 'en', ...translated])
+          await req.payload.update({
+            collection: 'posts', id, draft: true,
+            data: { availableLocales: LOCALES.filter((locale) => available.has(locale)) },
+          })
+        }
+        if (failed.length) req.payload.logger.error({ failed }, `Translation failed for post ${id}`)
+        return Response.json({ translated, failed }, { status: translated.length ? 200 : 502 })
+      },
+    },
+  ],
   hooks: {
     afterChange: [revalidateDocument('posts', '/blog')],
     afterDelete: [revalidateOnDelete('posts', '/blog')],
@@ -121,6 +164,11 @@ export const Posts: CollectionConfig = {
           ],
         },
       ],
+    },
+    {
+      name: 'translate',
+      type: 'ui',
+      admin: { position: 'sidebar', components: { Field: '@/components/admin/TranslateButton#TranslateButton' } },
     },
     {
       name: 'featured',
