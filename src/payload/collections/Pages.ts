@@ -38,7 +38,7 @@ export const Pages: CollectionConfig = {
     afterDelete: [revalidateOnDelete('pages')],
   },
   fields: [
-    { name: 'title', type: 'text', localized: true, required: true },
+    { name: 'title', type: 'text', localized: true, required: true, hooks: { beforeValidate: [({ value }) => (typeof value === 'string' ? value.trim() : value)] } },
     slugField(),
     {
       type: 'tabs',

@@ -404,23 +404,30 @@ export function HeroSection({
             )}
           >
             {block.heading}
-            <br />
             {/* Second line is a gradient fill in the comp, teal -> blue.
                 The gradient must live ON the animated word (inside
                 RotatingWords), not on a wrapper: Chrome leaves paint slivers
                 when a `background-clip: text` element has animating children. */}
             {words.length ? (
-              <RotatingWords words={words} />
-            ) : block.headingAccent ? (
-              /* Static accent renders as the SUBHEAD line (About-page comp
-                 93:2966): small, bold, navy — several steps below the H1. */
-              /* Roboto Medium in the comp, not the display face — Inter is
-                 our neutral grotesque, so the subhead drops out of the display face. */
-              <span className="mt-2 block font-sans text-[clamp(1.125rem,1.66vw,1.5rem)] leading-[1.25] font-medium tracking-normal text-[#333333] dark:text-foreground">
-                {block.headingAccent}
-              </span>
+              <>
+                <br />
+                <RotatingWords words={words} />
+              </>
             ) : null}
           </Title>
+          {!words.length && block.headingAccent ? (
+            /* Static accent renders as the SUBHEAD line (About-page comp
+               93:2966): small, bold, navy — several steps below the H1. A <p>
+               outside the heading keeps the H1 one headline (FK-29).
+               Roboto Medium in the comp, not the display face — Inter is
+               our neutral grotesque, so the subhead drops out of the display face. */
+            <p
+              style={{ '--i': 1 } as React.CSSProperties}
+              className="fk-enter mt-2 font-sans text-[clamp(1.125rem,1.66vw,1.5rem)] leading-[1.25] font-medium tracking-normal text-[#333333] dark:text-foreground"
+            >
+              {block.headingAccent}
+            </p>
+          ) : null}
 
           {block.body ? (
             <p

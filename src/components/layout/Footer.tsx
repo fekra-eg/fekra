@@ -186,7 +186,8 @@ export function Footer({
       </div>
 
       {data.newsletter?.enabled ? (
-        <div className="container-site grid items-center gap-10 pb-16 lg:grid-cols-2">
+        // One signup per page: blog pages already carry the newsletter panel (FK-42).
+        <div className="container-site grid items-center gap-10 pb-16 lg:grid-cols-2 [body:has([data-blog-newsletter])_&]:hidden">
           <div className="flex items-start gap-6">
             <Image
               aria-hidden

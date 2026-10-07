@@ -22,10 +22,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     path: '/',
     locale,
     availableLocales: page.availableLocales,
-    image: page.meta?.image?.url ? { url: page.meta.image.url } : {
-      url: '/images/hero/egypt-team-discussion.webp', width: 1050, height: 600,
-      alt: 'FEKRA — technology teams and engineering talent',
-    },
+    image: page.meta?.image?.url ? { url: page.meta.image.url } : null,
     noindex: page.meta?.noindex,
     canonicalOverride: page.meta?.canonicalOverride,
   })

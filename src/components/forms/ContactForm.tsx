@@ -102,8 +102,8 @@ export function ContactForm({ dict, locale }: { dict: Dictionary; locale: Locale
         <input id="contact-website" name="website" type="text" tabIndex={-1} autoComplete="off" />
       </div>
 
-      {/* Four stacked fields, as the comp draws them. Phone and company are
-          gone from the form; the API still accepts them, so nothing breaks. */}
+      {/* Stacked fields, as the comp draws them. Phone and company are
+          optional — they qualify the lead, and the privacy policy lists them (FK-20/21). */}
       <Field hideLabel label={dict.form.name} required error={messageFor('fullName')}>
         {(props) => <Input {...props} name="fullName" autoComplete="name" />}
       </Field>
@@ -112,6 +112,14 @@ export function ContactForm({ dict, locale }: { dict: Dictionary; locale: Locale
         {(props) => (
           <Input {...props} name="email" type="email" autoComplete="email" inputMode="email" />
         )}
+      </Field>
+
+      <Field hideLabel label={dict.form.company} error={messageFor('company')}>
+        {(props) => <Input {...props} name="company" autoComplete="organization" />}
+      </Field>
+
+      <Field hideLabel label={dict.form.phone} error={messageFor('phone')}>
+        {(props) => <Input {...props} name="phone" type="tel" autoComplete="tel" inputMode="tel" />}
       </Field>
 
       <Field hideLabel label={dict.form.subject} required error={messageFor('subject')}>

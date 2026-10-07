@@ -5,8 +5,7 @@ import { notFound } from 'next/navigation'
 import { RenderBlocks } from '@/components/blocks/RenderBlocks'
 import { Cover } from '@/components/blog/Cover'
 import { HeroBand } from '@/components/blog/HeroBand'
-import { HtmlArticle } from '@/components/blog/HtmlArticle'
-import { blogHtmlDocument, htmlReadingMinutes } from '@/lib/blog-html'
+import { BLOG_HTML_CLASS, blogHtmlInline, htmlReadingMinutes } from '@/lib/blog-html'
 import { extractHeadings, readingMinutes } from '@/components/blog/lexical'
 import { NewsletterPanel } from '@/components/blog/NewsletterPanel'
 import { PostCard, categoryTitle, formatDate, type PostSummary } from '@/components/blog/PostCard'
@@ -204,7 +203,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ locale
               </div>
             ) : null}
 
-            {isHtml ? <HtmlArticle document={blogHtmlDocument(post.htmlContent!)} title={post.title} /> :
+            {isHtml ? <InlineHtmlArticle source={post.htmlContent!} /> :
               <RichText data={post.content} anchors variant="article" locale={locale} />}
 
             {post.tags?.length ? (
@@ -303,5 +302,15 @@ export default async function ArticlePage({ params }: { params: Promise<{ locale
         ]}
       />
     </div>
+  )
+}
+
+function InlineHtmlArticle({ source }: { source: string }) {
+  const { html, css } = blogHtmlInline(source)
+  return (
+    <>
+      <style>{css}</style>
+      <div className={BLOG_HTML_CLASS} dangerouslySetInnerHTML={{ __html: html }} />
+    </>
   )
 }

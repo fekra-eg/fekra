@@ -26,7 +26,7 @@ const LINKEDIN_PATH =
 export function ShareButtons({ url, title, label }: { url: string; title: string; label: string }) {
   const [copied, setCopied] = useState(false)
 
-  const encoded = { url: encodeURIComponent(url), title: encodeURIComponent(title) }
+  const encoded = { url: encodeURIComponent(url), title: encodeURIComponent(title.trim()) }
   const links = [
     {
       name: 'X',

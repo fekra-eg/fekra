@@ -87,9 +87,12 @@ export default async function proxy(request: NextRequest) {
         routeExists(route.collection, route.slug, locale),
         new Promise<never>((_, reject) => { timer = setTimeout(() => reject(new Error('route_lookup_timeout')), 2000) }),
       ])
-      if (!exists) return await missingResponse(locale, 404)
+      if (!exists) return await notFoundResponse(locale)
     } catch {
-      return await missingResponse(locale, 503)
+      // Slow or failed lookup (a cold start's DB connect alone can pass 2s):
+      // fall through and let the page render — it still calls notFound() on
+      // a real miss. Answering 503 here served crawlers errors for live
+      // articles (FK-07).
     } finally {
       clearTimeout(timer)
     }
@@ -118,12 +121,13 @@ export default async function proxy(request: NextRequest) {
   return withGuards(remember(response, DEFAULT_LOCALE, request), request)
 }
 
-async function missingResponse(locale: typeof DEFAULT_LOCALE | 'ar' | 'de' | 'fr' | 'es', status: 404 | 503) {
+async function notFoundResponse(locale: typeof DEFAULT_LOCALE | 'ar' | 'de' | 'fr' | 'es') {
+  const status = 404
   const dict = await getDictionary(locale)
-  const copy = status === 404 ? dict.notFound : { ...dict.error, cta: dict.notFound.cta }
+  const copy = dict.notFound
   const escape = (value: string) => value.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!)
   return new NextResponse(`<!doctype html><html lang="${locale}" dir="${dir(locale)}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>${status} | FEKRA</title></head><body style="margin:0;background:#f2fafb;color:#153c48;font:18px Arial,sans-serif"><main style="min-height:100dvh;display:grid;place-content:center;padding:24px;text-align:center"><p style="font-size:64px;margin:0;font-weight:bold">${status}</p><h1>${escape(copy.title)}</h1><p>${escape(copy.body)}</p><a style="padding:16px;color:#075e70;font-weight:bold" href="${localeHref(locale, '/')}">${escape(copy.cta)}</a></main></body></html>`, {
-    status, headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex, nofollow', ...(status === 503 ? { 'Retry-After': '5' } : {}) },
+    status, headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex, nofollow' },
   })
 }
 

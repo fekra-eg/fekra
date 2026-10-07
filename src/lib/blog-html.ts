@@ -41,3 +41,40 @@ export function htmlReadingMinutes(source: string): number {
   const text = sanitizeHtml(source, { allowedTags: [], allowedAttributes: {} })
   return Math.max(1, Math.ceil(text.trim().split(/\s+/).filter(Boolean).length / 220))
 }
+
+const ARTICLE_CLASS = 'fk-html-article'
+
+/**
+ * Same article, rendered into the page instead of an iframe: srcdoc content is
+ * invisible to crawlers, so the post indexed as title + summary only (FK-06).
+ * The article's CSS is confined with @scope, its page-level selectors
+ * (`:root`, `html`, `body`) retarget the wrapper, and a reset layer that ranks
+ * above Tailwind's undoes preflight so the article sees browser defaults, as
+ * it did in the frame. CSS is editor-supplied (trusted), as before.
+ */
+export function blogHtmlInline(source: string): { html: string; css: string } {
+  const cleaned = sanitizeHtml(cleanBlogHtml(source), {
+    allowedTags: false,
+    allowedAttributes: false,
+    allowVulnerableTags: true,
+    exclusiveFilter: (frame) => ['title', 'meta'].includes(frame.tag),
+    transformTags: {
+      // The page already has its <main> and its H1 (the post title).
+      main: 'div',
+      h1: (_, attribs) => ({ tagName: 'h2', attribs: { ...attribs, class: `${attribs.class ?? ''} fk-article-title`.trim() } }),
+    },
+  })
+  const styles = [...cleaned.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/gi)].map((m) => m[1]).join('\n')
+  const body = cleaned.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+  const html = (body.match(/<body[^>]*>([\s\S]*)<\/body>/i)?.[1] ?? body).replace(/<\/?html[^>]*>/gi, '')
+  const scoped = styles.replace(/([^{}]+)\{/g, (_, selector: string) =>
+    `${selector.replace(/:root\b|\bhtml\b|\bbody\b/g, ':scope').replace(/\bh1\b/g, '.fk-article-title')}{`,
+  )
+  const css =
+    `@layer fk-article-reset{.${ARTICLE_CLASS} *{all:revert}}` +
+    `.${ARTICLE_CLASS}{position:relative;overflow:clip;background:#fff;color:#000;overflow-wrap:break-word}.${ARTICLE_CLASS} img{max-width:100%;height:auto}` +
+    `@scope (.${ARTICLE_CLASS}){${scoped}}`
+  return { html, css }
+}
+
+export const BLOG_HTML_CLASS = ARTICLE_CLASS

@@ -95,8 +95,12 @@ export function LegacyCareers({ jobs, dict, locale }: { jobs: JobDoc[]; dict: Di
                 <span className={`${styles.applyButton} fk-button fk-button--career`}>{dict.careers.applyNow}<ArrowRightCircle size={16} aria-hidden className="icon-flip" /></span>
               </summary>
               <div className={styles.jobBody}>
+                {/* The form lives on the job page — seven full forms here made one
+                    heavy page competing with every job URL (FK-57). */}
                 <div><CareerDescription job={job} locale={locale} /><Link className={styles.detailsLink} href={localeHref(locale, `/careers/${job.slug}`)}>{copy.fullDetails}</Link></div>
-                <CareerApplication job={job} locale={locale} dict={dict} />
+                <aside className={styles.application}>
+                  <Link className={`${styles.applyButton} fk-button fk-button--career`} href={localeHref(locale, `/careers/${job.slug}#apply`)}>{dict.careers.applyNow}<ArrowRightCircle size={16} aria-hidden className="icon-flip" /></Link>
+                </aside>
               </div>
             </details>
           }) : <p>{dict.careers.empty}</p>}

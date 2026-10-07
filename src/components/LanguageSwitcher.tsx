@@ -89,60 +89,61 @@ export function LanguageSwitcher({
       </button>
       <span role="status" className="sr-only">{pending ? `${labels.switch}: ${LOCALE_META[targetLocale].label}` : ''}</span>
 
-      {open ? (
-        <div
-          role="menu"
-          className="absolute end-0 z-50 mt-2 min-w-44 rounded-card border border-border bg-card p-1 shadow-lift"
-        >
-          {LOCALES.map((locale) => {
-            const isAvailable = enabled.has(locale)
-            const label = LOCALE_META[locale].label
+      {/* Always rendered, toggled with `hidden`: the locale links must be in
+          the server HTML for crawlers to find the other languages (FK-64). */}
+      <div
+        role="menu"
+        hidden={!open}
+        className="absolute end-0 z-50 mt-2 min-w-44 rounded-card border border-border bg-card p-1 shadow-lift"
+      >
+        {LOCALES.map((locale) => {
+          const isAvailable = enabled.has(locale)
+          const label = LOCALE_META[locale].label
 
-            if (!isAvailable) {
-              return (
-                <span
-                  key={locale}
-                  role="menuitem"
-                  aria-disabled
-                  title={labels.unavailable}
-                  className="flex cursor-not-allowed items-center justify-between rounded-lg px-3 py-2 text-sm text-muted-foreground/60"
-                >
-                  {label}
-                </span>
-              )
-            }
-
+          if (!isAvailable) {
             return (
-              <Link
+              <span
                 key={locale}
                 role="menuitem"
-                href={localeHref(locale, rest)}
-                hrefLang={LOCALE_META[locale].hreflang}
-                prefetch={false}
-                onPointerEnter={() => { if (locale !== current) router.prefetch(localeHref(locale, rest)) }}
-                onFocus={() => { if (locale !== current) router.prefetch(localeHref(locale, rest)) }}
-                onNavigate={(event) => {
-                  event.preventDefault()
-                  setOpen(false)
-                  if (locale === current) return
-                  // Explicit choice must beat the remembered locale, or the "/"
-                  // redirect in proxy.ts bounces English home back to the old one.
-                  document.cookie = `NEXT_LOCALE=${locale}; path=/; max-age=31536000; samesite=lax`
-                  setTargetLocale(locale)
-                  startTransition(() => router.push(localeHref(locale, rest) + window.location.search + window.location.hash))
-                }}
-                className={cn(
-                  'fk-button fk-button--secondary flex items-center justify-between rounded-lg px-3 py-2 text-sm transition-colors',
-                  locale === current && 'font-semibold text-primary',
-                )}
+                aria-disabled
+                title={labels.unavailable}
+                className="flex cursor-not-allowed items-center justify-between rounded-lg px-3 py-2 text-sm text-muted-foreground/60"
               >
                 {label}
-                {locale === current ? <Check className="size-4" aria-hidden /> : null}
-              </Link>
+              </span>
             )
-          })}
-        </div>
-      ) : null}
+          }
+
+          return (
+            <Link
+              key={locale}
+              role="menuitem"
+              href={localeHref(locale, rest)}
+              hrefLang={LOCALE_META[locale].hreflang}
+              prefetch={false}
+              onPointerEnter={() => { if (locale !== current) router.prefetch(localeHref(locale, rest)) }}
+              onFocus={() => { if (locale !== current) router.prefetch(localeHref(locale, rest)) }}
+              onNavigate={(event) => {
+                event.preventDefault()
+                setOpen(false)
+                if (locale === current) return
+                // Explicit choice must beat the remembered locale, or the "/"
+                // redirect in proxy.ts bounces English home back to the old one.
+                document.cookie = `NEXT_LOCALE=${locale}; path=/; max-age=31536000; samesite=lax`
+                setTargetLocale(locale)
+                startTransition(() => router.push(localeHref(locale, rest) + window.location.search + window.location.hash))
+              }}
+              className={cn(
+                'fk-button fk-button--secondary flex items-center justify-between rounded-lg px-3 py-2 text-sm transition-colors',
+                locale === current && 'font-semibold text-primary',
+              )}
+            >
+              {label}
+              {locale === current ? <Check className="size-4" aria-hidden /> : null}
+            </Link>
+          )
+        })}
+      </div>
     </div>
   )
 }

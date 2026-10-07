@@ -63,12 +63,10 @@ export function RoleRow({ job, locale, dict }: { job: JobDoc; locale: Locale; di
           {job.summary ? (
             <p className="mt-1.5 max-w-[60ch] text-sm/6 text-ink-500 dark:text-muted-foreground">{job.summary}</p>
           ) : null}
-          <JobMeta job={job} dict={dict} className="mt-3 md:hidden" />
         </div>
 
-        <div className="hidden shrink-0 md:block">
-          <JobMeta job={job} dict={dict} />
-        </div>
+        {/* One list: the row stacks it under the text on phones (FK-59). */}
+        <JobMeta job={job} dict={dict} className="shrink-0" />
 
         <ArrowRight
           className="icon-flip hidden size-5 shrink-0 text-border transition-colors group-hover:text-primary md:block"

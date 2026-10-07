@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import { Users } from 'lucide-react'
 
 import { getDictionary } from '@/i18n/getDictionary'
-import { isLocale } from '@/i18n/routing'
+import { isLocale, type Locale } from '@/i18n/routing'
 import { findDocs, getGlobal } from '@/lib/payload'
 import { ContactSection } from '@/components/blocks/ContactSection'
 import type { SettingsLite } from '../page-types'
@@ -26,6 +26,15 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     path: '/careers',
     locale,
   })
+}
+
+// Content photos, so they get described (FK-63).
+const TEAM_PHOTO_ALT: Record<Locale, [string, string]> = {
+  en: ['FEKRA engineers in a planning session', 'Two FEKRA engineers pair programming'],
+  ar: ['مهندسو فكرة في جلسة تخطيط', 'مهندسان من فكرة يعملان معًا على الكود'],
+  de: ['FEKRA-Engineers in einer Planungssitzung', 'Zwei FEKRA-Engineers beim Pair Programming'],
+  fr: ['Ingénieurs FEKRA en séance de planification', 'Deux ingénieurs FEKRA en pair programming'],
+  es: ['Ingenieros de FEKRA en una sesión de planificación', 'Dos ingenieros de FEKRA programando en pareja'],
 }
 
 export default async function CareersIndex({ params }: { params: Promise<{ locale: string }> }) {
@@ -70,11 +79,11 @@ export default async function CareersIndex({ params }: { params: Promise<{ local
               {hasFuture ? <a className="fk-button fk-button--career" href="#future-opportunities">{copy.future.replace(/\.+$/, '')}</a> : null}
             </nav>
           </div>
-          <div className="grid grid-cols-2 items-center gap-4" aria-hidden>
-            <Image src="/images/team/team-planning-session.webp" alt="" width={360} height={440} priority className="aspect-[4/5] w-full rounded-tl-[64px] rounded-br-[32px] object-cover" />
+          <div className="grid grid-cols-2 items-center gap-4">
+            <Image src="/images/team/team-planning-session.webp" alt={TEAM_PHOTO_ALT[locale][0]} width={360} height={440} priority className="aspect-[4/5] w-full rounded-tl-[64px] rounded-br-[32px] object-cover" />
             <div className="flex flex-col gap-4 pt-10">
-              <Image src="/images/team/team-pairing-session.webp" alt="" width={320} height={240} priority className="aspect-[4/3] w-full rounded-tr-[40px] rounded-bl-[32px] object-cover" />
-              <div className="rounded-tr-[32px] rounded-bl-[32px] bg-brand-100 p-5 text-navy-800 dark:bg-card dark:text-foreground"><Users className="mb-3 size-6 text-primary" /><p className="font-display text-lg font-semibold">{dict.careers.whyTitle}</p></div>
+              <Image src="/images/team/team-pairing-session.webp" alt={TEAM_PHOTO_ALT[locale][1]} width={320} height={240} priority className="aspect-[4/3] w-full rounded-tr-[40px] rounded-bl-[32px] object-cover" />
+              <div className="rounded-tr-[32px] rounded-bl-[32px] bg-brand-100 p-5 text-navy-800 dark:bg-card dark:text-foreground"><Users className="mb-3 size-6 text-primary" aria-hidden /><p className="font-display text-lg font-semibold">{dict.careers.whyTitle}</p></div>
             </div>
           </div>
         </div>

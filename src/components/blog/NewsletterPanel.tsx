@@ -41,7 +41,7 @@ export function NewsletterPanel({ dict, locale }: { dict: Dictionary; locale: Lo
   }
 
   return (
-    <section className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-blog-800 via-blog-500 to-blog-700 px-6 py-10 text-white shadow-[0_30px_70px_-40px_rgba(72,155,194,0.9)] sm:px-12 sm:py-14 dark:from-card dark:via-card dark:to-card dark:ring-1 dark:ring-border">
+    <section data-blog-newsletter className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-blog-800 via-blog-500 to-blog-700 px-6 py-10 text-white shadow-[0_30px_70px_-40px_rgba(72,155,194,0.9)] sm:px-12 sm:py-14 dark:from-card dark:via-card dark:to-card dark:ring-1 dark:ring-border">
       <div
         aria-hidden
         className="absolute inset-0 opacity-10 [background-image:radial-gradient(white_1px,transparent_1px)] [background-size:22px_22px]"
@@ -80,7 +80,7 @@ export function NewsletterPanel({ dict, locale }: { dict: Dictionary; locale: Lo
               disabled={status === 'sending' || !valid || !botReady}
               className="fk-button fk-button--inverse h-12 shrink-0 rounded-full bg-white px-6 text-sm font-bold text-blog-700 transition-transform disabled:opacity-70"
             >
-              {status === 'sending' ? dict.form.submitting : dict.form.submit}
+              {status === 'sending' ? dict.form.submitting : dict.form.subscribe}
             </button>
             {errors.email ? <p id="blog-newsletter-email-error" role="alert" className="w-full text-start text-sm text-white">{dict.form.errors.email}</p> : null}
             <div className="w-full text-start"><BotVerification key={verification} locale={locale} action="newsletter" onReady={setBotReady} /></div>

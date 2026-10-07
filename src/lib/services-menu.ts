@@ -161,9 +161,25 @@ const roleTitle = (technology: string, engineer: boolean, locale: Locale) => {
   return titles[locale]
 }
 
+// Technology pages whose slug isn't `hire-<tech>-developers`.
+const ROLE_SLUGS: Record<string, string> = {
+  '.NET': 'hire-dotnet-core-developers',
+  'ASP.NET Core': 'hire-aspnet-developers',
+  'Full-Stack': 'hire-full-stack-developers',
+  'Manual QA': 'hire-manual-qa-testers',
+  'Automation QA': 'hire-automation-qa-engineers',
+}
+
 /** Explicit groups follow the approved comp independently of the CMS taxonomy. */
 export function buildServicesMenu(services: Service[], locale: Locale): ServicesMenu {
   const bySlug = new Map(services.map((service) => [service.slug, service]))
+  // A role links to its own technology page when one is published, else to its
+  // group — the menu used to send ~70 links to 8 pages (FK-24/27).
+  const roleSlug = (technology: string, fallback: string) => {
+    const tech = technology.replace(/ (Developers|Engineers)$/, '')
+    const slug = ROLE_SLUGS[tech] ?? `hire-${tech.toLowerCase().replace(/\./g, '').replace(/\s+/g, '-')}-developers`
+    return bySlug.has(slug) ? slug : fallback
+  }
   return groups.flatMap((group) => {
     const service = bySlug.get(group.slug)
     if (!service) return []
@@ -174,7 +190,7 @@ export function buildServicesMenu(services: Service[], locale: Locale): Services
         {
           title: translate(approved.title),
           slug: group.slug,
-          roles: approved.roles.map((label) => ({ title: translate(label), slug: group.slug })),
+          roles: approved.roles.map((label) => ({ title: translate(label), slug: roleSlug(label, group.slug) })),
         },
       ]
     }
@@ -182,7 +198,7 @@ export function buildServicesMenu(services: Service[], locale: Locale): Services
       ? group.roles.map((technology) => {
           return {
             title: roleTitle(technology, group.slug === 'hire-qa-engineers', locale),
-            slug: group.slug,
+            slug: roleSlug(technology, group.slug),
           }
         })
       : (service.menuRoles ?? []).map((role) => ({ title: role.label, slug: group.slug }))
