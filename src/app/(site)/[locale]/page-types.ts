@@ -33,6 +33,8 @@ export type PostDoc = {
   excerpt?: string | null
   heroImage?: MediaDoc | null
   content?: SerializedEditorState | null
+  contentFormat?: 'richText' | 'html' | null
+  htmlContent?: string | null
   layout?: BlockProps[] | null
   category?: { title?: string; slug?: string } | null
   author?: { name?: string } | null

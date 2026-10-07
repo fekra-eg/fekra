@@ -26,6 +26,8 @@ type SeoInput = {
  * hreflang only lists locales that actually have an approved translation —
  * pointing at a fallback page would be a reciprocity error.
  */
+const DEFAULT_OG_IMAGE = { url: '/images/og-default.jpg', width: 1200, height: 630, alt: 'FEKRA — vetted engineering teams from Egypt' }
+
 export function buildMetadata({
   title,
   description,
@@ -51,9 +53,9 @@ export function buildMetadata({
   const canonical = canonicalOverride || absoluteUrl(path, locale)
   const unbrandedTitle = title.replace(/(?:\s*\|\s*FEKRA)+$/i, '').trim()
   const brandedTitle = `${unbrandedTitle} | FEKRA`
-  const ogImage = image?.url
-    ? [{ url: new URL(image.url, base).toString(), width: image.width ?? 1200, height: image.height ?? 630, alt: image.alt ?? title }]
-    : undefined
+  // Every page gets a share card (FK-33); JPG because LinkedIn's WebP support is unreliable.
+  const card = image?.url ? image : DEFAULT_OG_IMAGE
+  const ogImage = [{ url: new URL(card.url, base).toString(), width: card.width ?? 1200, height: card.height ?? 630, alt: card.alt ?? title }]
 
   return {
     // CMS editors may include the brand suffix while the root layout also has
@@ -76,7 +78,7 @@ export function buildMetadata({
       images: ogImage,
       ...(type === 'article' ? { publishedTime, modifiedTime } : {}),
     },
-    twitter: { card: 'summary_large_image', title: brandedTitle, description, images: ogImage?.map((i) => i.url) },
+    twitter: { card: 'summary_large_image', title: brandedTitle, description, images: ogImage.map((i) => i.url) },
   }
 }
 

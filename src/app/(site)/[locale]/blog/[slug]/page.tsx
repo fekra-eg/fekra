@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation'
 import { RenderBlocks } from '@/components/blocks/RenderBlocks'
 import { Cover } from '@/components/blog/Cover'
 import { HeroBand } from '@/components/blog/HeroBand'
+import { BLOG_HTML_CLASS, blogHtmlInline, htmlReadingMinutes } from '@/lib/blog-html'
 import { extractHeadings, readingMinutes } from '@/components/blog/lexical'
 import { NewsletterPanel } from '@/components/blog/NewsletterPanel'
 import { PostCard, categoryTitle, formatDate, type PostSummary } from '@/components/blog/PostCard'
@@ -62,8 +63,9 @@ export default async function ArticlePage({ params }: { params: Promise<{ locale
 
   const category = categoryTitle(post as unknown as PostSummary)
   const theme = categoryTheme(category || slug)
-  const headings = extractHeadings(post.content)
-  const minutes = readingMinutes(post.content)
+  const isHtml = post.contentFormat === 'html' && Boolean(post.htmlContent?.trim())
+  const headings = isHtml ? [] : extractHeadings(post.content)
+  const minutes = isHtml ? htmlReadingMinutes(post.htmlContent!) : readingMinutes(post.content)
   const url = absoluteUrl(`/blog/${slug}`, locale)
 
   // Related posts: same category first, falling back to most recent, and never
@@ -77,6 +79,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ locale
           locale,
           limit: 4,
           sort: '-publishedAt',
+          select: { slug: true, title: true, excerpt: true, heroImage: true, publishedAt: true, featured: true, tags: true, category: true },
           where: { slug: { not_equals: slug } },
         })
   const related = [...(explicit as unknown as PostSummary[]), ...fallback]
@@ -161,13 +164,13 @@ export default async function ArticlePage({ params }: { params: Promise<{ locale
 
       <div className="container-wide py-12 sm:py-16">
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
-          <aside className="order-2 hidden lg:order-1 lg:col-span-3 lg:block">
+          {!isHtml ? <aside className="order-2 hidden lg:order-1 lg:col-span-3 lg:block">
             <div className="scrollbar-slim sticky top-24 max-h-[calc(100vh-7rem)] overflow-auto rounded-2xl border border-slate-200/70 bg-white p-5 shadow-[0_12px_44px_-30px_rgba(15,23,42,0.4)] dark:border-white/10 dark:bg-white/[0.03]">
               <TableOfContents headings={headings} title={dict.blog.tableOfContents} />
             </div>
-          </aside>
+          </aside> : null}
 
-          <article className="order-1 lg:order-2 lg:col-span-6">
+          <article className={cn('order-1 min-w-0 lg:order-2', isHtml ? 'lg:col-span-9' : 'lg:col-span-6')}>
             {headings.length ? (
               /* Phones lose the sticky sidebar, so the same TOC collapses in
                  here instead. The nav's own title is hidden — the summary row
@@ -200,7 +203,8 @@ export default async function ArticlePage({ params }: { params: Promise<{ locale
               </div>
             ) : null}
 
-            <RichText data={post.content} anchors variant="article" locale={locale} />
+            {isHtml ? <InlineHtmlArticle source={post.htmlContent!} /> :
+              <RichText data={post.content} anchors variant="article" locale={locale} />}
 
             {post.tags?.length ? (
               <ul className="mt-10 flex flex-wrap gap-2">
@@ -298,5 +302,15 @@ export default async function ArticlePage({ params }: { params: Promise<{ locale
         ]}
       />
     </div>
+  )
+}
+
+function InlineHtmlArticle({ source }: { source: string }) {
+  const { html, css } = blogHtmlInline(source)
+  return (
+    <>
+      <style>{css}</style>
+      <div className={BLOG_HTML_CLASS} dangerouslySetInnerHTML={{ __html: html }} />
+    </>
   )
 }

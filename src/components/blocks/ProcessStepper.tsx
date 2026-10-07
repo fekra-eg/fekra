@@ -129,9 +129,11 @@ export function ProcessStepper({ steps, completed, resultLabel }: { steps: Step[
                 <button
                   data-process-control type="button"
                   onClick={() => selectStep(i)}
-                  aria-label={`${i + 1} — ${s.title}`}
+                  // Pointer target only: the title button beside it is the same
+                  // control, so this one stays out of AT and the tab order (FK-66).
+                  aria-hidden
+                  tabIndex={-1}
                   data-process-number={i}
-                  aria-current={on ? 'step' : undefined}
                   className={cn(
                     'absolute end-full flex h-full w-12 items-center justify-center text-xl font-bold transition-colors duration-200 sm:w-24 sm:text-2xl',
                     on ? 'text-primary-foreground' : 'text-primary',
@@ -264,9 +266,10 @@ export function ProcessStepper({ steps, completed, resultLabel }: { steps: Step[
           rock the funnel beside it. */}
       <div aria-hidden className="w-full max-w-[420px] self-center p-6 sm:min-h-[220px] lg:p-8">
         <div key={active} className="fk-enter [animation-duration:0.35s]">
-          <h3 className="font-display text-2xl leading-tight font-bold text-navy-800 dark:text-foreground">
+          {/* <p>, not a heading: a duplicate heading still reads to crawlers. */}
+          <p className="font-display text-2xl leading-tight font-bold text-navy-800 dark:text-foreground">
             {step.title}
-          </h3>
+          </p>
           <p className="mt-3 text-base/7 text-ink-500 dark:text-muted-foreground">{step.body}</p>
         </div>
       </div>

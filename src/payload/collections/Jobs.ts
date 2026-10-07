@@ -27,7 +27,7 @@ export const Jobs: CollectionConfig = {
     afterDelete: [revalidateOnDelete('jobs', '/careers')],
   },
   fields: [
-    { name: 'title', type: 'text', localized: true, required: true },
+    { name: 'title', type: 'text', localized: true, required: true, hooks: { beforeValidate: [({ value }) => (typeof value === 'string' ? value.trim() : value)] } },
     slugField(),
     {
       type: 'tabs',

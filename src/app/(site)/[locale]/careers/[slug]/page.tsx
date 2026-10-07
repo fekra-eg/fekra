@@ -59,11 +59,13 @@ export default async function JobPage({ params }: { params: Promise<{ locale: st
   const { docs: siblings } = await findDocs<JobDoc>({
     collection: 'jobs',
     locale,
-    limit: 4,
+    limit: 100,
     sort: '-publishedAt',
     where: { roleStatus: { equals: 'open' } },
+    select: { title: true, slug: true, summary: true, location: true, workModel: true, employmentType: true },
   })
-  const related = siblings.filter((other) => other.slug !== job.slug && other.slug !== 'future-opportunities').slice(0, 3)
+  // Every other open role, not the first few (FK-60).
+  const related = siblings.filter((other) => other.slug !== job.slug && other.slug !== 'future-opportunities')
 
   return (
     <>

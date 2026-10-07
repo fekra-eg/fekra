@@ -1,4 +1,5 @@
 import { cache } from 'react'
+import { cmsMemo } from './cms-cache'
 
 import { draftMode } from 'next/headers'
 import { getPayload, type SelectType, type Where } from 'payload'
@@ -39,60 +40,10 @@ async function isDraft(): Promise<boolean> {
   }
 }
 
-/*
- * Process-lifetime memo for `next dev` and `next build`. Dev re-renders every
- * request — ISR is a production mechanism — so each locale switch repaid ~1.2s
- * of remote queries for data that had not changed.
- *
- * The build needs it for a different reason. Every page carrying a
- * `sharedSection` block reads the whole home document to resolve it (see
- * RenderBlocks.resolveShared), and that is Payload's widest query: a lateral
- * join across all nineteen block tables and their locale tables. `findDoc` is
- * wrapped in React `cache()`, which dedupes inside ONE render and does nothing
- * across separate prerenders, so a 109-page export ran it 109 times. That is
- * what put the deploy at the mercy of a busy pooler — `Export encountered an
- * error on /services/[slug]`, cause `timeout exceeded when trying to connect`.
- * Content cannot change mid-build, so one fetch per worker is not just an
- * optimisation, it is the correct read.
- *
- * Draft reads bypass it, and serving production still never touches it: ISR is
- * the one cache layer there.
- */
-const devCache = new Map<string, { t: number; v: unknown }>()
-const devInflight = new Map<string, Promise<unknown>>()
-const DEV_TTL_MS = 300_000
-const MEMOIZED_PHASE =
-  process.env.NODE_ENV === 'development' || process.env.NEXT_PHASE === 'phase-production-build'
-async function devMemo<T>(key: string | null, fn: () => Promise<T>): Promise<T> {
-  if (!MEMOIZED_PHASE || key === null) return fn()
-  const hit = devCache.get(key)
-  if (hit && Date.now() - hit.t < DEV_TTL_MS) return hit.v as T
-
-  // React can request the page HTML and RSC payload at the same time. Share a
-  // single cold database read instead of making both requests compete for the
-  // small remote Postgres pool.
-  const pending = devInflight.get(key)
-  if (pending) return pending as Promise<T>
-
-  const request = fn()
-    .then((value) => {
-      devCache.set(key, { t: Date.now(), v: value })
-      return value
-    })
-    .finally(() => devInflight.delete(key))
-  devInflight.set(key, request)
-  return request
-}
-
 /**
- * Draft mode reads unpublished versions; published reads are cached by the
- * route segment itself (`export const revalidate` + the revalidatePath calls in
- * the afterChange hooks).
- *
- * Deliberately NOT wrapped in `unstable_cache`: that stores entries under cache
- * *tags*, while publishing invalidates by *path*. Two namespaces meant a
- * published article stayed invisible until its timer expired. One cache layer,
- * one invalidation mechanism (17.4 / 4.3).
+ * Draft mode reads unpublished versions directly. Published reads use a data
+ * cache because draftMode() opts the route into dynamic rendering. CMS hooks
+ * invalidate both the data tag and route paths when content changes.
  */
 export async function findDocs<T = unknown>({
   collection,
@@ -111,7 +62,7 @@ export async function findDocs<T = unknown>({
   // e.g. `categories` is a 400. Read it from the config so it cannot drift.
   const hasDrafts = Boolean(payload.collections[collection]?.config.versions?.drafts)
 
-  const result = await devMemo(
+  const result = await cmsMemo(
     draft ? null : JSON.stringify(['find', collection, locale, limit, page, where, sort, depth, select]),
     () =>
       payload.find({
@@ -191,7 +142,7 @@ export const getGlobal = cache(async function getGlobal<T = unknown>(
   locale: Locale,
 ): Promise<T> {
   const payload = await payloadClient()
-  return correctQaDocument(await devMemo(JSON.stringify(['global', slug, locale]), () =>
+  return correctQaDocument(await cmsMemo(JSON.stringify(['global', slug, locale]), () =>
     payload.findGlobal({ slug, locale, fallbackLocale: 'en', depth: 1 }),
   ), locale) as T
 })

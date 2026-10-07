@@ -2,10 +2,13 @@
 
 import { useEffect, useState } from 'react'
 
-import { BidiText } from '@/components/BidiText'
+import { bidiIsolate } from '@/components/BidiText'
 import { cn } from '@/lib/cn'
 
-const CELL = 'col-start-1 row-start-1 -my-[0.16em] py-[0.16em]'
+// Visual layers draw their text from `data-text` via ::before, so it stays out
+// of the DOM: crawlers read hidden spans too, and the H1 used to index as every
+// phrase concatenated. The sr-only span is the heading's only real text.
+const CELL = 'col-start-1 row-start-1 -my-[0.16em] py-[0.16em] before:content-[attr(data-text)]'
 const CARET = 'ms-[0.08em] inline-block h-[0.8em] w-[0.055em] min-w-[2px] translate-y-[0.05em] rounded-[2px]'
 
 /**
@@ -70,25 +73,22 @@ export function RotatingWords({ words, intervalMs = 5000 }: { words: string[]; i
       {/* Measure every phrase in the same grid cell: character count does not
           predict rendered width, and mobile phrases can wrap to two lines. */}
       {words.map((word, i) => (
-        <span key={i} aria-hidden className={cn(CELL, 'invisible')}>
-          <BidiText>{word}</BidiText>
-        </span>
+        <span key={i} aria-hidden data-text={bidiIsolate(word)} className={cn(CELL, 'invisible')} />
       ))}
       {/* Nothing inside a `background-clip: text` span may animate — Chrome
           leaves stale paint slivers — so the gradient word only holds an
           invisible caret-sized spacer... */}
       <span
         aria-hidden
+        data-text={bidiIsolate(shown)}
         className={cn(CELL, 'bg-[linear-gradient(137.53deg,#12cbb4_0%,#375bc7_100%)] bg-clip-text text-transparent')}
       >
-        <BidiText>{shown}</BidiText>
         {enabled ? <span className={cn(CARET, 'invisible')} /> : null}
       </span>
       {/* ...and the blinking caret rides a transparent copy of the same text
           on top, so both layers centre and wrap identically. */}
       {enabled ? (
-        <span aria-hidden className={cn(CELL, 'text-transparent')}>
-          <BidiText>{shown}</BidiText>
+        <span aria-hidden data-text={bidiIsolate(shown)} className={cn(CELL, 'text-transparent')}>
           <span className={cn(CARET, 'fk-caret bg-[linear-gradient(180deg,#12cbb4,#375bc7)]')} />
         </span>
       ) : null}

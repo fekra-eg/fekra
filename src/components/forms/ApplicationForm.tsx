@@ -199,11 +199,12 @@ export function ApplicationForm({
         <Field label={dict.form.phone} hideLabel={Boolean(kind)} required error={messageFor('phone')}>
           {(props) => <Input {...props} name="phone" type="tel" autoComplete="tel" dir="ltr" />}
         </Field>
-        {!kind ? <Field label={dict.form.linkedin} error={messageFor('linkedin')}>
+        {/* Optional on every form — the privacy policy lists it (FK-22). */}
+        <Field label={dict.form.linkedin} hideLabel={Boolean(kind)} error={messageFor('linkedin')}>
           {(props) => (
-            <Input {...props} name="linkedin" type="url" dir="ltr" placeholder="https://" />
+            <Input {...props} name="linkedin" type="url" dir="ltr" {...(kind ? {} : { placeholder: 'https://' })} />
           )}
-        </Field> : null}
+        </Field>
         {extraFields.map((key) => <Field key={key} label={copy[key]} hideLabel required error={messageFor(key)}>
           {(props) => <Input {...props} name={key} maxLength={500} inputMode={key === 'graduation' ? 'numeric' : undefined} />}
         </Field>)}

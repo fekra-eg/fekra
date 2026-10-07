@@ -89,7 +89,7 @@ export default async function ServicePage({ params }: { params: Promise<{ locale
       />
 
       {service.relatedServices?.length ? (
-        <section className="container-site pb-16">
+        <section className="container-site pb-[var(--section-y)]">
           <h2 className="text-2xl">{dict.common.learnMore}</h2>
           <ul className="mt-6 flex flex-wrap gap-3">
             {service.relatedServices

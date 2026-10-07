@@ -324,7 +324,7 @@ export function HeroSection({
       // 1440x982 screen — the whole hero fits one screen by default there.
       data-motion="hero"
       className={cn(
-        'relative isolate mt-[calc(var(--header-block)*-1)] flex flex-col overflow-hidden pt-[calc(var(--header-block)+clamp(1.25rem,5.2vw,4.75rem))] pb-8 md:pb-12 dark:bg-background',
+        'relative isolate mt-[calc(var(--header-block)*-1)] flex flex-col overflow-hidden pt-[calc(var(--header-block)+clamp(1.25rem,3vw,2.5rem))] pb-8 md:pb-12 dark:bg-background',
         // The copy-only hero carries the comp's 136px of air under the nav;
         // the collage hero cannot afford it and keeps the tighter default.
         // 26px under the badges is the comp's own clearance (pills end 758,
@@ -404,23 +404,30 @@ export function HeroSection({
             )}
           >
             {block.heading}
-            <br />
             {/* Second line is a gradient fill in the comp, teal -> blue.
                 The gradient must live ON the animated word (inside
                 RotatingWords), not on a wrapper: Chrome leaves paint slivers
                 when a `background-clip: text` element has animating children. */}
             {words.length ? (
-              <RotatingWords words={words} />
-            ) : block.headingAccent ? (
-              /* Static accent renders as the SUBHEAD line (About-page comp
-                 93:2966): small, bold, navy — several steps below the H1. */
-              /* Roboto Medium in the comp, not the display face — Inter is
-                 our neutral grotesque, so the subhead drops out of the display face. */
-              <span className="mt-2 block font-sans text-[clamp(1.125rem,1.66vw,1.5rem)] leading-[1.25] font-medium tracking-normal text-[#333333] dark:text-foreground">
-                {block.headingAccent}
-              </span>
+              <>
+                <br />
+                <RotatingWords words={words} />
+              </>
             ) : null}
           </Title>
+          {!words.length && block.headingAccent ? (
+            /* Static accent renders as the SUBHEAD line (About-page comp
+               93:2966): small, bold, navy — several steps below the H1. A <p>
+               outside the heading keeps the H1 one headline (FK-29).
+               Roboto Medium in the comp, not the display face — Inter is
+               our neutral grotesque, so the subhead drops out of the display face. */
+            <p
+              style={{ '--i': 1 } as React.CSSProperties}
+              className="fk-enter mt-2 font-sans text-[clamp(1.125rem,1.66vw,1.5rem)] leading-[1.25] font-medium tracking-normal text-[#333333] dark:text-foreground"
+            >
+              {block.headingAccent}
+            </p>
+          ) : null}
 
           {block.body ? (
             <p
@@ -586,7 +593,7 @@ export function HeroSection({
   )
 }
 
-export function LogoCloudSection({ block, locale }: { block: BlockProps; locale: Locale }) {
+export function LogoCloudSection({ block }: { block: BlockProps; locale: Locale }) {
   /* Figma 1:11600 — the same logo array, presented as a centred badge row
      under a gradient heading instead of beside a statement. */
   if (block.variant === 'badges') {
@@ -621,7 +628,9 @@ export function LogoCloudSection({ block, locale }: { block: BlockProps; locale:
                       mixes a wide lockup with four round seals. */}
                   <Image
                     src={certificationSource(image)}
-                    alt={badge.name}
+                    // `name` isn't localized, so a translated save leaks into every
+                    // locale; the media alt is per-locale with English fallback.
+                    alt={image.alt || badge.name}
                     width={296}
                     height={125}
                     style={{ width: 'auto' }}
@@ -665,18 +674,12 @@ export function LogoCloudSection({ block, locale }: { block: BlockProps; locale:
        */}
       <div className="container-site mx-auto flex flex-col items-center gap-10 lg:flex-row lg:justify-center lg:gap-10 xl:gap-14">
         {hasStatement ? (
-          /* 458px / 32px / 48px line-height, Space Grotesk Medium in the comp —
-             not bold, which is what made it read heavier than the design. */
-          <p className="mx-auto max-w-md text-center font-display text-2xl leading-[1.35] font-semibold text-navy-800 lg:mx-0 lg:my-auto lg:w-[430px] lg:max-w-none lg:shrink-0 lg:text-start lg:text-[30px] dark:text-foreground">
-            {locale === 'en' && statement?.before === '50+ companies rely on our' ? <>
-              <span className="lg:block">50+ companies rely on our</span>{' '}
-              <span className="lg:block"><span className="text-primary">top 3%</span> talent to scale their</span>{' '}
-              <span className="lg:block">dev teams.</span>
-            </> : <>{statement?.before}{' '}
+          <p className="mx-auto max-w-md text-center font-display text-[28px] leading-[1.3] font-semibold text-navy-800 sm:text-[32px] lg:mx-0 lg:my-auto lg:w-[430px] lg:max-w-none lg:shrink-0 lg:text-start lg:text-[36px] dark:text-foreground">
+            {statement?.before}{' '}
             {statement?.highlight ? (
               <span className="text-primary">{statement.highlight}</span>
             ) : null}{' '}
-            {statement?.after}</>}
+            {statement?.after}
           </p>
         ) : block.heading ? (
           <p className="text-sm text-muted-foreground">{block.heading}</p>
@@ -915,7 +918,7 @@ export function CardGridSection({ block, locale }: { block: BlockProps; locale: 
                 <li
                   key={card.title}
                   className={cn(
-                    'relative isolate overflow-hidden rounded-card border border-panel-grey bg-card px-7 py-6 dark:border-border',
+                    'relative isolate overflow-hidden rounded-card border border-panel-grey bg-card px-5 py-5 sm:px-7 sm:py-6 dark:border-border',
                     index < 2 ? 'md:col-span-3' : 'md:col-span-2',
                   )}
                 >
@@ -954,7 +957,7 @@ export function CardGridSection({ block, locale }: { block: BlockProps; locale: 
                       {card.title}
                     </h3>
                     {card.body ? (
-                      <p className="text-lg/[1.35] whitespace-pre-line text-ink-500 dark:text-muted-foreground">
+                      <p className="text-base/[1.55] whitespace-pre-line text-ink-500 sm:text-lg/[1.35] dark:text-muted-foreground">
                         {card.body}
                       </p>
                     ) : null}
@@ -1075,14 +1078,14 @@ export function IndustriesSection({ block }: { block: BlockProps }) {
          * exactly seven per row, so twenty items land 7/7/6 — three balanced
          * rows with no orphan. Still a wrap, so it reflows normally below lg.
          */}
-        <ul className="flex flex-wrap justify-center gap-6 lg:max-w-[1264px]">
+        <ul className="grid w-full grid-cols-3 gap-3 sm:flex sm:w-auto sm:flex-wrap sm:justify-center sm:gap-6 lg:max-w-[1264px]">
           {items.map((item) => {
             const icon = item.icon as MediaDoc | undefined
             return (
               <li
                 key={item.label}
                 style={{ '--fk-tint': INDUSTRY_TONE[item.tone ?? 'teal'] } as React.CSSProperties}
-                className="fk-tint-bg fk-tint-border flex w-[132px] flex-col items-center gap-4 rounded-tl-industry rounded-br-industry border px-4 py-4 sm:w-[160px]"
+                className="fk-tint-bg fk-tint-border flex min-w-0 flex-col items-center gap-2 rounded-tl-industry rounded-br-industry border px-2 py-3 sm:w-[160px] sm:gap-4 sm:px-4 sm:py-4"
               >
                 <span className="flex size-8 items-center justify-center">
                   {icon?.url ? (
@@ -1096,7 +1099,7 @@ export function IndustriesSection({ block }: { block: BlockProps }) {
                     />
                   ) : null}
                 </span>
-                <span className="text-center text-base leading-6 font-semibold text-ink-900 dark:text-foreground">
+                <span className="text-center text-sm leading-5 font-semibold [overflow-wrap:anywhere] text-ink-900 sm:text-base sm:leading-6 dark:text-foreground">
                   {item.label}
                 </span>
               </li>

@@ -1,8 +1,9 @@
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 import type { CollectionAfterChangeHook, CollectionAfterDeleteHook, GlobalAfterChangeHook } from 'payload'
 
 import { LOCALES } from '@/i18n/routing'
 import { documentHref, type LinkableCollection } from '@/lib/urls'
+import { clearCmsMemo } from '@/lib/cms-cache'
 
 type MaybeDoc = { _status?: string; slug?: string } | undefined
 
@@ -24,7 +25,9 @@ const affectsPublic = (doc: MaybeDoc): boolean =>
  * blank screen.
  */
 const purge = (paths: string[], req: { payload?: { logger?: { warn: (msg: string) => void } } }) => {
+  clearCmsMemo()
   try {
+    revalidateTag('cms-public', { expire: 0 })
     for (const path of paths) revalidatePath(path, 'page')
   } catch (error) {
     req.payload?.logger?.warn(`revalidate skipped: ${error instanceof Error ? error.message : String(error)}`)
@@ -73,10 +76,23 @@ export const revalidateOnDelete =
 /** Header/Footer/Settings appear on every page — purge the whole tree. */
 export const revalidateGlobal: GlobalAfterChangeHook = ({ doc, req }) => {
   if (req.context?.disableRevalidate) return doc
+  clearCmsMemo()
   try {
+    revalidateTag('cms-public', { expire: 0 })
     revalidatePath('/', 'layout')
   } catch (error) {
     req.payload?.logger?.warn(`revalidate skipped: ${error instanceof Error ? error.message : String(error)}`)
   }
+  return doc
+}
+
+/** Populated names, category labels and media can affect any cached document. */
+export const revalidateRelatedDocument: CollectionAfterChangeHook = ({ doc, req }) => {
+  if (!req.context?.disableRevalidate) purge([], req)
+  return doc
+}
+
+export const revalidateRelatedDelete: CollectionAfterDeleteHook = ({ doc, req }) => {
+  if (!req.context?.disableRevalidate) purge([], req)
   return doc
 }

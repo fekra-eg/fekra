@@ -1,9 +1,11 @@
 import type { CollectionConfig } from 'payload'
 
 import { authenticated, isAdmin, isAdminField } from '../access'
+import { revalidateRelatedDocument, revalidateRelatedDelete } from '../hooks/revalidate'
 
 export const Users: CollectionConfig = {
   slug: 'users',
+  hooks: { afterChange: [revalidateRelatedDocument], afterDelete: [revalidateRelatedDelete] },
   labels: { singular: 'User', plural: 'Users' },
   admin: {
     useAsTitle: 'email',

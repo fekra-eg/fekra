@@ -22,6 +22,7 @@ export async function PostsTeaser({ block, locale }: { block: BlockProps; locale
     locale,
     limit: block.limit ?? 3,
     sort: '-publishedAt',
+    select: { slug: true, title: true, heroImage: true, featured: true, category: true },
     where: categorySlug ? { 'category.slug': { equals: categorySlug } } : {},
   })
 

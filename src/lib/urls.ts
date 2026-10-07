@@ -37,8 +37,14 @@ export function allLocaleHrefs(path: string): Record<Locale, string> {
  * origin so it can never match. Normalising here costs one URL parse and makes
  * that whole class of misconfiguration impossible.
  */
+const PRODUCTION_ORIGIN = 'https://www.fekra-egy.com'
+
 export const siteUrl = (): string => {
-  const raw = (process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000').trim()
+  let raw = (process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000').trim()
+  // Production once shipped with the *.vercel.app alias here, and every
+  // canonical, og:url and share link told Google that was the real site.
+  // A production deploy only ever has one public origin.
+  if (process.env.VERCEL_ENV === 'production' && (!raw || /\.vercel\.app/i.test(raw))) raw = PRODUCTION_ORIGIN
   try {
     return new URL(raw).origin
   } catch {

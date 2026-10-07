@@ -63,11 +63,14 @@ export function BlogIndex({
       <HeroBand>
         <div className="container-wide py-14 sm:py-20">
           <div className="grid items-start gap-8 lg:grid-cols-[1.5fr_minmax(0,1fr)]">
-            <h1 className="text-[clamp(2rem,4vw,3.25rem)] leading-[1.12] font-extrabold tracking-tight text-slate-900 dark:text-white">
+            {/* The counter is display copy; the heading crawlers and screen
+                readers get describes the blog (FK-30). */}
+            <h1 className="sr-only">{dict.blog.subtitle}</h1>
+            <p className="text-[clamp(2rem,4vw,3.25rem)] leading-[1.12] font-extrabold tracking-tight text-slate-900 dark:text-white">
               {dict.blog.heroPre} <span className="text-blog-500">{new Intl.NumberFormat(locale).format(posts.length)}</span>
               <br />
               <span className="text-blog-500">{articleWord}</span> {dict.blog.heroPost}
-            </h1>
+            </p>
 
             <div className="relative w-full max-w-md lg:justify-self-end">
               <svg

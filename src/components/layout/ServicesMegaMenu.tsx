@@ -1,5 +1,5 @@
 import { BidiText } from '@/components/BidiText'
-import Link from 'next/link'
+import { IntentLink as Link } from './IntentLink'
 import { localeHref, type Locale } from '@/i18n/routing'
 import type { Dictionary } from '@/i18n/getDictionary'
 import type { ServicesMenu } from './Header'

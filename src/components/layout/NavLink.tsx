@@ -18,6 +18,7 @@ export function NavLink({ link, hasChildren }: { link: ResolvedLink; hasChildren
   return (
     <Link
       href={link.href}
+      prefetch={link.external ? false : true}
       aria-current={isActive ? 'page' : undefined}
       data-analytics-id={link.analyticsId}
       className={cn(
