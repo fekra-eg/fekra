@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fekra website: master plan to 100%</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1A2340;--navy2:#2B3763;--teal:#00A88F;--teal-d:#00735F;--teal-soft:#E3F6F1;
+  --crit:#B42318;--crit-soft:#FDECEA;--high:#C4540A;--high-soft:#FEF0E6;
+  --med:#946200;--med-soft:#FFF6DB;--low:#4A5468;--low-soft:#EEF1F5;
+  --ink:#1E2433;--muted:#5B6478;--line:#DDE2EA;--bg:#F3F5F8;--paper:#fff;
+  --sans:'IBM Plex Sans','Segoe UI',Roboto,Arial,sans-serif;
+  --ar:'IBM Plex Sans Arabic','Segoe UI',Tahoma,Arial,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,Consolas,monospace;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6}
+.wrap{max-width:1000px;margin:0 auto;padding:28px 20px 60px}
+header.top{background:var(--navy);color:#fff;border-radius:12px;padding:32px 36px}
+.brand{font-weight:700;letter-spacing:.22em;font-size:13px;color:#9FE1CB;margin:0 0 16px}
+h1{font-size:29px;line-height:1.2;margin:0 0 10px;font-weight:600;max-width:28ch}
+.lede{color:#C9D1E6;margin:0;max-width:70ch}
+.ar,.lede-ar{font-family:var(--ar);direction:rtl;text-align:right}
+.lede-ar{color:#9FE1CB;margin:12px 0 0}
+nav.tabs{position:sticky;top:0;z-index:10;background:var(--bg);display:flex;gap:6px;flex-wrap:wrap;padding:14px 0 10px;border-bottom:1px solid var(--line);margin-bottom:6px}
+nav.tabs button{font:inherit;font-size:14px;font-weight:500;padding:8px 14px;border:1px solid var(--line);background:#fff;border-radius:8px;cursor:pointer;color:var(--ink)}
+nav.tabs button[aria-selected=true]{background:var(--navy);color:#fff;border-color:var(--navy)}
+section.tab{display:none}section.tab.on{display:block}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:24px 28px;margin:16px 0}
+.panel h2{font-size:20px;margin:0 0 10px;color:var(--navy);font-weight:600}
+.panel h3{font-size:16px;margin:18px 0 6px;color:var(--navy2);font-weight:600}
+.panel p{margin:0 0 10px;max-width:78ch}
+.ar p,.ar li{max-width:none}
+.panel ul,.panel ol{margin:6px 0 12px;padding-inline-start:22px}
+.panel li{margin:4px 0}
+code{font-family:var(--mono);font-size:12.5px;background:#F1F3F7;border:1px solid var(--line);border-radius:4px;padding:0 4px;word-break:break-word}
+.road{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin:14px 0 6px;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.road div{padding:14px;border-inline-start:1px solid var(--line);background:#fff}
+.road div:first-child{border-inline-start:none}
+.road .n{font-size:26px;font-weight:700;color:var(--navy);line-height:1}
+.road .t{font-size:12px;color:var(--muted);margin-top:6px}
+.road .now{background:#F7F9FB}.road .goal{background:var(--teal-soft)}.road .goal .n{color:var(--teal-d)}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:14px 0}
+.stat{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.stat .n{font-size:26px;font-weight:700;line-height:1}.stat .l{font-size:12px;color:var(--muted);margin-top:4px}
+.stat.c .n{color:var(--crit)}.stat.h .n{color:var(--high)}.stat.m .n{color:var(--med)}.stat.lo .n{color:var(--low)}
+.progress{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 16px;margin-bottom:12px}
+.progress .row{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:8px}
+.bar{height:10px;background:#E8ECF2;border-radius:6px;overflow:hidden}.bar i{display:block;height:100%;width:0;background:var(--teal);transition:width .3s}
+.filters{position:sticky;top:58px;z-index:5;background:var(--bg);padding:10px 0;display:flex;flex-wrap:wrap;gap:8px;align-items:center;border-bottom:1px solid var(--line)}
+.filters label{font-size:12px;color:var(--muted)}
+.filters select,.filters input{font:inherit;font-size:13px;padding:6px 10px;border:1px solid var(--line);border-radius:7px;background:#fff;color:var(--ink)}
+.filters input{flex:1;min-width:150px}
+.btn{font:inherit;font-size:13px;padding:7px 13px;border:1px solid var(--line);border-radius:7px;background:#fff;cursor:pointer;color:var(--ink)}
+.btn.pri{background:var(--navy);color:#fff;border-color:var(--navy)}
+.btn:hover{border-color:var(--navy2)}
+.phase-h{margin:26px 0 6px;padding:14px 18px;border-radius:10px;background:var(--navy);color:#fff}
+.phase-h b{font-size:16px}.phase-h span{display:block;font-size:13px;color:#C9D1E6}
+.phase-h .ar{color:#9FE1CB;font-size:13px}
+.issue{background:#fff;border:1px solid var(--line);border-inline-start:5px solid var(--low);border-radius:10px;padding:16px 20px;margin:10px 0}
+.issue.Critical{border-inline-start-color:var(--crit)}.issue.High{border-inline-start-color:var(--high)}.issue.Medium{border-inline-start-color:#D9A400}.issue.Low{border-inline-start-color:#9AA4B5}
+.issue.done{opacity:.55}.issue.done .ttl{text-decoration:line-through}
+.head{display:flex;gap:14px;align-items:flex-start}
+.id{font-family:var(--mono);font-weight:600;font-size:15px;color:var(--navy);min-width:62px}
+.ttl{font-weight:600;font-size:16px;line-height:1.35;flex:1}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0 76px}
+.tag{font-size:11.5px;padding:2px 8px;border-radius:5px;background:var(--low-soft);color:var(--low);font-weight:500}
+.tag.Critical{background:var(--crit-soft);color:var(--crit)}.tag.High{background:var(--high-soft);color:var(--high)}.tag.Medium{background:var(--med-soft);color:var(--med)}
+.tag.own{background:#EEF2FF;color:var(--navy2)}.tag.ver{background:var(--teal-soft);color:var(--teal-d)}.tag.chk{background:#FFF6DB;color:var(--med)}
+.body{margin:12px 0 0 76px}
+.body dl{margin:0;display:grid;grid-template-columns:96px 1fr;gap:6px 14px}
+.body dt{font-size:12px;color:var(--muted);font-weight:500;padding-top:2px}
+.body dd{margin:0;font-size:14px}
+.arline{font-family:var(--ar);direction:rtl;text-align:right;background:#F7F9FB;border-radius:7px;padding:8px 12px;margin-top:10px;font-size:14px;color:#2A3242}
+.done-toggle{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--muted);cursor:pointer;white-space:nowrap;user-select:none}
+.done-toggle input{width:17px;height:17px;accent-color:var(--teal)}
+/* questionnaire */
+.qsec{margin:24px 0 8px;font-weight:600;color:var(--navy);font-size:17px}
+.q{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px 20px;margin:10px 0}
+.q .qh{display:flex;gap:12px}
+.q .qid{font-family:var(--mono);font-weight:600;color:var(--navy);min-width:58px}
+.q .qt{font-weight:600}
+.q .why{font-size:13px;color:var(--muted);margin:4px 0 10px 70px}
+.opts{margin-left:70px;display:grid;gap:6px}
+.opts label{display:flex;gap:8px;align-items:flex-start;font-size:14px;padding:6px 10px;border:1px solid var(--line);border-radius:7px;cursor:pointer}
+.opts label:hover{border-color:var(--navy2)}
+.opts input{margin-top:3px;accent-color:var(--navy)}
+.opts .rec{display:none;font-size:11px;font-weight:600;color:var(--teal-d);background:var(--teal-soft);border-radius:4px;padding:1px 6px;margin-inline-start:auto;white-space:nowrap}
+body.showrec .opts .rec{display:inline-block}
+.recnote{display:none;margin:8px 0 0 70px;font-size:13px;background:var(--teal-soft);border-radius:7px;padding:8px 12px;color:#0B4D41}
+body.showrec .recnote{display:block}
+.q textarea,.q input[type=text]{width:calc(100% - 70px);margin:8px 0 0 70px;font:inherit;font-size:13.5px;padding:8px 10px;border:1px solid var(--line);border-radius:7px;min-height:38px}
+.qbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;position:sticky;top:58px;background:var(--bg);padding:10px 0;z-index:5;border-bottom:1px solid var(--line)}
+.qbar .count{font-size:13px;color:var(--muted);margin-inline-start:auto}
+table.t{width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 14px}
+table.t th,table.t td{border:1px solid var(--line);padding:8px 10px;text-align:start;vertical-align:top}
+table.t th{background:#F6F7FA;font-weight:600}
+.scroll{overflow-x:auto}
+.callout{background:var(--teal-soft);border-inline-start:4px solid var(--teal);padding:12px 16px;border-radius:6px;margin:10px 0}
+.warn{background:var(--crit-soft);border-inline-start:4px solid var(--crit);padding:12px 16px;border-radius:6px;margin:10px 0}
+footer{font-size:12.5px;color:var(--muted);text-align:center;margin-top:30px}
+:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+@media (max-width:760px){
+  header.top{padding:22px}h1{font-size:23px}
+  .road{grid-template-columns:1fr 1fr}.road div{border-inline-start:none;border-top:1px solid var(--line)}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .tags,.body,.opts,.q .why,.recnote{margin-left:0}
+  .q textarea,.q input[type=text]{width:100%;margin-left:0}
+  .head{flex-wrap:wrap}.body dl{grid-template-columns:1fr}
+  .filters,.qbar{top:96px}
+}
+@media print{nav.tabs,.filters,.qbar,.done-toggle{display:none}section.tab{display:block}body{background:#fff}.issue,.q{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <p class="brand">FEKRA</p>
+  <h1>fekra-egy.com: the complete plan to reach first place</h1>
+  <p class="lede">One file for Fekra and the development team: every verified issue with its fix, ordered in four phases; questions for the developer with selectable answers; and the playbook for a blog that ranks in five languages.</p>
+  <p class="lede-ar">ملف واحد ليك وللمطور: كل مشكلة اتأكدت منها وحلها، مترتبة على 4 مراحل، وأسئلة للمطور يختار إجابتها، وخطة البلوج عشان يبقى رقم واحد في الخمس لغات.</p>
+</header>
+
+<nav class="tabs" role="tablist">
+  <button role="tab" data-t="ov" aria-selected="true">1. Overview</button>
+  <button role="tab" data-t="is">2. Issues &amp; fixes</button>
+  <button role="tab" data-t="dq">3. Developer questions</button>
+  <button role="tab" data-t="bl">4. Blog &amp; 5 languages</button>
+  <button role="tab" data-t="ts">5. Tests</button>
+</nav>
+
+<!-- ================= OVERVIEW ================= -->
+<section class="tab on" id="ov">
+  <div class="panel">
+    <h2>Where Fekra stands and where this plan takes it</h2>
+    <p>Score on the 14-criteria comparison against BairesDev, Andela, Digipal, FlairsTech, DevsData and Vivasoft. Projections assume each phase is fully completed.</p>
+    <div class="road">
+      <div class="now"><div class="n">70</div><div class="t">Today · rank #3 of 8</div></div>
+      <div><div class="n">≈76</div><div class="t">After Phase 0 · foundation</div></div>
+      <div><div class="n">≈82</div><div class="t">After Phase 1 · trust &amp; message</div></div>
+      <div><div class="n">≈86</div><div class="t">After Phases 2–3 · structure &amp; polish</div></div>
+      <div class="goal"><div class="n">90+</div><div class="t">+ 6 months of blog and real case studies · rank #1</div></div>
+    </div>
+    <p style="font-size:13px;color:var(--muted)">Competitor scores come from the earlier review of their sites. These are estimates on a consistent scale, not guarantees.</p>
+  </div>
+
+  <div class="panel">
+    <h2>How to use this file</h2>
+    <ol>
+      <li><b>Developer:</b> answer tab 3 first (about 20 minutes), click “Download answers”, and send the file back. This tells Fekra how the site is built today.</li>
+      <li><b>Developer:</b> work through tab 2 phase by phase. Report progress by ID, for example “Phase 0: FK-01, FK-02, FK-05 done; FK-06 in progress”.</li>
+      <li><b>Fekra:</b> items marked <b>Owner: Fekra</b> are business decisions (claims, testimonials, offices, titles) and need your answer, not code.</li>
+      <li><b>Both:</b> do not publish the first real blog article until every item in the “Pre-launch gate” in tab 4 passes.</li>
+      <li>Tick “Fixed” on each issue as it is confirmed. Ticks and questionnaire answers are saved in this browser.</li>
+    </ol>
+    <div class="ar callout">
+      <p><b>بالعربي:</b> المطور يجاوب الأسئلة في التاب 3 الأول ويبعتلك الإجابات، وبعدين يشتغل على التاب 2 مرحلة مرحلة ويبلغك بالأرقام. البنود اللي عليها Owner: Fekra دي قراراتك انت. ومتنشرش أول مقال حقيقي غير لما كل بنود "Pre-launch gate" في التاب 4 تنجح.</p>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>The ten actions that matter most</h2>
+    <ol>
+      <li><b>FK-01 → FK-05:</b> move every canonical, OG and share URL to www.fekra-egy.com and redirect the Vercel preview domain. One configuration change fixes all five languages.</li>
+      <li><b>FK-06:</b> make the real article’s body appear in the server HTML. Without this, no blog article will rank.</li>
+      <li><b>FK-68:</b> remove the 20 test-article URLs (4 articles × 5 languages).</li>
+      <li><b>FK-08 / FK-09:</b> show only real offices; replace “Our Locations” with “Where our clients are”.</li>
+      <li><b>FK-10 / FK-13:</b> replace template testimonials and unsourced ratings with real, attributable proof.</li>
+      <li><b>FK-17 / FK-16:</b> put 30–60% savings, 6–14 days, the 30-day replacement guarantee and recorded interviews in the hero, with one consistent speed claim.</li>
+      <li><b>FK-64 / FK-80:</b> confirm hreflang and make the language switcher real links so all five languages can rank.</li>
+      <li><b>FK-79:</b> add an Impressum for the German version (confirm with legal advice).</li>
+      <li><b>FK-36:</b> replace “Home | FEKRA” with a descriptive title in every language.</li>
+      <li><b>FK-26 / FK-24:</b> give each service and technology page its own content and link it from the menu.</li>
+    </ol>
+  </div>
+
+  <div class="panel">
+    <h2>What is already strong</h2>
+    <ul>
+      <li>Next.js with server-rendered pages in five languages on their own URLs (/ar, /de, /fr, /es), with Arabic right-to-left handled correctly.</li>
+      <li>Translated titles, descriptions and Open Graph locale per language; each language canonical points to its own path (only the domain is wrong).</li>
+      <li>Certifications presented clearly: ISO 9001, ISO 27001, SOC 2 Type II, GDPR, ISTQB Platinum.</li>
+      <li>Strong privacy policy, granular cookie consent, security verification on forms, 5 MB CV limit.</li>
+      <li>Blog template with breadcrumbs, “In short” summary, tags, related articles and dates.</li>
+      <li>Fika as a distinctive brand element most competitors do not have.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= ISSUES ================= -->
+<section class="tab" id="is">
+  <div class="stats" id="stats"></div>
+  <div class="progress"><div class="row"><span>Fixed so far</span><b id="progtxt">0 / 0</b></div><div class="bar"><i id="progbar"></i></div></div>
+  <div class="filters">
+    <label for="fPh">Phase</label><select id="fPh"><option value="">All</option><option value="0">0 · Foundation</option><option value="1">1 · Trust &amp; message</option><option value="2">2 · Structure &amp; languages</option><option value="3">3 · Polish</option></select>
+    <label for="fAr">Area</label><select id="fAr"><option value="">All</option></select>
+    <label for="fSev">Severity</label><select id="fSev"><option value="">All</option><option>Critical</option><option>High</option><option>Medium</option><option>Low</option></select>
+    <label for="fOwn">Owner</label><select id="fOwn"><option value="">All</option><option>Developer</option><option>Fekra</option><option>Both</option></select>
+    <label for="fSt">Status</label><select id="fSt"><option value="">All</option><option value="open">Open</option><option value="done">Fixed</option></select>
+    <input id="fQ" type="search" placeholder="Search…" aria-label="Search issues">
+  </div>
+  <div id="list"></div>
+  <p id="empty" style="display:none;text-align:center;color:var(--muted);padding:30px">No issues match these filters.</p>
+  <p style="text-align:end"><button class="btn" id="reset" type="button">Clear all ticks</button></p>
+</section>
+
+<!-- ================= DEVELOPER QUESTIONS ================= -->
+<section class="tab" id="dq">
+  <div class="panel">
+    <h2>Questions for the development team</h2>
+    <p>Please choose the option that describes how the site works <b>today</b>, not how it should work. If none fits, use the notes field. When finished, click <b>Download answers</b> and send the file to Fekra.</p>
+    <p class="ar">المطور يختار اللي بيوصف الموقع <b>دلوقتي</b> فعلاً. بعد ما يبعت الإجابات، دوس "Show recommended setup" عشان تشوف الإجابة الصح جنب كل سؤال وتقارن.</p>
+  </div>
+  <div class="qbar">
+    <button class="btn" id="recBtn" type="button" aria-pressed="false">Show recommended setup</button>
+    <button class="btn pri" id="dlBtn" type="button">Download answers</button>
+    <button class="btn" id="cpBtn" type="button">Copy answers</button>
+    <span class="count" id="qcount"></span>
+  </div>
+  <div id="qlist"></div>
+</section>
+
+<!-- ================= BLOG ================= -->
+<section class="tab" id="bl">
+  <div class="panel ar">
+    <h2>البلوج: إزاي يبقى رقم واحد في الخمس لغات</h2>
+    <p>البلوج هو أقوى أداة عندك عشان تعدّي BairesDev وAndela، لأن الموقع نفسه خلاص بقى في مستواهم. بس فيه شرط: <b>الأساس التقني لازم يبقى سليم قبل أول مقال</b>، وإلا كل المجهود هيروح لعنوان Vercel أو هيتقري فاضي.</p>
+  </div>
+
+  <div class="panel">
+    <h2>1 · Pre-launch gate (all must pass before the first real article)</h2>
+    <p class="ar">ممنوع تنشر أول مقال غير لما الـ 10 دول ينجحوا.</p>
+    <table class="t"><thead><tr><th>#</th><th>Check</th><th>Linked issue</th></tr></thead><tbody>
+      <tr><td>G1</td><td>Article body text is present in View Page Source and in Search Console “View crawled page”.</td><td>FK-06</td></tr>
+      <tr><td>G2</td><td>Canonical, og:url and share links use www.fekra-egy.com.</td><td>FK-01, 02, 04</td></tr>
+      <tr><td>G3</td><td>fekra-nu.vercel.app redirects (301) to www.fekra-egy.com.</td><td>FK-05</td></tr>
+      <tr><td>G4</td><td>All 20 test-article URLs return 404/410 and are out of the sitemap.</td><td>FK-68</td></tr>
+      <tr><td>G5</td><td>Publish date is the real date; modified date updates on edits.</td><td>FK-69</td></tr>
+      <tr><td>G6</td><td>Author block with name, role, photo and LinkedIn on every article.</td><td>FK-38</td></tr>
+      <tr><td>G7</td><td>Each language version of an article has its own URL, hreflang to the other four, and is in the sitemap.</td><td>FK-64, 80</td></tr>
+      <tr><td>G8</td><td>BlogPosting + BreadcrumbList JSON-LD passes Google’s Rich Results Test.</td><td>CHK-07</td></tr>
+      <tr><td>G9</td><td>Unique 1200×630 cover image per article; LinkedIn Post Inspector shows correct URL and image.</td><td>FK-70, 33</td></tr>
+      <tr><td>G10</td><td>Search Console and Bing Webmaster Tools verified; sitemap submitted.</td><td>CHK-13</td></tr>
+    </tbody></table>
+  </div>
+
+  <div class="panel">
+    <h2>2 · Article template requirements (developer)</h2>
+    <ul>
+      <li>One H1 (the title), logical H2/H3 hierarchy, auto-generated table of contents from H2s.</li>
+      <li>“In short” summary at the top (already built; keep it, it helps AI search quote the article).</li>
+      <li>Author box with expertise line; “Reviewed by” field for technical articles.</li>
+      <li>Visible “Updated on” date when an article changes.</li>
+      <li>Optional FAQ block per article rendered as visible text plus FAQPage JSON-LD.</li>
+      <li>Two contextual CTAs: one mid-article (inline), one at the end, each linking to the most relevant service page.</li>
+      <li>Related articles chosen by shared tag, then by service, never the test articles.</li>
+      <li>Reading time calculated from real word count (the empty article currently says 12 minutes).</li>
+      <li>Per-article SEO fields: SEO title, meta description, slug, OG image, noindex toggle, canonical override.</li>
+      <li>Per-language editable fields: title, description, body, keyword, so translations can be localised, not only translated.</li>
+    </ul>
+  </div>
+
+  <div class="panel ar">
+    <h2>3 · استراتيجية المحتوى</h2>
+    <h3>اكتب للي بيشتري، مش للي بيدوّر على شغل</h3>
+    <p>أكبر غلطة عند شركات الـ outsourcing إن البلوج يجذب مهندسين بيدوروا على وظيفة بدل مديرين بيدوروا على فريق. كل مقال لازم يجاوب سؤال بيسأله CTO أو مدير وهو بيقرر.</p>
+    <div class="scroll"><table class="t"><thead><tr><th>المحور</th><th>نوع السؤال</th><th>أمثلة لمقالات</th><th>بيودي على</th></tr></thead><tbody>
+      <tr><td><b>1. قرار التوظيف</b> (الأهم)</td><td>العميل جاهز يقرر</td><td>تكلفة توظيف مطور React من مصر 2026 · Staff augmentation ولا dedicated team · إزاي تقيّم شركة outsourcing قبل ما توقّع</td><td>صفحات الخدمات</td></tr>
+      <tr><td><b>2. الدليل</b></td><td>"أثق فيكم إزاي؟"</td><td>إزاي بنعمل المقابلة التقنية المسجلة · قصة 5 مهندسين في 4 أيام · ضمان الاستبدال 30 يوم بيشتغل إزاي</td><td>Contact / Calendly</td></tr>
+      <tr><td><b>3. دليل الأدوار</b></td><td>"محتاج مين بالظبط؟"</td><td>إيه اللي يفرق QA Automation Lead قوي · أسئلة لازم تسألها لمهندس DevOps</td><td>صفحة الدور</td></tr>
+      <tr><td><b>4. السوق</b></td><td>"ليه مصر؟"</td><td>المواهب التقنية في مصر بالأرقام · فرق التوقيت مع أوروبا والخليج عملياً</td><td>About / Contact</td></tr>
+    </tbody></table></div>
+    <h3>النسبة المقترحة</h3>
+    <p>حوالي <b>50%</b> قرار التوظيف، <b>25%</b> دليل، <b>15%</b> أدوار، <b>10%</b> سوق. ومقال "عمود" طويل (3000+ كلمة) مرة كل شهر، والباقي مقالات بتربط بيه.</p>
+    <h3>الإيقاع</h3>
+    <p>يوم آه ويوم لأ ممتاز لو الجودة هتفضل عالية. لو حسيت إن المستوى بينزل، <b>3 مقالات قوية في الأسبوع</b> أحسن من 4 متوسطين. كل مقال لازم يكون فيه حاجة محدش غيرك يقدر يكتبها: رقم من شغلكم، قصة عميل، أو تجربة حقيقية.</p>
+  </div>
+
+  <div class="panel ar">
+    <h2>4 · الاستفادة من الخمس لغات</h2>
+    <p>الترجمة لوحدها مش كفاية. الناس في كل بلد بتدوّر بكلمات مختلفة، فالمقال المترجم حرفياً ممكن ميظهرش أصلاً.</p>
+    <div class="scroll"><table class="t"><thead><tr><th>اللغة</th><th>الأولوية</th><th>إيه اللي يتعمل</th></tr></thead><tbody>
+      <tr><td><b>English</b></td><td>كل المقالات</td><td>اللغة الأساسية. كل مقال بيتكتب هنا الأول.</td></tr>
+      <tr><td><b>العربي</b></td><td>عالية جداً (الخليج)</td><td>ترجمة آلية + مراجعة بشرية لكل مقال في الأول. كلمة مفتاحية عربي لكل مقال (زي "توظيف مبرمجين عن بعد"). اسم الشركة Fekra مش "فكرة". انشر المقال العربي على LinkedIn بالعربي كمان.</td></tr>
+      <tr><td><b>Deutsch</b></td><td>عالية (أوروبا)</td><td>مراجعة لأهم المقالات. الألمان بيهتموا جداً بـ GDPR والعقود والتوقيت — زوّد فقرة عنهم. Impressum لازم يبقى موجود.</td></tr>
+      <tr><td><b>Français</b></td><td>متوسطة</td><td>ترجمة آلية مع مراجعة سريعة للعنوان والوصف.</td></tr>
+      <tr><td><b>Español</b></td><td>متوسطة</td><td>نفس الفرنساوي.</td></tr>
+    </tbody></table></div>
+    <div class="callout"><p><b>القاعدة الذهبية:</b> المقال يتترجم <b>مرة واحدة لحظة النشر</b> ويتحفظ في لينك خاص بيه (<code>/ar/blog/...</code>)، مع hreflang. مش يتترجم كل ما حد يختار اللغة.</p></div>
+  </div>
+
+  <div class="panel ar">
+    <h2>5 · خطوات كل مقال (من الفكرة للنشر)</h2>
+    <ol>
+      <li>اختار السؤال اللي المقال بيجاوبه، والكلمة المفتاحية (Ahrefs Starter أو Search Console).</li>
+      <li>اعمل outline، واكتب في Google Docs مع NeuronWriter أو Surfer.</li>
+      <li>ضيف حاجة من خبرتكم الحقيقية: رقم، قصة، أو مثال من مقابلة.</li>
+      <li>حد فني يراجع المقال تقنياً.</li>
+      <li>انشر الإنجليزي: عنوان SEO، وصف، صورة غلاف 1200×630، كاتب.</li>
+      <li>الترجمة الآلية تشتغل، وبعدين مراجعة العربي والألماني.</li>
+      <li>اعمل الـ 4 اختبارات (تاب 5) على المقال.</li>
+      <li>شارك على LinkedIn بالإنجليزي، وبعدها بيومين بالعربي.</li>
+      <li>بعد 4 أسابيع: افتح Search Console، شوف الكلمات اللي ظهر بيها، وحدّث المقال.</li>
+    </ol>
+  </div>
+
+  <div class="panel ar">
+    <h2>6 · هتعرف إنك بتكسب إزاي</h2>
+    <table class="t"><thead><tr><th>بعد</th><th>العلامة</th></tr></thead><tbody>
+      <tr><td>شهر</td><td>كل المقالات متفهرسة في Search Console في الخمس لغات.</td></tr>
+      <tr><td>3 شهور</td><td>Impressions بتزيد كل أسبوع، وأول كلمات في أول صفحتين.</td></tr>
+      <tr><td>6 شهور</td><td>طلبات تواصل جاية من البلوج (تتقاس من CTA المقالات)، واسم Fekra بيظهر في إجابات أدوات الـ AI.</td></tr>
+    </tbody></table>
+  </div>
+</section>
+
+<!-- ================= TESTS ================= -->
+<section class="tab" id="ts">
+  <div class="panel">
+    <h2>Manual checks (could not be tested remotely)</h2>
+    <p>Report these the same way as issues, using their IDs.</p>
+    <div id="checks"></div>
+  </div>
+  <div class="panel">
+    <h2>Four checks for every new article</h2>
+    <ol>
+      <li><b>View Page Source:</b> search for a sentence from the article body. It must be found.</li>
+      <li><b>Search Console → URL Inspection → View crawled page:</b> the full text is visible.</li>
+      <li><b>Rich Results Test:</b> BlogPosting and BreadcrumbList detected with no errors.</li>
+      <li><b>LinkedIn Post Inspector:</b> URL and image come from www.fekra-egy.com.</li>
+    </ol>
+    <p class="ar">الـ 4 اختبارات دول لكل مقال جديد، في كل لغة على الأقل أول شهر.</p>
+  </div>
+</section>
+
+<footer>Prepared for Fekra · 6 October 2026 · Based on live HTML tests of 17 pages across 5 languages</footer>
+</div>
+
+<script>
+const I = [
+// ---------- CRITICAL ----------
+{id:"FK-01",sev:"Critical",own:"Developer",st:"v",pages:"All pages in all 5 languages (16 tested)",
+ t:"Canonical tag points to the Vercel preview domain",
+ w:"Every page declares <code>&lt;link rel=\"canonical\" href=\"https://fekra-nu.vercel.app/...\"&gt;</code> instead of www.fekra-egy.com — including /ar, /de, /fr and /es (each points to its own path, which is correct, but on the wrong domain).",
+ i:"Tells Google the preview domain is the original site. The real domain can be treated as a duplicate and rank lower; all SEO and blog value flows to the wrong address.",
+ f:"Set <code>metadataBase</code> / site URL env var to <code>https://www.fekra-egy.com</code> and build canonicals from it. Checklist 14.2, 12.5.",
+ ar:"كل صفحة بتقول لجوجل إن الموقع الأصلي هو عنوان Vercel التجريبي مش دومينك."},
+{id:"FK-02",sev:"Critical",own:"Developer",st:"v",pages:"All pages",
+ t:"og:url points to the Vercel preview domain",
+ w:"<code>og:url</code> is <code>https://fekra-nu.vercel.app/...</code> on every page.",
+ i:"LinkedIn, WhatsApp and other platforms attribute shares and previews to the preview domain.",
+ f:"Same root fix as FK-01; confirm og:url uses the production domain on every template.",
+ ar:"اللينك اللي بيظهر لما حد يشارك صفحة بيروح لـ Vercel."},
+{id:"FK-03",sev:"High",own:"Developer",st:"v",pages:"Homepage",
+ t:"Homepage social preview image is served from the Vercel domain",
+ w:"<code>og:image</code> and <code>twitter:image</code> = <code>https://fekra-nu.vercel.app/images/hero/egypt-team-discussion.webp</code>.",
+ i:"If the preview domain is redirected or removed, the homepage preview image breaks on every platform.",
+ f:"Serve the image from www.fekra-egy.com (fixed automatically once metadataBase is correct).",
+ ar:"صورة المعاينة بتاعة الصفحة الرئيسية متسحبة من Vercel."},
+{id:"FK-04",sev:"Critical",own:"Developer",st:"v",pages:"All blog articles",
+ t:"Blog share buttons generate Vercel links",
+ w:"X and LinkedIn share URLs contain <code>url=https%3A%2F%2Ffekra-nu.vercel.app%2Fblog%2F...</code>.",
+ i:"Every article shared on LinkedIn (Fekra’s main channel) sends traffic and backlinks to the preview domain.",
+ f:"Build share URLs from the production site URL, not from the deployment URL.",
+ ar:"زرار المشاركة على LinkedIn بيشارك لينك Vercel بدل دومينك."},
+{id:"FK-05",sev:"Critical",own:"Developer",st:"v",pages:"fekra-nu.vercel.app",
+ t:"The full site is live and indexable on the preview domain",
+ w:"fekra-nu.vercel.app serves the entire site with no redirect, <code>robots: index, follow</code>, and all internal links pointing to vercel.app.",
+ i:"Two complete copies of the website compete in search. Combined with FK-01, Google is told to prefer the copy.",
+ f:"Add a permanent 301 redirect from fekra-nu.vercel.app to www.fekra-egy.com (path preserved), or at minimum return <code>X-Robots-Tag: noindex</code> on that host.",
+ ar:"نسخة كاملة من الموقع شغالة على عنوان Vercel ومفتوحة لجوجل."},
+{id:"FK-06",sev:"Critical",own:"Both",st:"v",pages:"/blog/software-outsourcing-in-2026",
+ t:"The only real article has no body text in the page HTML",
+ w:"Re-tested twice on 6 October, after Fekra confirmed this is the only real article (added 5 Oct). The page HTML shows the title, “12 min read”, the “In short” summary and tags — but no article body.",
+ i:"This is the featured article on the homepage, blog and Fika page. Readers and search engines see an empty article labelled 12 minutes.",
+ f:"Open the article and check whether the body was lost in the CMS or is loaded only client-side. Restore it and make sure it is server-rendered.",
+ ar:"المقال الحقيقي الوحيد فاضي في الكود — عنوان وملخص بس. لو انت شايف النص في المتصفح يبقى بيتحمّل بالـ JavaScript بس وجوجل ممكن ميشوفوش."},
+{na:1,id:"FK-07",sev:"High",own:"Developer",st:"c",pages:"/blog/nearshore-vs-offshore",
+ t:"Article returned a server error (HTTP 503) twice",
+ w:"Two requests a few minutes apart both returned 503, while every other page returned normally.",
+ i:"If persistent, the article is unavailable to visitors and Google.",
+ f:"Open the URL directly, check Vercel function logs for this route, and confirm it renders.",
+ ar:"مقال Nearshore vs Offshore رجّع خطأ سيرفر مرتين وأنا بختبر."},
+{id:"FK-08",sev:"Critical",own:"Fekra",st:"v",pages:"Homepage, Contact, Careers, Fika, services, footer of every page",
+ t:"Offices listed in New York, London and Dubai",
+ w:"“Our Locations” map with flags and the footer list New York, London and Dubai, with no address or phone for any of them.",
+ i:"Claiming offices that do not exist risks client trust when checked, Google Ads misrepresentation policy, and conflicts with checklist item 1.5 (transparent claims). Empty locations also look unconvincing.",
+ f:"Replace “Our Locations” with “Where our clients are” or list only physical offices with full addresses.",
+ ar:"الموقع بيعرض مكاتب في نيويورك ولندن ودبي — ده ادعاء خطر على الثقة وعلى إعلانات جوجل."},
+{id:"FK-09",sev:"High",own:"Fekra",st:"c",pages:"Homepage, About, footer",
+ t:"Confirm the Riyadh office and the “delivery centers in Egypt and Saudi Arabia” claim",
+ w:"Riyadh is listed with a phone number, and “Businesses We Serve” says “offshore delivery centers in Egypt and Saudi Arabia”.",
+ i:"If Riyadh is not currently a physical office or delivery center, the same risk as FK-08 applies.",
+ f:"Keep only if accurate; otherwise reword to “serving clients in Saudi Arabia”.",
+ ar:"اتأكد إن مكتب الرياض و“مراكز التسليم في السعودية” حقيقيين حالياً."},
+// ---------- CREDIBILITY / CONTENT ----------
+{id:"FK-10",sev:"High",own:"Fekra",st:"v",pages:"Homepage, all service pages",
+ t:"Testimonials are generic and unverifiable",
+ w:"Five quotes (Omar Khalid, Emily Carter, Lukas Weber, Abdullah Al Saud, Jessica Brown) with role and country only — no company, no link. The same photos are reused as the “Trusted by 50+” avatars in the hero.",
+ i:"B2B buyers recognize template testimonials quickly; this undermines the strong certifications and logos.",
+ f:"Replace with real, attributable quotes (name, title, company, optional LinkedIn) or real case stories such as the Canada→KSA 5-engineers-in-4-days and the UK FinTech relocation.",
+ ar:"آراء العملاء شكلها عام ومن غير أسماء شركات — بتضعف الثقة."},
+{id:"FK-11",sev:"High",own:"Fekra",st:"c",pages:"Homepage, all service pages",
+ t:"Confirm relationship and permission for client logos",
+ w:"Logos shown: ADNOC, NEOM, Ooredoo, Al Rajhi Bank, STC, Kuwait Finance House, Allianz, QNB, Pitman, SLB, GOSI, Alfanar. Several (ADNOC, NEOM, Ooredoo, Al Rajhi, QNB, Pitman, SLB, GOSI) are not in the 2026 company profile client list.",
+ i:"Displaying a brand without a client relationship or permission is a legal and credibility risk.",
+ f:"Keep only logos you can stand behind; consider adding the profile’s verified clients (Bullhorn, iress, Taager, Blinx, Freightoscope, Career180).",
+ ar:"اتأكد إن كل لوجو عميل حقيقي ومعاك إذن تعرضه."},
+{id:"FK-12",sev:"High",own:"Fekra",st:"c",pages:"Homepage",
+ t:"Named engineer profile cards need consent or an “example” label",
+ w:"Cards show names, photos, years and “Match: 96%” (e.g., Ahmed Nabil, Noha Mohamed, Sherif Hossam).",
+ i:"Real people need consent; invented profiles presented as real are misleading.",
+ f:"Confirm consent, or label the section “Example profiles”.",
+ ar:"كروت المهندسين بالأسماء والصور — لو حقيقيين محتاج موافقتهم، لو أمثلة اكتب كده."},
+{id:"FK-13",sev:"High",own:"Fekra",st:"v",pages:"Homepage, service pages",
+ t:"Unsourced ratings: “4.9/5 Client Rating” and “98% Client Retention”",
+ w:"No source (Clutch, Google, internal survey) is given.",
+ i:"Unsourced numbers read as marketing and can fail ad review.",
+ f:"Add the source and link, or remove.",
+ ar:"تقييم 4.9 ونسبة 98% من غير مصدر."},
+{id:"FK-14",sev:"Medium",own:"Fekra",st:"v",pages:"Homepage, About",
+ t:"Years of experience contradict the founding year",
+ w:"“8+ Years of Experience” on homepage and About, while About says “Since 2017” (9 years in 2026).",
+ i:"Visible inconsistency on the same page.",
+ f:"Use “9+ years” or “Since 2017” everywhere.",
+ ar:"مكتوب 8 سنين خبرة والشركة من 2017 يعني 9."},
+{id:"FK-15",sev:"Medium",own:"Fekra",st:"c",pages:"Homepage, About",
+ t:"Confirm “12+ countries served”",
+ w:"Homepage and About say 12+ countries; the 2026 company profile client map lists 6.",
+ i:"Inconsistent with Fekra’s own sales material.",
+ f:"Confirm the number and align the profile and site.",
+ ar:"الموقع بيقول 12 دولة والبروفايل فيه 6."},
+{id:"FK-16",sev:"Medium",own:"Fekra",st:"v",pages:"Homepage, FAQ, service pages",
+ t:"Speed claims are inconsistent",
+ w:"Hero: “Vetted in days, not weeks”. FAQ: “within 14 days”. Service pages: “6 to 14 days”.",
+ i:"14 days is two weeks, which contradicts the hero line.",
+ f:"Use one claim everywhere, e.g. “Engineers in 6–14 days”.",
+ ar:"مرة “أيام مش أسابيع” ومرة “14 يوم” — لازم رقم واحد."},
+{id:"FK-17",sev:"High",own:"Fekra",st:"v",pages:"Homepage (and whole site)",
+ t:"Fekra’s strongest differentiators are missing from the homepage",
+ w:"30–60% savings and 6–14 days appear only on service pages. The 30-day replacement guarantee and recorded technical interviews do not appear anywhere in the tested pages.",
+ i:"The homepage hero shows weaker numbers (100+ talent, 80+ projects) instead of the reasons clients choose Fekra.",
+ f:"Put 30–60%, 6–14 days, replacement guarantee and recorded interviews in the hero/stats area.",
+ ar:"أقوى مميزاتك (التوفير، السرعة، ضمان الاستبدال، المقابلات المسجلة) مش في الصفحة الرئيسية."},
+{id:"FK-18",sev:"High",own:"Both",st:"v",pages:"Homepage, /fika",
+ t:"Fika is described two different ways",
+ w:"Homepage: an internal tool “to help our team organize candidate data”. /fika: an assistant “helping you understand your needs”. /fika has no way to actually talk to Fika (a floating Fika button is visible on mobile — confirm what it does).",
+ i:"Confusing positioning; a client-facing promise with no interaction looks unfinished.",
+ f:"Choose one position. If internal: “Fika works behind the scenes so you get the right shortlist faster.” If client-facing: add a working entry point.",
+ ar:"Fika مرة أداة داخلية ومرة مساعد للعميل، ومفيش طريقة تكلمه."},
+{id:"FK-19",sev:"High",own:"Fekra",st:"c",pages:"/careers",
+ t:"Confirm leadership titles",
+ w:"“Eslam — Founder & CEO” and “Mohamed — General Manager and Co-Founder”.",
+ i:"Titles should match LinkedIn, contracts and the company profile.",
+ f:"Confirm the correct titles and update.",
+ ar:"راجع المسميات: الموقع كاتب إسلام Founder & CEO ومحمد GM & Co-Founder."},
+{id:"FK-20",sev:"Medium",own:"Both",st:"v",pages:"/privacy-policy, contact forms",
+ t:"Privacy policy describes contact-form fields that do not exist",
+ w:"Policy: contact form collects “optionally your phone number and company”. Actual form: Name, Email, Subject, Message only.",
+ i:"Privacy policy must match what is actually collected.",
+ f:"Either add the fields (see FK-21) or update the policy.",
+ ar:"سياسة الخصوصية بتقول الفورم فيه تليفون وشركة، والفورم مفيهوش."},
+{id:"FK-21",sev:"Medium",own:"Both",st:"v",pages:"Contact form (all pages), service forms",
+ t:"Lead forms do not qualify the request",
+ w:"Contact form: no company, phone, country, role needed or team size. Service form: name, email, phone and hiring model only, with no field for the role or stack.",
+ i:"Sales has to go back and forth before a first call. Checklist 10.1.",
+ f:"Add company, country, role/stack needed and team size (optional fields are fine).",
+ ar:"الفورم مش بيسأل عن الشركة ولا الدور المطلوب ولا حجم الفريق."},
+{id:"FK-22",sev:"Medium",own:"Both",st:"v",pages:"/privacy-policy, /careers",
+ t:"Privacy policy describes job-application fields that do not exist",
+ w:"Policy mentions optional LinkedIn profile and cover note; the forms have neither. The forms ask “Where are you located?”, which the policy does not mention.",
+ i:"Policy and forms out of sync. Checklist 8.3.",
+ f:"Add LinkedIn (recommended) or update the policy; mention location.",
+ ar:"السياسة بتذكر LinkedIn وخطاب تقديم، والفورم مفيهوش."},
+// ---------- NAVIGATION / SEO STRUCTURE ----------
+{id:"FK-23",sev:"Medium",own:"Developer",st:"v",pages:"Main menu",
+ t:"“Services” has no overview page",
+ w:"The Services menu item links to /services/hire-dedicated-developers.",
+ i:"No page explains all services and engagement models together.",
+ f:"Create /services as an overview, or rename the link.",
+ ar:"مفيش صفحة خدمات عامة — Services بيوديك على صفحة واحدة بس."},
+{id:"FK-24",sev:"High",own:"Developer",st:"v",pages:"Mega menu (every page)",
+ t:"About 70 menu links point to only 8 pages",
+ w:"Example: React, Angular, Vue.js, Next.js, JavaScript and TypeScript all link to /services/hire-front-end-developers.",
+ i:"Visitors clicking “React Developers” land on a generic page; each technology loses its own search page.",
+ f:"Link each item to its own page (see FK-27) or reduce the menu to the 8 category links.",
+ ar:"حوالي 70 لينك في المنيو بيروحوا لـ 8 صفحات بس."},
+{id:"FK-25",sev:"Low",own:"Fekra",st:"v",pages:"Mega menu",
+ t:"Duplicate entries across menu groups",
+ w:"MEAN, MERN, Full Stack, Python, JavaScript, Data Engineers and AWS appear in more than one group.",
+ i:"Cluttered menu.",
+ f:"Keep each item in one group.",
+ ar:"عناصر متكررة في أكتر من مجموعة في المنيو."},
+{id:"FK-26",sev:"High",own:"Both",st:"v",pages:"Service pages",
+ t:"Service pages are mostly duplicated content",
+ w:"After a short intro, each service page repeats the same blocks as the homepage: logos, process, technologies, industries, testimonials, Fika, certifications, FAQ, blogs, contact.",
+ i:"Search engines treat near-identical pages as thin content; less chance to rank for “hire back-end developers”.",
+ f:"Add page-specific content: skills covered, sample profiles, role-specific FAQ, typical team setups.",
+ ar:"صفحات الخدمات تقريباً نسخة من الرئيسية."},
+{id:"FK-27",sev:"Medium",own:"Developer",st:"v",pages:"/services/hire-back-end-developers",
+ t:"Technology pages exist but are hidden from navigation",
+ w:"“Learn more” lists /services/hire-angular-developers, /hire-react-developers, /hire-yii-developers, /hire-laravel-developers — none are in the menu.",
+ i:"Valuable search pages get almost no internal links.",
+ f:"Link them from the mega menu (fixes FK-24 at the same time).",
+ ar:"فيه صفحات لتقنيات معينة موجودة بس مش متربطة في المنيو."},
+{id:"FK-28",sev:"Medium",own:"Developer",st:"v",pages:"Homepage",
+ t:"Homepage H1 contains all rotating words joined together",
+ w:"H1 text: “Scale Your Team Faster With AI EngineersAI EngineersFull-Stack EngineersBackend Engineers…”.",
+ i:"The most important heading reads as garbled text to search engines, AI tools and screen readers.",
+ f:"Keep one readable H1 text; mark the animated copies <code>aria-hidden</code>.",
+ ar:"العنوان الرئيسي جوجل بيقراه كلام لازق في بعض."},
+{id:"FK-29",sev:"Medium",own:"Developer",st:"v",pages:"/about",
+ t:"About page H1 merges two headlines",
+ w:"“Meet FEKRA: Your Trusted Technology & Outsourcing Partner  Scaling Businesses with Top Tech Talent…” (double space, no separator).",
+ i:"Overlong, run-on H1.",
+ f:"Make the second line a subtitle (p or H2).",
+ ar:"عنوان صفحة About جملتين لازقين في بعض."},
+{id:"FK-30",sev:"Low",own:"Developer",st:"v",pages:"/blog",
+ t:"Blog listing H1 is not descriptive",
+ w:"“We have published 5  articles on various topics” (also a double space).",
+ i:"Wasted heading for search.",
+ f:"Use e.g. “Insights on hiring and scaling engineering teams”.",
+ ar:"عنوان صفحة البلوج ضعيف."},
+{id:"FK-31",sev:"Medium",own:"Developer",st:"v",pages:"Homepage, /services/hire-dedicated-developers",
+ t:"Certification image alt text is in Arabic on English pages",
+ w:"<code>alt=\"حاصلون على ISO 9001\"</code>, <code>\"حاصلون على ISO 27001\"</code>, <code>\"متوافقون مع GDPR\"</code>.",
+ i:"Mixed-language signals; screen readers read Arabic on an English page.",
+ f:"Use the page language: “ISO 9001 certified”, etc.",
+ ar:"وصف صور الشهادات بالعربي في الصفحات الإنجليزي."},
+{id:"FK-32",sev:"Medium",own:"Developer",st:"v",pages:"/services/hire-back-end-developers",
+ t:"Certification image alt text is in Spanish",
+ w:"<code>alt=\"Certificado ISO 9001\"</code>, <code>\"Certificado ISO 27001\"</code>, <code>\"Conforme con RGPD\"</code>.",
+ i:"Same as FK-31; suggests translation strings are mixed up.",
+ f:"Fix the translation keys for this component.",
+ ar:"وصف صور الشهادات بالإسباني في صفحة Back-End."},
+{id:"FK-33",sev:"High",own:"Developer",st:"v",pages:"About, Contact, Careers, job pages, Fika, services, Blog listing, Privacy",
+ t:"Most pages have no social preview image",
+ w:"Only the homepage and blog articles define <code>og:image</code>.",
+ i:"Sharing these pages on LinkedIn or WhatsApp shows no image or a random one.",
+ f:"Add a default og:image (1200×630) in the root metadata and page-specific ones where useful.",
+ ar:"معظم الصفحات ملهاش صورة معاينة لما تتشارك."},
+{id:"FK-34",sev:"Low",own:"Developer",st:"v",pages:"Homepage",
+ t:"Homepage og:image is 1050×600",
+ w:"Declared size 1050×600.",
+ i:"Recommended 1200×630; may crop on some platforms.",
+ f:"Export at 1200×630.",
+ ar:"مقاس صورة المعاينة مش القياسي."},
+{id:"FK-35",sev:"Low",own:"Fekra",st:"v",pages:"/blog, /services/hire-dedicated-developers",
+ t:"Weak meta descriptions",
+ w:"Blog: “Insights on engineering, hiring and delivery.” (44 characters). Dedicated developers: generic slogan.",
+ i:"Lower click-through from search results.",
+ f:"Write 140–160 character descriptions with the main keyword and a reason to click.",
+ ar:"وصف بعض الصفحات في جوجل قصير وعام."},
+{id:"FK-36",sev:"High",own:"Fekra",st:"v",pages:"Homepage",
+ t:"Homepage title is “Home | FEKRA”",
+ w:"The page title has no description of what Fekra does.",
+ i:"The single most important title for search shows only “Home”.",
+ f:"e.g. “FEKRA | Hire Vetted Software Engineers from Egypt”.",
+ ar:"عنوان الصفحة الرئيسية في جوجل “Home” بس."},
+// ---------- BLOG ----------
+{na:1,id:"FK-37",sev:"High",own:"Fekra",st:"v",pages:"/blog/how-we-vet-the-top-3-percent, /blog/building-qa-culture-that-ships",
+ t:"Articles are very short (about 200 words, “1 min read”)",
+ w:"Both articles have 3–5 short paragraphs.",
+ i:"Too thin to rank or to be cited by AI search; weak support for the “top 3%” claim.",
+ f:"Expand to 1,200–2,000 words with examples and data.",
+ ar:"المقالات قصيرة جداً — دقيقة قراية."},
+{id:"FK-38",sev:"Medium",own:"Both",st:"v",pages:"All articles",
+ t:"No author shown on articles",
+ w:"No author name, photo or bio.",
+ i:"Weak expertise signal for Google and readers.",
+ f:"Add an author block (e.g., co-founder) with a short bio and LinkedIn.",
+ ar:"المقالات من غير اسم كاتب."},
+{id:"FK-39",sev:"High",own:"Developer",st:"c",pages:"/blog",
+ t:"Confirm old WordPress articles were migrated or redirected",
+ w:"The new blog has 5 articles, all from July–August 2026.",
+ i:"If old posts were dropped without 301 redirects, their search traffic and backlinks are lost. Checklist 12.1–12.4.",
+ f:"Export the old URL list (Search Console or old sitemap) and confirm each one is migrated or 301-redirected.",
+ ar:"اتأكد إن مقالات الموقع القديم اتنقلت أو اتعملها redirect."},
+{na:1,id:"FK-40",sev:"Low",own:"Fekra",st:"v",pages:"/blog",
+ t:"“Engineering” category has no articles",
+ w:"Filters: All, Hiring, AI, Outsourcing, Quality, Engineering — no article is tagged Engineering.",
+ i:"Clicking it shows an empty list.",
+ f:"Hide empty categories or publish one.",
+ ar:"تصنيف Engineering فاضي."},
+{id:"FK-41",sev:"Low",own:"Developer",st:"v",pages:"/blog and articles",
+ t:"Newsletter button says “Send a Message”",
+ w:"The “Get the next one in your inbox” form button reads “Send a Message”; the footer version says “Subscribe”.",
+ i:"Confusing label.",
+ f:"Change to “Subscribe”.",
+ ar:"زرار الاشتراك في النشرة مكتوب عليه “Send a Message”."},
+{id:"FK-42",sev:"Low",own:"Developer",st:"v",pages:"/blog and articles",
+ t:"Two newsletter forms on the same page",
+ w:"Blog block plus footer subscription.",
+ i:"Repetition.",
+ f:"Keep one on blog pages.",
+ ar:"فورمين اشتراك في نفس الصفحة."},
+{id:"FK-43",sev:"Low",own:"Developer",st:"v",pages:"/blog/software-outsourcing-in-2026",
+ t:"Trailing space in the share text",
+ w:"Share URL contains <code>...Fails%20&amp;url=</code>.",
+ i:"Minor.",
+ f:"Trim the title before encoding.",
+ ar:"مسافة زيادة في نص المشاركة."},
+// ---------- HOMEPAGE CONTENT / UX ----------
+{id:"FK-44",sev:"Medium",own:"Fekra",st:"v",pages:"Homepage, service pages",
+ t:"Industries list has 20 items, many low relevance",
+ w:"Includes Agriculture, Fashion & Apparel, Gaming, Photo & Video, Sports & Fitness alongside Health & Fitness.",
+ i:"Dilutes positioning; “Sports & Fitness” and “Health & Fitness” overlap.",
+ f:"Keep around 8 industries where Fekra has real clients.",
+ ar:"20 قطاع كتير — خليهم 8 فيهم عملاء حقيقيين."},
+{id:"FK-45",sev:"Medium",own:"Fekra",st:"v",pages:"Homepage",
+ t:"“Businesses We Serve” is long and includes a non-business card",
+ w:"Each card is a full paragraph; the fifth card “Bringing Innovation Together” is not a business type.",
+ i:"Adds length without new information.",
+ f:"Two lines per card; remove or move the fifth.",
+ ar:"قسم Businesses We Serve طويل وفيه كارت مش في مكانه."},
+{id:"FK-46",sev:"Low",own:"Fekra",st:"v",pages:"Homepage, About, services",
+ t:"FAQ answers are long 10-bullet lists repeated on every page",
+ w:"Three answers have 10 bullets each.",
+ i:"Hard to scan; inflates every page.",
+ f:"Shorten to 2–3 sentences; keep the full FAQ on one page.",
+ ar:"إجابات الأسئلة الشائعة طويلة ومتكررة في كل صفحة."},
+{id:"FK-47",sev:"Low",own:"Fekra",st:"v",pages:"FAQ (every page)",
+ t:"Hard-to-defend claim in “Why Egypt?”",
+ w:"“Egypt offers lower wage levels compared to India and Eastern Europe.”",
+ i:"Easy for a buyer to dispute.",
+ f:"Soften to “competitive costs compared with Eastern Europe”.",
+ ar:"ادعاء إن مرتبات مصر أقل من الهند صعب تثبته."},
+{id:"FK-48",sev:"Medium",own:"Fekra",st:"v",pages:"FAQ (every page)",
+ t:"Cost FAQ gives no numbers",
+ w:"“What is the estimated cost…” answers only “varies… contact Fekra”.",
+ i:"Misses the 30–60% savings proof point.",
+ f:"Add the savings range and what is included in pricing.",
+ ar:"سؤال التكلفة مفيهوش أي رقم."},
+{id:"FK-49",sev:"Medium",own:"Fekra",st:"v",pages:"Whole site",
+ t:"Too many different CTA labels",
+ w:"Schedule a Call, Book a 30-Min. Call, Hire Now!, Get in Touch, Inquire Now, Send a Message, Hire developers, Schedule a Developer Interview, Talk to us.",
+ i:"Visitors are unsure which action matters.",
+ f:"Standardize on two: “Book a 30-min call” and “Hire developers”.",
+ ar:"صيغ كتير جداً للأزرار — وحّدهم لاتنين."},
+{id:"FK-50",sev:"Medium",own:"Fekra",st:"v",pages:"Homepage",
+ t:"Three call-to-action blocks back to back at the end",
+ w:"Contact form, then “Ready to scale your engineering team?”, then footer “Let’s create something remarkable together”.",
+ i:"Repetitive ending.",
+ f:"Keep one strong closing CTA.",
+ ar:"3 دعوات للتواصل ورا بعض في آخر الصفحة."},
+{id:"FK-51",sev:"Medium",own:"Fekra",st:"v",pages:"Homepage",
+ t:"Client journey (3 steps) is missing",
+ w:"The “Our Process” funnel describes candidate screening. The client-side steps (share needs → review shortlist → onboard) are not on the page.",
+ i:"Visitors do not see what working with Fekra looks like from their side.",
+ f:"Add the 3-step client journey section designed earlier.",
+ ar:"خطوات العميل الـ 3 (Day 1/3/7) مش موجودة."},
+{id:"FK-52",sev:"Low",own:"Both",st:"v",pages:"Service pages",
+ t:"Hourly hiring card is unclear",
+ w:"Shows “400/200 100/50 Hours … Flexible Maintenance service”.",
+ i:"Packages are not readable at a glance.",
+ f:"Show as clear options: 50, 100, 200, 400 hours.",
+ ar:"كارت الساعات مش واضح."},
+{id:"FK-53",sev:"Low",own:"Fekra",st:"v",pages:"Homepage vs About",
+ t:"“SOC 2 Type 2” vs “SOC 2 Type II”",
+ w:"Both spellings used.",
+ i:"Minor inconsistency.",
+ f:"Use “SOC 2 Type II” everywhere.",
+ ar:"اسم الشهادة مكتوب بطريقتين."},
+{id:"FK-54",sev:"Low",own:"Fekra",st:"v",pages:"Footer",
+ t:"Generic footer tagline",
+ w:"“We provide your teams with a diverse group of highly skilled engineers.”",
+ i:"Adds nothing.",
+ f:"Use a specific line, e.g. vetted engineers in 6–14 days.",
+ ar:"جملة الفوتر عامة."},
+{id:"FK-55",sev:"Low",own:"Fekra",st:"c",pages:"Contact section",
+ t:"Confirm the Riyadh contact email",
+ w:"Riyadh is listed with info@fekra-egy.com; the company profile uses info@fekra.sa.",
+ i:"Inconsistent contact details.",
+ f:"Confirm which address should be shown.",
+ ar:"إيميل الرياض مختلف عن البروفايل."},
+{id:"FK-56",sev:"Medium",own:"Fekra",st:"v",pages:"/about",
+ t:"About page has no leadership, story or office photos",
+ w:"The team appears only on Careers, as illustrated avatars.",
+ i:"Buyers look for the people behind an outsourcing partner.",
+ f:"Add leadership with real photos and a short company story.",
+ ar:"صفحة About مفيهاش الإدارة ولا قصة الشركة."},
+// ---------- CAREERS ----------
+{id:"FK-57",sev:"Medium",own:"Developer",st:"v",pages:"/careers",
+ t:"Seven full application forms on one page",
+ w:"Each of the 5 jobs plus internship and future opportunities renders a full form with CV upload.",
+ i:"Heavy page and a larger spam surface; job detail pages already exist.",
+ f:"Show summary cards that link to each job page; keep forms on job pages.",
+ ar:"7 فورمات تقديم في صفحة واحدة."},
+{id:"FK-58",sev:"Low",own:"Fekra",st:"v",pages:"/careers",
+ t:"Job cards show different fields",
+ w:"AI Engineer shows location only; others show experience and openings but no location.",
+ i:"Inconsistent at a glance.",
+ f:"Show the same fields on every card.",
+ ar:"كروت الوظائف مش موحدة."},
+{id:"FK-59",sev:"Low",own:"Developer",st:"v",pages:"/careers/ai-engineer",
+ t:"“Other open roles” repeats each detail twice",
+ w:"Each card lists Location, Work model and Employment type twice.",
+ i:"Display bug.",
+ f:"Render the meta list once.",
+ ar:"تفاصيل الوظائف الأخرى متكررة مرتين."},
+{id:"FK-60",sev:"Low",own:"Developer",st:"v",pages:"/careers/ai-engineer",
+ t:"“Other open roles” shows only 2 of 4",
+ w:"Product Owner/QA and Business Development are not listed.",
+ i:"Fewer cross-links between jobs.",
+ f:"Show all open roles or add “See all”.",
+ ar:"بيعرض وظيفتين بس من 4."},
+{id:"FK-61",sev:"Medium",own:"Fekra",st:"c",pages:"/careers",
+ t:"Confirm team avatars are original artwork",
+ w:"Copy says “Choose a character you love from anime or film”.",
+ i:"Using recognizable anime or film characters can be a copyright problem.",
+ f:"Confirm avatars are original illustrations.",
+ ar:"اتأكد إن صور الفريق الكرتونية رسم أصلي مش شخصيات أنمي معروفة."},
+{id:"FK-62",sev:"Low",own:"Developer",st:"v",pages:"/careers",
+ t:"Same image rendered twice",
+ w:"<code>Group-1.png</code> appears twice in “Meet your future team”.",
+ i:"Minor.",
+ f:"Remove the duplicate or use a second image.",
+ ar:"نفس الصورة متكررة."},
+// ---------- ACCESSIBILITY / MARKUP ----------
+{id:"FK-63",sev:"Medium",own:"Developer",st:"v",pages:"/careers and others",
+ t:"Team and office photos have empty alt text",
+ w:"Images such as team-planning-session.webp and team avatars have <code>alt=\"\"</code>.",
+ i:"Meaningful images are invisible to screen readers. Checklist 15.2.",
+ f:"Add short descriptive alt text to content images.",
+ ar:"صور الفريق من غير وصف."},
+{id:"FK-64",sev:"High",own:"Developer",st:"c",pages:"/ar, /de, /fr, /es",
+ t:"Confirm each language version is fully readable by Google",
+ w:"Screenshots confirm the five versions exist on their own URLs (/ar, /de, /fr, /es) and Arabic switches to RTL correctly. Still to confirm: each URL’s HTML contains its own language text, <code>&lt;html lang&gt;</code> and <code>dir=\"rtl\"</code> for Arabic, hreflang tags linking all five versions, a self-referencing canonical per language, and all language URLs in sitemap.xml.",
+ i:"Without hreflang and correct canonicals, Google may treat the translations as duplicates of the English page and not show them in local results.",
+ f:"Add hreflang (en, ar, de, fr, es plus x-default) on every page; make each canonical point to its own language URL on www.fekra-egy.com; list all language URLs in the sitemap.",
+ ar:"اللغات الخمسة موجودة ولكل واحدة لينك — ممتاز. فاضل نتأكد إن جوجل فاهم إنهم نسخ لنفس الصفحة (hreflang) وإن الـ canonical لكل لغة بيشاور على نفسها."},
+{id:"FK-65",sev:"Low",own:"Developer",st:"v",pages:"Homepage",
+ t:"Carousel items are duplicated in the page",
+ w:"Engineer cards and hero stats appear twice in the HTML (infinite-scroll copies).",
+ i:"Screen readers read everything twice.",
+ f:"Add <code>aria-hidden=\"true\"</code> to the cloned set.",
+ ar:"عناصر الشريط المتحرك متكررة مرتين في الكود."},
+{id:"FK-66",sev:"Low",own:"Developer",st:"v",pages:"Homepage, service pages",
+ t:"Process steps markup repeats numbers and text",
+ w:"Steps render as “1. 1 — 1 — Application Review”, and “Application Review” repeats again after step 5.",
+ i:"Messy for screen readers and AI parsers.",
+ f:"Render each number once; hide the decorative duplicate.",
+ ar:"خطوات الـ Process الأرقام متكررة في الكود."},
+{id:"FK-67",sev:"Low",own:"Developer",st:"v",pages:"Homepage, About, Blog",
+ t:"Double spaces inside headings",
+ w:"“Build Your  Team Faster”, “Work With  Confidence”, “Faster With  AI Engineers”.",
+ i:"Minor.",
+ f:"Clean the heading strings.",
+ ar:"مسافات زيادة جوه العناوين."},
+// ---------- ADDED AFTER CLARIFICATION: TEST ARTICLES ----------
+{id:"FK-68",sev:"Critical",own:"Both",st:"v",pages:"/blog, homepage, /fika, service pages, related articles",
+ t:"Four test articles are live in all five languages (20 URLs), indexable and linked across the site",
+ w:"how-we-vet-the-top-3-percent, scaling-engineering-teams-with-ai, building-qa-culture-that-ships and nearshore-vs-offshore are test content, translated and linked from /ar, /de, /fr and /es homepages too. They but are public with <code>robots: index, follow</code>, appear in “Our Recent Blogs” on the homepage, Fika and service pages, and in “Related articles” under the real article.",
+ i:"Google can index placeholder content under Fekra’s name, and visitors see test posts presented as real insights.",
+ f:"Unpublish or delete the four posts, return 404/410 for their URLs, remove them from sitemap.xml, and hide the “Recent blogs” block until there are at least three real articles.",
+ ar:"المقالات التجريبية الأربعة منشورة ومفتوحة لجوجل وظاهرة في الصفحة الرئيسية — لازم تتشال."},
+{id:"FK-69",sev:"High",own:"Both",st:"v",pages:"/blog/software-outsourcing-in-2026",
+ t:"Real article shows the wrong publish date",
+ w:"Displays “August 14, 2026” and <code>article:published_time 2026-08-14</code>, but the article was added on 5 October 2026.",
+ i:"Wrong dates confuse readers and search engines and look like the post was backdated.",
+ f:"Set the publish date to the real date in the CMS.",
+ ar:"تاريخ النشر مكتوب 14 أغسطس والمقال اتضاف 5 أكتوبر."},
+{id:"FK-70",sev:"Medium",own:"Fekra",st:"c",pages:"/blog/software-outsourcing-in-2026",
+ t:"Confirm the real article’s cover image is not a test placeholder",
+ w:"It uses tile-08.webp, from the same tile set (tile-02, 04, 06, 07) used by the test articles.",
+ i:"A generic placeholder cover weakens the first real article and its LinkedIn preview.",
+ f:"Use a dedicated cover image at 1200×630.",
+ ar:"اتأكد إن صورة المقال مش صورة من صور التجربة."},
+{id:"FK-71",sev:"Medium",own:"Developer",st:"v",pages:"/blog/software-outsourcing-in-2026",
+ t:"Real article has no table of contents",
+ w:"The test articles show an “On this page” table of contents; the real article does not (likely because the body is missing, see FK-06).",
+ i:"Long articles need navigation, and the TOC helps search and AI understand structure.",
+ f:"Re-check after FK-06 is fixed; confirm headings generate the TOC.",
+ ar:"المقال الحقيقي مفيهوش فهرس — غالباً عشان المحتوى نفسه مش ظاهر."},
+// ---------- ADDED FROM LANGUAGE SCREENSHOTS ----------
+{id:"FK-72",sev:"Medium",own:"Fekra",st:"v",pages:"/ar (all Arabic pages)",
+ t:"Brand name translated to the common Arabic word “فكرة”",
+ w:"Arabic body copy reads “تساعد فكرة الشركات على التوسّع…”. Without the Latin name, “فكرة” reads as the everyday word “an idea”, so the sentence can read as “an idea helps companies scale”.",
+ i:"Brand ambiguity in the most important regional market; weak brand search in Arabic.",
+ f:"Keep the brand as “Fekra” in Arabic copy, or use “فكرة (Fekra)” on first mention, consistently.",
+ ar:"اسم الشركة مكتوب “فكرة” فبيتقري كأنه الكلمة العادية — خليه Fekra أو “فكرة (Fekra)”."},
+{id:"FK-73",sev:"Low",own:"Developer",st:"v",pages:"/ar header and hero",
+ t:"Mixed numeral styles in Arabic",
+ w:"Arabic-Indic digits in the header button, logo-strip line, FAQ and footer (“٣٠ دقيقة”, “أكثر من ٥٠”, “٣٪”, “١٤ يوماً”, “© ٢٠٢٦”), Western digits in the trust pill and stats (“أكثر من 50”, “100+”, “4.9/5”, “98%”) — sometimes for the same number on the same page.",
+ i:"Looks inconsistent.",
+ f:"Pick one numeral style for all Arabic pages (Western digits are common for B2B in the Gulf).",
+ ar:"أرقام عربي (٣٠) وأرقام إنجليزي (50) في نفس الصفحة — وحّدهم."},
+{id:"FK-74",sev:"Medium",own:"Developer",st:"c",pages:"Header in EN, DE, FR, ES",
+ t:"Header may overflow the screen in longer languages",
+ w:"In all four Latin-script screenshots the right-hand booking button is cut off, and in DE, FR and ES the logo is also cut on the left. This may be screenshot cropping, but longer labels (e.g. “Découvrez Fika AI”, “Contactez-nous”) make the header wider.",
+ i:"If real, the main booking button is partly hidden on common laptop widths.",
+ f:"Check at 1280px and 1366px widths in every language; shorten labels or switch to the compact menu earlier.",
+ ar:"زرار الحجز مقصوص في كل اللغات واللوجو مقصوص في الألماني والفرنساوي والإسباني — اتأكد إنه مش قص صورة."},
+{id:"FK-75",sev:"Low",own:"Fekra",st:"v",pages:"/es",
+ t:"Spanish wording: “Empleo” and two different booking verbs",
+ w:"Careers is labelled “Empleo” (employment); the header says “Reserva una llamada” while the hero says “Agendar una llamada”.",
+ i:"Minor; reads less natural for a careers page and repeats the English CTA inconsistency (FK-49).",
+ f:"Use “Carreras” or “Trabaja con nosotros”, and one booking verb.",
+ ar:"كلمة الوظائف بالإسباني مش أنسب اختيار، وفيه فعلين مختلفين للحجز."},
+{id:"FK-76",sev:"Medium",own:"Both",st:"v",pages:"All 5 languages",
+ t:"Content fixes must be applied in all five languages",
+ w:"Copy issues such as “Vetted in days, not weeks” (FK-16), the 100+ talent stat (FK-17) and the rotating H1 (FK-28) appear translated in every version.",
+ i:"Fixing English only leaves four versions with the old claims.",
+ f:"When any copy item is fixed, update or regenerate the AR, DE, FR and ES strings in the same release.",
+ ar:"أي تعديل في الكلام لازم يتعمل في الخمس لغات، مش الإنجليزي بس."},
+// ---------- ADDED FROM /ar /de /fr /es HTML REVIEW ----------
+{id:"FK-77",sev:"Medium",own:"Developer",st:"v",pages:"/fr, /de, /es (menu on every page)",
+ t:"About 30 menu items are still in English in French, German and Spanish",
+ w:"Examples: “AI Developer”, “MEAN Stack Developers”, “Python Developers”, “Graphics Designers”, “Machine Learning Engineers”, “Cloud Engineers”, “Kubernetes Engineers”, plus mixed forms like “Ingénieurs Manual QA” and “Manual QA-Engineers”. The Arabic menu is fully translated.",
+ i:"Half-translated navigation looks unfinished and weakens local-language search relevance.",
+ f:"Translate the remaining menu keys in fr, de and es. Also fix the English source label “Graphics Designers” → “Graphic Designers”.",
+ ar:"حوالي 30 عنصر في المنيو لسه إنجليزي في الفرنساوي والألماني والإسباني (العربي كامل)."},
+{id:"FK-78",sev:"Medium",own:"Developer",st:"v",pages:"/fr, /de, /es",
+ t:"Hero sentence fragments reused as labels, causing grammar errors",
+ w:"French: menu and role list show “des ingénieurs IA” (lower-case with article), and the rotating H1 reads “…plus vite avec Ingénieurs DevOps / Ingénieurs data” (missing “des”). German: menu and roles show “KI-Ingenieuren” (dative form), while the rotation mixes “DevOps-Ingenieure” and English “Data Engineers”. Spanish: menu and roles show lower-case “ingenieros de IA”.",
+ i:"Visible grammar mistakes in the first headline and navigation for native readers.",
+ f:"Use separate translation keys for the hero phrase and for stand-alone labels; make every rotating word fit the sentence grammatically.",
+ ar:"المطور استخدم نفس جملة العنوان كاسم في المنيو، فطلعت أخطاء نحوية في الفرنساوي والألماني والإسباني."},
+{id:"FK-79",sev:"High",own:"Fekra",st:"c",pages:"/de (footer)",
+ t:"No Impressum on the German version",
+ w:"The German footer links to Datenschutz, Nutzungsbedingungen and Cookie-Richtlinie, but there is no Impressum (legal notice).",
+ i:"German B2B buyers expect an Impressum, and commercial sites aimed at Germany are generally required to provide one. Its absence is both a trust gap and a legal risk.",
+ f:"Confirm the requirement with a legal advisor and add an Impressum page (company name, legal form, address, contact, registration details).",
+ ar:"النسخة الألماني مفيهاش صفحة Impressum — دي متوقعة وغالباً مطلوبة قانونياً للمواقع التجارية اللي بتستهدف ألمانيا."},
+{id:"FK-80",sev:"Medium",own:"Developer",st:"v",pages:"Header (all languages)",
+ t:"Language switcher is not a crawlable link",
+ w:"In the page HTML the switcher appears only as plain text (“en”, “ar”, “fr”) with no links to the other language versions.",
+ i:"Search engines can only discover the translations through hreflang tags or the sitemap (see FK-64).",
+ f:"Render each language option as an <code>&lt;a href&gt;</code> to the equivalent page, in addition to hreflang tags.",
+ ar:"زرار اللغة مش لينك حقيقي في الكود، فجوجل مش هيلاقي اللغات التانية منه."},
+{id:"FK-81",sev:"Low",own:"Developer",st:"v",pages:"/ar, /de, /fr, /es",
+ t:"Image descriptions are not translated",
+ w:"Hero photo alt text (“Developer concentrating at her desk”…), the Fika image alt and <code>og:image:alt</code> stay in English on every language; certification alts are in Arabic on the French, German and Spanish pages too.",
+ i:"Weaker image search and accessibility in each language.",
+ f:"Add these alt strings to the translation files.",
+ ar:"وصف الصور مش مترجم — إنجليزي في كل اللغات، والشهادات عربي في الفرنساوي والألماني والإسباني."},
+{id:"FK-82",sev:"Low",own:"Developer",st:"v",pages:"All pages, all languages",
+ t:"Logo link has no proper name",
+ w:"Both logo images have empty alt text, so the home link is announced as “Loyalty . Innovation . Expansion” instead of “FEKRA”.",
+ i:"Screen readers and AI agents read the wrong name for the home link.",
+ f:"Give the logo <code>alt=\"FEKRA\"</code> (or an aria-label on the link).",
+ ar:"اللوجو ملوش وصف، فاللينك بيتقري “Loyalty . Innovation . Expansion” بدل FEKRA."},
+{id:"FK-83",sev:"Low",own:"Developer",st:"v",pages:"Footer (all languages)",
+ t:"Social icons have no text labels",
+ w:"LinkedIn, Facebook, YouTube and WhatsApp links expose only the raw URL as their name.",
+ i:"Accessibility and agent-readability (checklist 15.2).",
+ f:"Add <code>aria-label</code> (e.g. “Fekra on LinkedIn”) in each language.",
+ ar:"أيقونات السوشيال ملهاش اسم مكتوب."}
+];
+const C = [
+ ["CHK-01","Mobile and tablet layout","Open every main page on a phone: menu, forms, careers, blog reading. Checklist 13.2–13.4."],
+ ["CHK-02","Dark mode","Switch the theme and check contrast on cards, forms and logos. Checklist 11.6–11.7."],
+ ["CHK-03","Arabic version and RTL","Open the Arabic version (if it exists) and check layout direction, fonts and translated forms. Checklist 11."],
+ ["CHK-04","Page speed","Run PageSpeed Insights for homepage, a service page and an article (mobile and desktop). Checklist 13.7."],
+ ["CHK-05","Form delivery","Submit contact, service, job (with CV) and newsletter forms; confirm thank-you state and the email arrives. Checklist 19.4."],
+ ["CHK-06","Cookie consent behaviour","With “Essential only”, confirm GA and LinkedIn tags do not load. Checklist 16.5."],
+ ["CHK-07","Structured data","Test homepage, an article and a job page in Google’s Rich Results Test (Organization, Article, JobPosting, FAQ, Breadcrumb). Checklist 14.5."],
+ ["CHK-08","sitemap.xml and robots.txt","Open both and confirm they use www.fekra-egy.com only. Checklist 14.3."],
+ ["CHK-09","Old URL redirects","Test the top 20 URLs from the old WordPress site. Checklist 12.3–12.7."],
+ ["CHK-10","404 page","Open a non-existent URL and check the 404 page. Checklist 19.5."],
+ ["CHK-11","www vs non-www","Confirm fekra-egy.com and www.fekra-egy.com resolve to one version via 301."],
+ ["CHK-12","Security headers","Run securityheaders.com on the homepage. Checklist 16.6."],
+ ["CHK-13","Search Console","Confirm the property is verified, the sitemap is submitted and the preview domain is not indexed. Checklist 17.3."],
+ ["CHK-14","Remaining pages","Review Terms, Cookie Policy, the other 6 service pages and 4 job pages for the same patterns listed above."]
+];
+
+const PH={0:["FK-01","FK-02","FK-03","FK-04","FK-05","FK-06","FK-07","FK-08","FK-09","FK-68","FK-69","FK-79"],
+1:["FK-10","FK-11","FK-12","FK-13","FK-14","FK-15","FK-16","FK-17","FK-18","FK-19","FK-36","FK-51","FK-55","FK-56","FK-64","FK-72","FK-80"],
+2:["FK-20","FK-21","FK-22","FK-23","FK-24","FK-25","FK-26","FK-27","FK-28","FK-29","FK-31","FK-32","FK-33","FK-37","FK-38","FK-39","FK-70","FK-71","FK-76","FK-77","FK-78"]};
+const PHN=["Phase 0 · Foundation (week 1)","Phase 1 · Trust & message (weeks 2–3)","Phase 2 · Structure, SEO & languages (weeks 3–5)","Phase 3 · Polish (ongoing)"];
+const PHD=["Technical blockers, legal and credibility risks. Nothing else matters until these are done.","What the visitor reads and believes: claims, proof, message and identity.","How search engines and five languages understand the site: menus, service pages, alt text, translations.","Details that separate “very good” from “excellent”."];
+const PHA=["الأساس: مشاكل تقنية وقانونية ومصداقية — مفيش حاجة تانية تهم قبلها.","اللي الزائر بيقراه ويصدقه: الادعاءات والأدلة والرسالة.","إزاي جوجل والخمس لغات بيفهموا الموقع.","التفاصيل اللي بتفرق بين ممتاز وفوق الممتاز."];
+const AREA={"Domain & indexing":["FK-01","FK-02","FK-03","FK-04","FK-05","FK-33","FK-34","FK-35","FK-36","FK-64","FK-80"],
+"Blog":["FK-06","FK-07","FK-37","FK-38","FK-39","FK-40","FK-41","FK-42","FK-43","FK-68","FK-69","FK-70","FK-71"],
+"Trust & claims":["FK-08","FK-09","FK-10","FK-11","FK-12","FK-13","FK-14","FK-15","FK-16","FK-19","FK-55","FK-56","FK-79"],
+"Message & homepage":["FK-17","FK-18","FK-44","FK-45","FK-46","FK-47","FK-48","FK-49","FK-50","FK-51","FK-52","FK-53","FK-54"],
+"Navigation & services":["FK-23","FK-24","FK-25","FK-26","FK-27"],
+"Forms & privacy":["FK-20","FK-21","FK-22"],
+"Careers":["FK-57","FK-58","FK-59","FK-60","FK-61","FK-62"],
+"Languages":["FK-72","FK-73","FK-74","FK-75","FK-76","FK-77","FK-78","FK-81"],
+"Accessibility & markup":["FK-28","FK-29","FK-30","FK-31","FK-32","FK-63","FK-65","FK-66","FK-67","FK-82","FK-83"]};
+const phaseOf=id=>{for(const k of [0,1,2]) if(PH[k].includes(id)) return k; return 3;};
+const areaOf=id=>Object.keys(AREA).find(a=>AREA[a].includes(id))||"Other";
+I.forEach(x=>{x.ph=phaseOf(x.id);x.ar_=areaOf(x.id)});
+
+const $=id=>document.getElementById(id);
+const KEY="fekra-audit-oct2026";
+let done={};try{done=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(done))}catch(e){}};
+Object.keys(AREA).forEach(a=>{const o=document.createElement("option");o.textContent=a;$("fAr").appendChild(o)});
+
+function card(x){
+  const d=!!done[x.id]||!!x.na;
+  return `<article class="issue ${x.sev}${d?' done':''}">
+  <div class="head"><span class="id">${x.id}</span><span class="ttl">${x.t}</span>
+  ${x.na?'':`<label class="done-toggle"><input type="checkbox" ${d?'checked':''} data-id="${x.id}" aria-label="Mark ${x.id} fixed">Fixed</label>`}</div>
+  <div class="tags"><span class="tag ${x.sev}">${x.sev}</span><span class="tag own">Owner: ${x.own}</span>
+  ${x.na?'<span class="tag">No longer applies — test content</span>':`<span class="tag ${x.st==='v'?'ver':'chk'}">${x.st==='v'?'Verified':'Needs check'}</span>`}
+  <span class="tag">${x.ar_}</span><span class="tag">${x.pages}</span></div>
+  <div class="body"><dl><dt>What’s wrong</dt><dd>${x.w}</dd><dt>Impact</dt><dd>${x.i}</dd><dt>Fix</dt><dd>${x.f}</dd></dl>
+  <div class="arline">${x.ar}</div></div></article>`;
+}
+const sevOrder={Critical:0,High:1,Medium:2,Low:3};
+function render(){
+  const ph=$("fPh").value,ar=$("fAr").value,s=$("fSev").value,o=$("fOwn").value,st=$("fSt").value,q=$("fQ").value.trim().toLowerCase();
+  let html="",n=0;
+  [0,1,2,3].forEach(p=>{
+    const items=I.filter(x=>x.ph===p&&(ph===""||+ph===p)&&(!ar||x.ar_===ar)&&(!s||x.sev===s)&&(!o||x.own===o)
+      &&(!st||(st==='done')===(!!done[x.id]||!!x.na))&&(!q||(x.id+x.t+x.w+x.pages+x.ar).toLowerCase().includes(q)))
+      .sort((a,b)=>(a.na?1:0)-(b.na?1:0)||sevOrder[a.sev]-sevOrder[b.sev]||a.id.localeCompare(b.id));
+    if(items.length){html+=`<div class="phase-h"><b>${PHN[p]} · ${items.filter(i=>!i.na).length} items</b><span>${PHD[p]}</span><span class="ar">${PHA[p]}</span></div>`+items.map(card).join("");n+=items.length}
+  });
+  $("list").innerHTML=html;$("empty").style.display=n?"none":"block";
+  const A=I.filter(x=>!x.na),fixed=A.filter(x=>done[x.id]).length;
+  $("progtxt").textContent=`${fixed} / ${A.length}`;$("progbar").style.width=(fixed/A.length*100)+"%";
+  const c=k=>A.filter(x=>x.sev===k).length;
+  $("stats").innerHTML=`<div class="stat"><div class="n">${A.length}</div><div class="l">Open issues in scope</div></div><div class="stat c"><div class="n">${c("Critical")}</div><div class="l">Critical</div></div><div class="stat h"><div class="n">${c("High")}</div><div class="l">High</div></div><div class="stat m"><div class="n">${c("Medium")}</div><div class="l">Medium</div></div><div class="stat lo"><div class="n">${c("Low")}</div><div class="l">Low</div></div>`;
+}
+["fPh","fAr","fSev","fOwn","fSt"].forEach(i=>$(i).addEventListener("change",render));$("fQ").addEventListener("input",render);
+$("list").addEventListener("change",e=>{if(e.target.matches("input[type=checkbox]")){const id=e.target.dataset.id;e.target.checked?done[id]=1:delete done[id];save();render()}});
+$("reset").addEventListener("click",()=>{if(confirm("Clear all ticks?")){done={};save();render()}});
+$("checks").innerHTML=C.map(c=>`<article class="issue Low"><div class="head"><span class="id">${c[0]}</span><span class="ttl">${c[1]}</span></div><div class="body"><dl><dt>How</dt><dd>${c[2]}</dd></dl></div></article>`).join("");
+
+/* ---------- Developer questionnaire ---------- */
+const Q=[
+["Hosting & ownership"],
+["DQ-01","Which Vercel plan is the production site on?","radio",["Hobby (free)","Pro","Enterprise","Not on Vercel"],1,"Vercel’s Hobby plan does not allow commercial use. A business website should be on Pro."],
+["DQ-02","Which Supabase plan does production use?","radio",["Free","Pro","Team or higher","Production does not use Supabase"],1,"Free projects pause after a week of inactivity and have limited backups. Production data (content, CVs) needs Pro."],
+["DQ-03","Who owns the accounts? (tick each one that is under a Fekra-owned login)","check",["Vercel project","Supabase project","Domain registrar / DNS","Google Analytics / Tag Manager","Google Search Console","Calendly","Resend (email)","GitHub repository"],null,"Every account should be owned by Fekra, with the developer invited as a member. This protects the business if the team changes."],
+["DQ-04","Which host is the primary public version?","radio",["www.fekra-egy.com, and fekra-egy.com redirects to it","fekra-egy.com, and www redirects to it","Both load without redirect","Not sure"],0,"Exactly one version should answer; the other must 301-redirect."],
+["DQ-05","What happens on fekra-nu.vercel.app today?","radio",["301-redirects to www.fekra-egy.com","Serves the site with noindex","Serves the full site, indexable","The project is no longer reachable there"],0,"Redirect is best. Tests on 6 Oct showed it serves the full site, indexable (FK-05)."],
+["DQ-06","Where does the site URL used in metadata come from?","radio",["Hard-coded production URL","NEXT_PUBLIC_SITE_URL (or similar) set to the production URL","Falls back to VERCEL_URL / deployment URL","Not set"],1,"An environment variable set to https://www.fekra-egy.com, used for metadataBase, canonical, OG, sitemap and share links."],
+["Rendering & content"],
+["DQ-07","Next.js version and router","radio",["App Router","Pages Router","Mixed"],0,"Either works; App Router makes metadata, sitemap, robots and i18n routing simpler. Please add the exact version in notes."],
+["DQ-08","How is a blog article’s body rendered?","radio",["Fetched on the server and included in the HTML (SSG/ISR/SSR)","Fetched in the browser after the page loads","Rendered by a client-only rich-text component","Not sure"],0,"Must be in the server HTML. Tests show the body missing from the HTML of the real article (FK-06)."],
+["DQ-09","After an article is published or edited, how does the live page update?","radio",["On-demand revalidation triggered on save","Time-based revalidation (state interval in notes)","Requires a new deployment","Rendered dynamically on every request"],0,"On-demand revalidation: the page updates within seconds and stays fast."],
+["DQ-10","Where does content live?","radio",["Supabase tables with a custom admin","Headless CMS (Sanity, Payload, Strapi, Contentful…)","Markdown/MDX files in the repository","Other"],null,"Any is fine if non-developers can publish, edit and preview. Name the tool in notes."],
+["DQ-11","Can Fekra publish and edit articles without a developer?","radio",["Yes, through an admin interface","Partly (some fields need a developer)","No"],0,"Required for a six-month publishing programme."],
+["DQ-12","Which fields exist per article? (tick all)","check",["SEO title","Meta description","Custom slug","Cover / OG image","Author","Publish date (editable)","Updated date","Tags / category","FAQ block","noindex toggle","Canonical override","Draft and preview"],null,"All of them. Missing fields block the pre-launch gate."],
+["Languages"],
+["DQ-13","Which i18n approach is used?","radio",["next-intl","next-i18next","Custom middleware / routing","Other"],null,"Any is fine; please describe briefly in notes."],
+["DQ-14","Where is hreflang implemented?","radio",["In the <head> of every page","In sitemap.xml only","Both","Not implemented yet"],2,"Both is safest: head tags plus sitemap alternates, including x-default."],
+["DQ-15","What does x-default point to?","radio",["English root (/)","A language selector page","Not set"],0,"x-default → English."],
+["DQ-16","Does sitemap.xml list every language URL?","radio",["Yes, all five languages","English only","No sitemap yet","Not sure"],0,"All languages, all pages, production domain only."],
+["DQ-17","How is the language switcher built?","radio",["Real <a href> links to the equivalent page","Button that changes route with JavaScript","Not sure"],0,"Real links, so search engines and users can open each version directly (FK-80)."],
+["DQ-18","What happens when a visitor first arrives at /?","radio",["Always English","Redirects based on browser language","Remembers the last chosen language","Shows a suggestion banner without redirecting"],3,"Never force-redirect search engines. English at / plus an optional suggestion banner is safest."],
+["DQ-19","Where are interface strings (menus, buttons) stored?","radio",["JSON/translation files in the repo","Database","Machine-translated at build time"],0,"Files in the repo, reviewed by a person. Tests found about 30 untranslated menu items in FR/DE/ES (FK-77)."],
+["Blog translation plan"],
+["DQ-20","When will blog translation run?","radio",["Once at publish, stored per language","On first request, then cached","Every time a visitor switches language","Not decided"],0,"Once at publish, stored, server-rendered on its own URL. Translating on every visit is invisible to Google and repeats the cost."],
+["DQ-21","Which translation service is planned?","radio",["An LLM API (OpenAI, Anthropic, Google Gemini…)","Google Cloud Translation","DeepL","Other"],null,"Any good service works. An LLM can also adapt the SEO title and description per language."],
+["DQ-22","Will translated articles use translated slugs?","radio",["Keep the English slug (/ar/blog/english-slug)","Translated slug per language"],0,"Keeping the English slug is simpler and fine for SEO; it keeps redirects and links consistent."],
+["DQ-23","Can a person edit a translation after it is generated?","radio",["Yes, and edits are kept","Yes, but regeneration overwrites them","No"],0,"Arabic and German reviews must be kept."],
+["DQ-24","When the English article is edited, what happens to translations?","radio",["Re-translated automatically","Marked as outdated for review","Nothing"],1,"Mark as outdated (or re-translate only untouched languages) so human edits are not lost."],
+["DQ-25","Where will the API key be stored?","radio",["Vercel environment variable, server-side only","In the code repository","In the browser / client code"],0,"Server-side environment variable only, with a monthly spending limit set on the provider account."],
+["Structured data & search"],
+["DQ-26","Which JSON-LD types are implemented? (tick all)","check",["Organization","WebSite","BreadcrumbList","BlogPosting / Article","FAQPage","JobPosting","Service"],null,"All seven are relevant for this site."],
+["DQ-27","How is robots.txt produced?","radio",["app/robots.ts (generated)","Static file","None"],0,"Generated, pointing to the production sitemap."],
+["DQ-28","Is llms.txt implemented?","radio",["Yes","Planned","No"],0,"Listed in the requirements (checklist 15.5); low effort."],
+["DQ-29","Old WordPress URLs","radio",["Full redirect map in place","Some redirects","No redirects yet","Not sure what the old URLs were"],0,"Every old indexed URL should 301 to its new equivalent (checklist 12.3–12.7)."],
+["Analytics, forms & operations"],
+["DQ-30","Which tracking tools are installed? (tick all)","check",["Google Analytics 4","Google Tag Manager","LinkedIn Insight Tag","Microsoft Clarity","Google Consent Mode v2","None yet"],null,"GA4 + LinkedIn Insight via GTM, with Consent Mode v2 tied to the cookie banner."],
+["DQ-31","Which conversions are tracked? (tick all)","check",["Contact form submitted","Service form submitted","Calendly booking","Job application submitted","Newsletter signup","CTA clicks","Language switch"],null,"At least the first five, each with a clear event name."],
+["DQ-32","Where do form submissions go?","radio",["Email only (Resend)","Stored in Supabase only","Both email and Supabase","Other"],2,"Both: email for speed, database as a record if an email is missed."],
+["DQ-33","How are CV files stored?","radio",["Private bucket with expiring links","Public bucket","Email attachment only"],0,"Private bucket with signed, expiring links (as the privacy policy states)."],
+["DQ-34","Which anti-spam tool protects the forms?","radio",["Cloudflare Turnstile","Google reCAPTCHA","hCaptcha","Custom"],null,"Any is fine; reCAPTCHA must then be mentioned in the privacy policy."],
+["DQ-35","Dark mode behaviour","check",["Follows the system setting by default","Remembers the visitor’s choice","No flash of the wrong theme on load","Logos and certification images adapted for dark backgrounds"],null,"All four."],
+["DQ-36","What does the floating Fika button do?","radio",["Opens a working AI chat","Opens a contact form","Links to /fika","Placeholder, no action yet"],null,"It must match how Fika is described on the homepage and /fika (FK-18)."],
+["DQ-37","Error monitoring and uptime","check",["Sentry or similar error tracking","Uptime monitor with alerts","Vercel logs only","Nothing yet"],null,"An uptime monitor at minimum. One article returned HTTP 503 twice during testing."],
+["DQ-38","Latest Lighthouse mobile scores for the homepage","text",null,null,"Target: Performance 90+, Accessibility 95+, Best Practices 100, SEO 100."],
+["DQ-39","Anything else Fekra should know (limitations, risks, recommendations)?","text",null,null,"Open answer."]
+];
+/* Developer answers, 2026-10-07. Edits made in the browser are saved on top of these. */
+const PREFILL={"DQ-01":{"note":"Needs the account owner. The production project (\"fekra\") sits in a Vercel team my CLI login is not a member of, so I cannot see the plan. Please confirm in Vercel → Settings → Billing; it must be Pro for a commercial site."},"DQ-02":{"note":"Production does use Supabase (project wnotogdefnqnesrqzzuf, eu-north-1): Postgres for all CMS content and form submissions, Storage for media and CVs. Plan must be confirmed in the Supabase dashboard by the owner; Pro is needed (no pausing, daily backups)."},"DQ-03":{"note":"Owner to tick. Recommend Fekra owns every account and invites the developer as a member."},"DQ-04":{"v":0,"note":"Verified 7 Oct: fekra-egy.com and http://www both redirect permanently (308, treated like 301 by Google) to https://www.fekra-egy.com."},"DQ-05":{"v":3,"note":"Verified 7 Oct: every path returns 404 DEPLOYMENT_NOT_FOUND, so it no longer serves any content. Optional: re-attach it in Vercel Domains as a 301 to www."},"DQ-06":{"v":1,"note":"One function (siteUrl in src/lib/urls.ts) feeds metadataBase, canonical, hreflang, OG, sitemap, robots, JSON-LD and share links. The root cause of FK-01–04 was the production value being the vercel.app alias. Fixed in code: production now always uses https://www.fekra-egy.com when the variable is empty or a *.vercel.app address. The Vercel production variable should still be corrected to https://www.fekra-egy.com."},"DQ-07":{"v":0,"note":"Next.js 16.3.0, React 19.2.6, Payload CMS 3.87.1, Tailwind 4."},"DQ-08":{"v":0,"note":"Normal (rich-text) articles were always server-rendered. The one article imported as raw HTML (software-outsourcing-in-2026) was shown inside a sandboxed iframe, so its body was missing from the page HTML (FK-06). Pending deploy: it is now rendered into the page HTML (about 2,700 words) with its styling kept."},"DQ-09":{"v":0,"note":"CMS save hooks revalidate the page in all five languages plus the blog list. Pages also refresh on a timer as a fallback (15 min for the blog, 60 min elsewhere)."},"DQ-10":{"v":1,"note":"Payload CMS 3, built into the same Next.js app (admin at /admin), storing data in Supabase Postgres and files in Supabase Storage."},"DQ-11":{"v":0,"note":"/admin with drafts, autosave, live preview and one-click translation."},"DQ-12":{"v":[0,1,2,3,4,5,6,7,8,9,10,11],"note":"The slug is shared by all languages. The updated date is set automatically on save. The author is a CMS user. No current article has an author set yet (FK-38)."},"DQ-13":{"v":2,"note":"src/proxy.ts. English is unprefixed (/about); other languages are prefixed (/ar/about, /de, /fr, /es); /en/... redirects to the unprefixed URL."},"DQ-14":{"v":2,"note":"In every page's <head> and in sitemap.xml. Verified 8 Oct: the live <head> tags now point at https://www.fekra-egy.com and include x-default. The sitemap alternates do not include x-default yet."},"DQ-15":{"v":0},"DQ-16":{"v":1,"note":"Verified 8 Oct: the live sitemap has 65 <loc> entries, all English. Other languages appear only as hreflang alternates on those entries: Arabic on 64, German/French/Spanish on 12 (only languages a document is published in are listed, via the per-document \"available locales\" setting). Recommended: give every language URL its own <url> entry with the full alternate set plus x-default."},"DQ-17":{"v":0,"note":"The links were only created when the menu was opened, so crawlers could not see them (FK-64). Pending deploy: they are now always in the HTML, just hidden until opened."},"DQ-18":{"v":1,"note":"Only for the bare homepage \"/\". A language chosen before (cookie) wins; otherwise the browser language decides (temporary 307). It also remembers the last choice. Search engines send no language preference, so they always get English."},"DQ-19":{"v":0,"note":"src/i18n/dictionaries/{en,ar,de,fr,es}.json."},"DQ-20":{"v":0,"note":"Already built. An editor clicks \"Translate\" in the article sidebar. All four languages are generated and saved as drafts for review, then published by a person."},"DQ-21":{"v":0,"note":"OpenAI (model set by OPENAI_MODEL, default gpt-5-mini). Please confirm OPENAI_API_KEY is set in Vercel production; I cannot see the production variables."},"DQ-22":{"v":0},"DQ-23":{"v":0,"note":"Nothing regenerates on its own. Clicking \"Translate\" again does overwrite that article's translation drafts."},"DQ-24":{"v":2,"note":"Recommend adding an \"outdated\" flag in a later phase."},"DQ-25":{"v":0,"note":"Translation runs in a CMS endpoint that requires a logged-in editor. The key never reaches the browser."},"DQ-26":{"v":[0,1,2,3,4,5,6]},"DQ-27":{"v":0},"DQ-28":{"v":0,"note":"/llms.txt is built and generated from the CMS, but it is switched off: on 8 Oct the live URL returns 404. To turn it on, tick \"Publish /llms.txt (19.5)\" in the crawler policy section of CMS → Site settings. No deploy needed."},"DQ-29":{"v":1,"note":"The live site has 10 redirects. I tested 171 old URLs from the Wayback Machine: 153 returned 404. Pending deploy: 114 new permanent redirects, so every old page, service, career, news and industry URL resolves to its closest new page (all destinations tested 200). Only WordPress leftovers (/hello-world, /sample-page, /test, /jet-menu/*) stay 404, which is correct."},"DQ-30":{"v":[4],"note":"GTM, GA4 and the LinkedIn Insight Tag are fully coded (loaded only after cookie consent), but their IDs are empty in CMS → Site settings, so nothing tracks today. Enter the GTM/GA4/LinkedIn IDs there; no code change or deploy needed. Clarity is not installed."},"DQ-31":{"v":[0,1,2,3,4],"note":"Fired only after a confirmed successful submit. Booking-button clicks are also tracked. Generic CTA clicks and language switches are defined but not fired yet. None of these reach analytics until the IDs in DQ-30 are set."},"DQ-32":{"v":2,"note":"Stored first (Payload CMS → Supabase Postgres, visible in /admin), then emailed through Resend to the addresses in Site settings."},"DQ-33":{"v":0,"note":"Private applicant-files collection; admins download through short-lived signed links. The public never gets a URL."},"DQ-34":{"v":0,"note":"Also a honeypot field, a minimum fill time, per-IP rate limits and a signed, expiring challenge bound to each form. Verified working in production on 7 Oct."},"DQ-35":{"v":[1,2],"note":"Default is light; it does not follow the system setting (deliberate). The logo has a dark-mode version; certification badges have not been checked on dark backgrounds (CHK-02)."},"DQ-36":{"v":2,"note":"There is no chat backend. The bubble appears after the cookie choice."},"DQ-37":{"v":[2],"note":"There is a /api/health endpoint (checks the app and database) ready for an uptime monitor, but none is configured. No Sentry."},"DQ-38":{"text":"Lighthouse 12, mobile, one local run against the live homepage on 7 Oct 2026 (the PageSpeed Insights API was over its daily quota): Performance 73, Accessibility 97, Best Practices 96, SEO 100. LCP 5.4 s, FCP 1.9 s, Speed Index 4.7 s, TBT 180 ms, CLS 0. The weak point is LCP (the hero image collage). Re-run in PageSpeed Insights for official numbers."},"DQ-39":{"text":"1. A release is ready with the 6 Oct audit fixes. Built and checked locally but not yet released: FK-06, 07, 22, 23, 24/27, 29, 30, 33/34, 39, 41/42, 43, 57, 59/60, 63, 64, 66, plus Company/Phone on the contact form (FK-20/21). FK-01–04, 28 and 31/32 are already committed.\n2. Three settings only the account owner can change: the production NEXT_PUBLIC_SITE_URL (DQ-06), the tracking IDs in Site settings (DQ-30), and confirming OPENAI_API_KEY (DQ-21).\n3. Risk: the developer's local environment points at the production database, so local testing reads (and could change) live content. Recommend a separate staging database/branch in Supabase.\n4. CMS saves are slow (articles about 3 s, pages about 9 s) because the database connection pool on Vercel is small. It works, but a Supabase plan with more pooler capacity would help.\n5. Adding country, role/stack and team size to the contact form (FK-21) needs new database fields; waiting for Fekra to confirm which fields.\n6. Services menu: in batch two the client asked for \"Services\" to go straight to Hire Dedicated Developers. The audit asks for an overview page instead (FK-23). The overview is built; please confirm that is now the preferred behaviour."}};
+const QK="fekra-devq-oct2026-answered";
+let ans=PREFILL;try{const s=localStorage.getItem(QK);if(s)ans=JSON.parse(s)}catch(e){}
+const qsave=()=>{try{localStorage.setItem(QK,JSON.stringify(ans))}catch(e){}};
+function qrender(){
+  let h="";
+  Q.forEach(q=>{
+    if(q.length===1){h+=`<div class="qsec">${q[0]}</div>`;return}
+    const [id,t,type,opts,rec,why]=q, a=ans[id]||{};
+    h+=`<div class="q" data-q="${id}"><div class="qh"><span class="qid">${id}</span><span class="qt">${t}</span></div>`;
+    if(type==="text"){h+=`<textarea data-k="${id}" data-f="text" aria-label="${id} answer">${a.text||""}</textarea>`}
+    else{
+      h+=`<div class="opts">`+opts.map((o,i)=>{
+        const ck=type==="radio"?a.v===i:(a.v||[]).includes(i);
+        const isRec=type==="radio"?rec===i:false;
+        return `<label><input type="${type==="radio"?"radio":"checkbox"}" name="${id}" data-k="${id}" data-i="${i}" ${ck?"checked":""}><span>${o.replace(/</g,"&lt;")}</span>${isRec?'<span class="rec">Recommended</span>':''}</label>`}).join("")+`</div>`;
+      h+=`<input type="text" data-k="${id}" data-f="note" placeholder="Notes (optional)" value="${(a.note||"").replace(/"/g,"&quot;")}" aria-label="${id} notes">`;
+    }
+    h+=`<div class="recnote">${why}</div></div>`;
+  });
+  $("qlist").innerHTML=h;qcount();
+}
+function qcount(){const total=Q.filter(q=>q.length>1).length;const n=Object.keys(ans).filter(k=>{const a=ans[k];return a&&((a.v!==undefined&&!(Array.isArray(a.v)&&!a.v.length))||a.text)}).length;$("qcount").textContent=`${n} of ${total} answered`}
+$("qlist").addEventListener("input",e=>{
+  const el=e.target,k=el.dataset.k;if(!k)return;ans[k]=ans[k]||{};
+  if(el.dataset.f==="note")ans[k].note=el.value;
+  else if(el.dataset.f==="text")ans[k].text=el.value;
+  else if(el.type==="radio")ans[k].v=+el.dataset.i;
+  else if(el.type==="checkbox"){const s=new Set(ans[k].v||[]);el.checked?s.add(+el.dataset.i):s.delete(+el.dataset.i);ans[k].v=[...s].sort((a,b)=>a-b)}
+  qsave();qcount();
+});
+function qtext(){
+  let out="Fekra website — developer answers\nDate: "+new Date().toISOString().slice(0,10)+"\n\n";
+  Q.forEach(q=>{
+    if(q.length===1){out+="\n== "+q[0]+" ==\n";return}
+    const [id,t,type,opts]=q,a=ans[id]||{};
+    let v="(not answered)";
+    if(type==="text")v=a.text||v;
+    else if(type==="radio"&&a.v!==undefined)v=opts[a.v];
+    else if(type==="check"&&a.v&&a.v.length)v=a.v.map(i=>opts[i]).join("; ");
+    out+=`${id} ${t}\n  → ${v}${a.note?"\n  Notes: "+a.note:""}\n`;
+  });
+  return out;
+}
+$("dlBtn").addEventListener("click",()=>{const b=new Blob([qtext()],{type:"text/plain"});const u=URL.createObjectURL(b);const l=document.createElement("a");l.href=u;l.download="fekra-developer-answers.txt";document.body.appendChild(l);l.click();l.remove();URL.revokeObjectURL(u)});
+$("cpBtn").addEventListener("click",async()=>{try{await navigator.clipboard.writeText(qtext());$("cpBtn").textContent="Copied"}catch(e){$("cpBtn").textContent="Copy failed — use Download"}setTimeout(()=>$("cpBtn").textContent="Copy answers",2000)});
+$("recBtn").addEventListener("click",()=>{const on=document.body.classList.toggle("showrec");$("recBtn").setAttribute("aria-pressed",on);$("recBtn").textContent=on?"Hide recommended setup":"Show recommended setup"});
+
+/* tabs */
+document.querySelectorAll("nav.tabs button").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll("nav.tabs button").forEach(x=>x.setAttribute("aria-selected","false"));
+  b.setAttribute("aria-selected","true");
+  document.querySelectorAll("section.tab").forEach(s=>s.classList.toggle("on",s.id===b.dataset.t));
+  window.scrollTo({top:0,behavior:"smooth"});
+}));
+render();qrender();
+</script>
+</body>
+</html>

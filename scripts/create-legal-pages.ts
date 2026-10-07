@@ -56,7 +56,7 @@ const privacy = doc([
   ),
   h('h3', 'When you apply for a role'),
   p(
-    'A job application asks for your full name, email address, phone number and CV, and optionally a LinkedIn profile and a short cover note. We use it to assess your application and contact you about the role you applied for, and about comparable roles unless you tell us not to. The legal basis is steps taken at your request before entering an employment relationship, together with your consent.',
+    'A job application asks for your full name, email address, phone number, where you are located and your CV, and optionally a LinkedIn profile. Internship applications also ask for your university, graduation year and area of interest; future-opportunity applications ask for the role you want and your skills. We use it to assess your application and contact you about the role you applied for, and about comparable roles unless you tell us not to. The legal basis is steps taken at your request before entering an employment relationship, together with your consent.',
   ),
   h('h3', 'When you subscribe to updates'),
   p(

@@ -68,12 +68,19 @@ export function HiringModelsSection({ block, locale }: { block: BlockProps; loca
                     {(model.stats ?? []).map((stat) => (
                       <div
                         key={stat.label}
-                        /* min-h, not h: two-line values ("400/200\n100/50") overflow a fixed box on phones. */
+                        /* min-h, not h: the hour-package list wraps on phones. */
                         className={cn('flex min-h-[125px] flex-col gap-2 rounded-lg border-2 bg-white p-5 dark:bg-card', tone.card)}
                       >
-                        <span className={cn('font-display text-3xl/9 font-semibold whitespace-pre-line', tone.value)}>
-                          {stat.value === 'Flexible' ? ({ en: 'Flexible', ar: 'مرن', de: 'Flexibel', fr: 'Flexible', es: 'Flexible' })[locale] : <bdi dir="ltr">{stat.value}</bdi>}
-                        </span>
+                        {/* "400/200\n100/50" is a set of hour packages, not a ratio: list them as options (FK-52). */}
+                        {/^\d+(?:[\s/]+\d+){2,}$/.test(stat.value.trim()) ? (
+                          <span className={cn('font-display text-xl/7 font-semibold', tone.value)}>
+                            <bdi dir="ltr">{stat.value.trim().split(/[\s/]+/).map(Number).sort((a, b) => a - b).join(' · ')}</bdi>
+                          </span>
+                        ) : (
+                          <span className={cn('font-display text-3xl/9 font-semibold whitespace-pre-line', tone.value)}>
+                            {stat.value === 'Flexible' ? ({ en: 'Flexible', ar: 'مرن', de: 'Flexibel', fr: 'Flexible', es: 'Flexible' })[locale] : <bdi dir="ltr">{stat.value}</bdi>}
+                          </span>
+                        )}
                         <span className="mt-auto text-sm text-navy-800 dark:text-foreground">{stat.label}</span>
                       </div>
                     ))}
