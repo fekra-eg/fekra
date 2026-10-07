@@ -49,12 +49,12 @@ DQ-13 Which i18n approach is used?
   Notes: src/proxy.ts. English is unprefixed (/about); other languages are prefixed (/ar/about, /de, /fr, /es); /en/... redirects to the unprefixed URL.
 DQ-14 Where is hreflang implemented?
   → Both
-  Notes: In every page's <head> and in sitemap.xml. On the live site they currently point at the vercel.app domain; the DQ-06 fix corrects them.
+  Notes: In every page's <head> and in sitemap.xml. Verified 8 Oct: the live <head> tags now point at https://www.fekra-egy.com and include x-default. The sitemap alternates do not include x-default yet.
 DQ-15 What does x-default point to?
   → English root (/)
 DQ-16 Does sitemap.xml list every language URL?
-  → Yes, all five languages
-  Notes: Each entry carries its language versions as hreflang alternates. Only languages a document is actually published in are listed (the per-document "available locales" setting).
+  → English only
+  Notes: Verified 8 Oct: the live sitemap has 65 <loc> entries, all English. Other languages appear only as hreflang alternates on those entries: Arabic on 64, German/French/Spanish on 12 (only languages a document is published in are listed, via the per-document "available locales" setting). Recommended: give every language URL its own <url> entry with the full alternate set plus x-default.
 DQ-17 How is the language switcher built?
   → Real <a href> links to the equivalent page
   Notes: The links were only created when the menu was opened, so crawlers could not see them (FK-64). Pending deploy: they are now always in the HTML, just hidden until opened.
@@ -91,7 +91,7 @@ DQ-27 How is robots.txt produced?
   → app/robots.ts (generated)
 DQ-28 Is llms.txt implemented?
   → Yes
-  Notes: /llms.txt, generated from the CMS.
+  Notes: /llms.txt is built and generated from the CMS, but it is switched off: on 8 Oct the live URL returns 404. To turn it on, tick "Publish /llms.txt (19.5)" in the crawler policy section of CMS → Site settings. No deploy needed.
 DQ-29 Old WordPress URLs
   → Some redirects
   Notes: The live site has 10 redirects. I tested 171 old URLs from the Wayback Machine: 153 returned 404. Pending deploy: 114 new permanent redirects, so every old page, service, career, news and industry URL resolves to its closest new page (all destinations tested 200). Only WordPress leftovers (/hello-world, /sample-page, /test, /jet-menu/*) stay 404, which is correct.
