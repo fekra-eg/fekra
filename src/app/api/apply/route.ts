@@ -100,7 +100,7 @@ export async function POST(request: Request) {
     })
     uploadedId = uploaded.id
 
-    await payload.create({
+    const application = await payload.create({
       collection: 'job-applications',
       overrideAccess: true,
       depth: 0, // nothing reads the populated job/cv back — skip the re-fetch
@@ -139,6 +139,8 @@ export async function POST(request: Request) {
         await notify(payload, {
           to: (settings.careersEmails as string[] | undefined) ?? [],
           subject: `New application: ${job.title}`,
+          replyTo: data.email,
+          adminPath: `/admin/collections/job-applications/${application.id}`,
           rows: [
             ['Role', String(job.title)],
             ['Name', data.fullName],
