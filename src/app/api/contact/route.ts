@@ -59,7 +59,7 @@ export async function POST(request: Request) {
   const payload = await payloadClient()
 
   try {
-    await payload.create({
+    const submission = await payload.create({
       collection: 'contact-submissions',
       // Public users have no Payload session; the route is the trust boundary.
       overrideAccess: true,
@@ -101,6 +101,8 @@ export async function POST(request: Request) {
         await notify(payload, {
           to: (settings.notificationEmails as string[] | undefined) ?? [],
           subject: `New contact: ${data.subject}`,
+          replyTo: data.email,
+          adminPath: `/admin/collections/contact-submissions/${submission.id}`,
           rows: [
             ['Name', data.fullName],
             ['Email', data.email],

@@ -187,7 +187,7 @@ const run = async () => {
       tagline: 'Loyalty . Innovation . Expansion',
       generalEmail: 'info@fekra-egy.com',
       notificationEmails: ['info@fekra-egy.com'],
-      careersEmails: ['careers@fekra-egy.com'],
+      careersEmails: ['hr@fekra-egy.com'],
       consentMode: 'opt-in',
       // Live profiles, as published on fekra-egy.com.
       socialProfiles: [
