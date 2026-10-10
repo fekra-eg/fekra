@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 
+import { sitelinkCopy } from '@/i18n/qa-copy'
 import { BlogIndex } from '@/components/blog/BlogIndex'
 import { NewsletterPanel } from '@/components/blog/NewsletterPanel'
 import type { PostSummary } from '@/components/blog/PostCard'
@@ -13,10 +14,8 @@ export const revalidate = 900
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
   if (!isLocale(locale)) return {}
-  const dict = await getDictionary(locale)
   return buildMetadata({
-    title: dict.blog.title,
-    description: dict.blog.subtitle,
+    ...sitelinkCopy[locale].blog,
     path: '/blog',
     locale,
     availableLocales: [...LOCALES],

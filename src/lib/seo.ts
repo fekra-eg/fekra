@@ -17,7 +17,7 @@ type SeoInput = {
   type?: 'website' | 'article'
   publishedTime?: string
   modifiedTime?: string
-  /** false = emit `title` as-is, without the `| FEKRA` suffix (home page). */
+  /** false = emit `title` as-is, without the `| Fekra Tech` suffix (home page). */
   brand?: boolean
 }
 
@@ -28,7 +28,7 @@ type SeoInput = {
  * hreflang only lists locales that actually have an approved translation —
  * pointing at a fallback page would be a reciprocity error.
  */
-const DEFAULT_OG_IMAGE = { url: '/images/og-default.jpg', width: 1200, height: 630, alt: 'FEKRA — vetted engineering teams from Egypt' }
+const DEFAULT_OG_IMAGE = { url: '/images/og-default.jpg', width: 1200, height: 630, alt: 'Fekra Tech — vetted engineering teams from Egypt' }
 
 export function buildMetadata({
   title,
@@ -54,8 +54,8 @@ export function buildMetadata({
   if (published.includes(DEFAULT_LOCALE)) languages['x-default'] = absoluteUrl(path, DEFAULT_LOCALE)
 
   const canonical = canonicalOverride || absoluteUrl(path, locale)
-  const unbrandedTitle = title.replace(/(?:\s*\|\s*FEKRA)+$/i, '').trim()
-  const brandedTitle = brand ? `${unbrandedTitle} | FEKRA` : unbrandedTitle
+  const unbrandedTitle = title.replace(/(?:\s*\|\s*(?:FEKRA|Fekra\s?Tech))+$/i, '').trim()
+  const brandedTitle = brand ? `${unbrandedTitle} | Fekra Tech` : unbrandedTitle
   // Every page gets a share card (FK-33); JPG because LinkedIn's WebP support is unreliable.
   const card = image?.url ? image : DEFAULT_OG_IMAGE
   const ogImage = [{ url: new URL(card.url, base).toString(), width: card.width ?? 1200, height: card.height ?? 630, alt: card.alt ?? title }]
@@ -76,7 +76,7 @@ export function buildMetadata({
       title: brandedTitle,
       description,
       url: canonical,
-      siteName: 'FekraTech',
+      siteName: 'Fekra Tech',
       locale: LOCALE_META[locale].hreflang,
       images: ogImage,
       ...(type === 'article' ? { publishedTime, modifiedTime } : {}),
@@ -87,6 +87,6 @@ export function buildMetadata({
 
 /** Fallback metadata for a route whose document is missing — never a soft 404 (18.12). */
 export const notFoundMetadata: Metadata = {
-  title: { absolute: 'Page not found | FEKRA' },
+  title: { absolute: 'Page not found | Fekra Tech' },
   robots: { index: false, follow: false },
 }

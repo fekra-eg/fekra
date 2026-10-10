@@ -29,7 +29,7 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl()),
-  title: { default: 'FEKRA', template: '%s | FEKRA' },
+  title: { default: 'Fekra Tech', template: '%s | Fekra Tech' },
 }
 
 export function generateStaticParams() {

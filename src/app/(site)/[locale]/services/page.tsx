@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { sitelinkCopy } from '@/i18n/qa-copy'
 import { notFound } from 'next/navigation'
 import { ArrowUpRight, Check } from 'lucide-react'
 
@@ -15,8 +16,7 @@ export const revalidate = 3600
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
   if (!isLocale(locale)) return {}
-  const dict = await getDictionary(locale)
-  return buildMetadata({ title: dict.nav.services, description: dict.services.subtitle, path: '/services', locale })
+  return buildMetadata({ ...sitelinkCopy[locale].services, path: '/services', locale })
 }
 
 /**

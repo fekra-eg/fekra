@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { sitelinkCopy } from '@/i18n/qa-copy'
 import { notFound } from 'next/navigation'
 import { Users } from 'lucide-react'
 
@@ -19,10 +20,8 @@ export const revalidate = 900
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
   if (!isLocale(locale)) return {}
-  const dict = await getDictionary(locale)
   return buildMetadata({
-    title: dict.careers.title,
-    description: dict.careers.heroBody,
+    ...sitelinkCopy[locale].careers,
     path: '/careers',
     locale,
   })

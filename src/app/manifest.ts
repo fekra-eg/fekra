@@ -2,8 +2,8 @@ import type { MetadataRoute } from 'next'
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'FEKRA',
-    short_name: 'FEKRA',
+    name: 'Fekra Tech',
+    short_name: 'Fekra Tech',
     start_url: '/',
     display: 'standalone',
     background_color: '#ffffff',

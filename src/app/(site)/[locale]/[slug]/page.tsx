@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 
+import { sitelinkCopy } from '@/i18n/qa-copy'
 import { RenderBlocks } from '@/components/blocks/RenderBlocks'
 import { JsonLd } from '@/components/JsonLd'
 import { getDictionary } from '@/i18n/getDictionary'
@@ -31,6 +32,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     path: `/${slug}`,
     locale,
     availableLocales: page.availableLocales,
+    ...(slug === 'about' ? sitelinkCopy[locale].about : {}),
     image: page.meta?.image?.url ? { url: page.meta.image.url } : null,
     noindex: page.meta?.noindex,
     canonicalOverride: page.meta?.canonicalOverride,

@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return buildMetadata({
     title: homeTitle[locale],
     brand: false,
-    description: page.meta?.description?.trim() || homeDescription[locale],
+    description: homeDescription[locale],
     path: '/',
     locale,
     availableLocales: page.availableLocales,

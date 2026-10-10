@@ -30,7 +30,9 @@ export function organizationSchema(settings: {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     '@id': `${siteUrl()}/#organization`,
-    name: settings.siteName ?? 'FEKRA',
+    // Same name as the WebSite node so Google sees one consistent brand.
+    name: 'Fekra Tech',
+    alternateName: settings.siteName ?? undefined,
     legalName: settings.legalName ?? undefined,
     description: settings.tagline ?? undefined,
     url: siteUrl(),
@@ -63,8 +65,8 @@ export function websiteSchema(locale: Locale) {
     '@id': `${siteUrl()}/#website`,
     url: siteUrl(),
     // Google's site name (the label above the result) comes from here (19.4).
-    name: 'FekraTech',
-    alternateName: ['Fekra Tech', 'FEKRA', 'فكرة تك', 'فكرة'],
+    name: 'Fekra Tech',
+    alternateName: ['FekraTech', 'FEKRA', 'فكرة تك', 'فكرة'],
     inLanguage: locale,
     publisher: { '@id': `${siteUrl()}/#organization` },
   }

@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 
+import { sitelinkCopy } from '@/i18n/qa-copy'
 import { ContactSection } from '@/components/blocks/ContactSection'
 import { RenderBlocks } from '@/components/blocks/RenderBlocks'
 import { getDictionary } from '@/i18n/getDictionary'
@@ -14,10 +15,8 @@ export const revalidate = 3600
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
   if (!isLocale(locale)) return {}
-  const [dict, page] = await Promise.all([getDictionary(locale), findDoc<PageDoc>('pages', 'contact', locale)])
   return buildMetadata({
-    title: page?.meta?.title ?? dict.contact.title,
-    description: page?.meta?.description ?? dict.contact.subtitle,
+    ...sitelinkCopy[locale].contact,
     path: '/contact',
     locale,
     // The route is localized by the dictionary and by localized CMS fields, so
