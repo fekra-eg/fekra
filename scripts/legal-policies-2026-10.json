@@ -1,0 +1,948 @@
+{
+ "privacy-policy": {
+  "title": "Privacy Policy",
+  "blocks": [
+   [
+    "p",
+    "Fekra Tech (“Fekra”, “we”, “us” or “our”) respects your privacy. This Privacy Policy explains how we collect, use, disclose and protect personal information when you visit our website, contact us, apply for an opportunity, subscribe to updates, book a meeting or submit information through our advertising forms."
+   ],
+   [
+    "p",
+    "This policy applies to https://www.fekra-egy.com/ and to personal information received through the related activities described below."
+   ],
+   [
+    "h2",
+    "1. Who We Are"
+   ],
+   [
+    "p",
+    "Fekra Tech is a technology services and talent solutions business based in Egypt. We are responsible for determining how personal information collected for the activities covered by this policy is used."
+   ],
+   [
+    "p",
+    "You can contact us at:"
+   ],
+   [
+    "p",
+    "General enquiries and privacy requests: info@fekra-egy.com"
+   ],
+   [
+    "p",
+    "Recruitment enquiries: careers@fekra-egy.com"
+   ],
+   [
+    "p",
+    "Telephone: +20 110 113 3572"
+   ],
+   [
+    "p",
+    "Website: https://www.fekra-egy.com/"
+   ],
+   [
+    "h2",
+    "2. Information We Collect"
+   ],
+   [
+    "h3",
+    "Information you provide"
+   ],
+   [
+    "p",
+    "Depending on your interaction with us, we may collect:"
+   ],
+   [
+    "li",
+    "Your name, email address, telephone number, company and job title."
+   ],
+   [
+    "li",
+    "The subject and contents of your enquiry, including project requirements and information you choose to provide."
+   ],
+   [
+    "li",
+    "Recruitment information, including your CV, professional experience, qualifications, skills, location, professional profile links and supporting application materials."
+   ],
+   [
+    "li",
+    "Internship information, including your university, field of study, graduation year and area of interest."
+   ],
+   [
+    "li",
+    "Your email address and subscription preferences when you sign up for updates."
+   ],
+   [
+    "li",
+    "Meeting details and information you provide when scheduling an appointment."
+   ],
+   [
+    "li",
+    "Records of your consent, preferences and communications with us."
+   ],
+   [
+    "p",
+    "Please provide only information relevant to your request. Do not submit passwords, payment credentials or unnecessary sensitive personal information through general website forms."
+   ],
+   [
+    "h3",
+    "Information collected during website use"
+   ],
+   [
+    "p",
+    "Our website and service providers may process technical information such as your IP address, browser type, device information, requested pages, access times, referring website and security events."
+   ],
+   [
+    "p",
+    "We may also associate an enquiry with its originating page or advertising campaign, including referral information and campaign parameters."
+   ],
+   [
+    "p",
+    "Optional analytics and advertising technologies are described in our Cookie Policy and controlled through Cookie Preferences."
+   ],
+   [
+    "h3",
+    "Information collected through LinkedIn"
+   ],
+   [
+    "p",
+    "When you submit a LinkedIn Lead Gen Form associated with Fekra Tech, we receive the information included in that form. Depending on the fields displayed, this may include your name, work email, telephone number, company, job title, location and answers about your business requirements."
+   ],
+   [
+    "p",
+    "We may also receive information identifying the relevant form or campaign. LinkedIn handles information on its platform under its own privacy policy."
+   ],
+   [
+    "h2",
+    "3. How We Use Your Information"
+   ],
+   [
+    "p",
+    "We use personal information to:"
+   ],
+   [
+    "li",
+    "Respond to enquiries and discuss the services or information you requested."
+   ],
+   [
+    "li",
+    "Understand project requirements, prepare proposals and arrange meetings."
+   ],
+   [
+    "li",
+    "Assess recruitment applications and communicate with applicants."
+   ],
+   [
+    "li",
+    "Consider you for other relevant opportunities where permitted and consistent with your preferences."
+   ],
+   [
+    "li",
+    "Send newsletters or ongoing marketing communications where you have subscribed or another applicable legal permission allows us to do so."
+   ],
+   [
+    "li",
+    "Maintain records of communications and consent choices."
+   ],
+   [
+    "li",
+    "Protect our website, prevent spam and investigate misuse."
+   ],
+   [
+    "li",
+    "Maintain and improve our website and services."
+   ],
+   [
+    "li",
+    "Measure website and campaign performance using optional technologies where the appropriate consent has been obtained."
+   ],
+   [
+    "li",
+    "Meet legal obligations and establish, exercise or defend legal claims."
+   ],
+   [
+    "p",
+    "Submitting a contact form or LinkedIn Lead Gen Form does not automatically subscribe you to our newsletter. Responding to your request is separate from sending ongoing promotional messages."
+   ],
+   [
+    "h2",
+    "4. Grounds for Processing"
+   ],
+   [
+    "p",
+    "Where applicable law requires a legal basis, we process information on the basis appropriate to the activity. This may include:"
+   ],
+   [
+    "li",
+    "Taking steps at your request before entering a contract."
+   ],
+   [
+    "li",
+    "Performing an agreement with you."
+   ],
+   [
+    "li",
+    "Consent, particularly for optional tracking and marketing where required."
+   ],
+   [
+    "li",
+    "Legitimate interests in handling business communications, administering recruitment and protecting our systems, where permitted and balanced against your rights."
+   ],
+   [
+    "li",
+    "Compliance with legal obligations."
+   ],
+   [
+    "p",
+    "You may withdraw consent at any time. Withdrawal does not affect processing lawfully carried out before withdrawal."
+   ],
+   [
+    "h2",
+    "5. Who Receives Your Information"
+   ],
+   [
+    "p",
+    "Personal information may be accessed by authorised Fekra Tech personnel and service providers who need it for the relevant purpose."
+   ],
+   [
+    "p",
+    "Providers supporting our website and related activities include:"
+   ],
+   [
+    "li",
+    "Vercel: website hosting and delivery."
+   ],
+   [
+    "li",
+    "Supabase: database services and storage of submitted information and recruitment files."
+   ],
+   [
+    "li",
+    "Resend: email delivery and notifications."
+   ],
+   [
+    "li",
+    "Cloudflare: security and form verification."
+   ],
+   [
+    "li",
+    "Calendly: appointment scheduling when you choose to book a meeting."
+   ],
+   [
+    "li",
+    "Google: configured analytics and tag management services, subject to the applicable consent choices."
+   ],
+   [
+    "li",
+    "LinkedIn: advertising forms and, where enabled with appropriate consent, advertising measurement and audience features."
+   ],
+   [
+    "p",
+    "We may use business systems to organise enquiries and applications. Access to those records is restricted to authorised personnel and providers supporting the stated purposes."
+   ],
+   [
+    "p",
+    "Where a recruitment or staffing opportunity involves presenting your profile to a prospective client or employer, we explain the relevant sharing and obtain any consent or other authorisation required by applicable law."
+   ],
+   [
+    "p",
+    "We do not sell personal information. We may disclose information where legally required, to protect rights or security, or as part of a business restructuring or transfer subject to appropriate protections."
+   ],
+   [
+    "h2",
+    "6. International Processing"
+   ],
+   [
+    "p",
+    "Our providers and authorised recipients may process information in countries outside your country of residence."
+   ],
+   [
+    "p",
+    "Where applicable law requires safeguards for international transfers, we use an appropriate lawful transfer mechanism and relevant contractual or other protections. You may contact us for information about safeguards relevant to your personal information."
+   ],
+   [
+    "h2",
+    "7. Retention"
+   ],
+   [
+    "p",
+    "We retain personal information for the purposes described in this policy:"
+   ],
+   [
+    "li",
+    "Business enquiries and LinkedIn leads: ordinarily for up to 24 months after our last meaningful exchange."
+   ],
+   [
+    "li",
+    "Recruitment applications and CVs: ordinarily for up to 12 months after application."
+   ],
+   [
+    "li",
+    "Newsletter information: while your subscription remains active."
+   ],
+   [
+    "li",
+    "Consent and unsubscribe records: for the period reasonably needed to demonstrate and respect your choices."
+   ],
+   [
+    "li",
+    "Technical, security and analytics records: according to their purpose and the relevant service settings."
+   ],
+   [
+    "p",
+    "Different retention periods may apply where information is needed for an ongoing agreement, a legal obligation or a dispute."
+   ],
+   [
+    "p",
+    "When information is no longer needed, we delete or anonymise it, subject to lawful retention requirements and normal backup expiry. We may retain a limited suppression record after an unsubscribe request to prevent further unwanted marketing."
+   ],
+   [
+    "p",
+    "Cookie expiry does not necessarily mean that information already received by a provider has been deleted."
+   ],
+   [
+    "h2",
+    "8. Security"
+   ],
+   [
+    "p",
+    "We use appropriate technical and organisational measures to protect personal information. These include encrypted website connections, access restrictions and controls over submitted records and recruitment materials."
+   ],
+   [
+    "p",
+    "No transmission or storage system can be guaranteed completely secure. Where a personal data incident occurs, we investigate and take the actions required by applicable law."
+   ],
+   [
+    "h2",
+    "9. Your Rights and Choices"
+   ],
+   [
+    "p",
+    "Depending on the law that applies, you may have the right to:"
+   ],
+   [
+    "li",
+    "Request access to your personal information."
+   ],
+   [
+    "li",
+    "Request correction of inaccurate information."
+   ],
+   [
+    "li",
+    "Request deletion."
+   ],
+   [
+    "li",
+    "Request restriction of processing."
+   ],
+   [
+    "li",
+    "Object to certain processing, including direct marketing."
+   ],
+   [
+    "li",
+    "Request portability where applicable."
+   ],
+   [
+    "li",
+    "Withdraw consent."
+   ],
+   [
+    "li",
+    "Complain to the competent data protection authority."
+   ],
+   [
+    "p",
+    "To make a request, email info@fekra-egy.com. We may request proportionate information to verify your identity. We respond within the period required by applicable law and explain any permitted extension."
+   ],
+   [
+    "p",
+    "You can unsubscribe from marketing emails using the link in the message or by contacting us. You can manage optional website tracking through Cookie Preferences in the website footer."
+   ],
+   [
+    "h2",
+    "10. Automated Decisions and Advertising"
+   ],
+   [
+    "p",
+    "We do not use your information to make decisions with legal or similarly significant effects based solely on automated processing without the safeguards required by applicable law."
+   ],
+   [
+    "p",
+    "Where enabled with appropriate consent, advertising tools may group website activity into audiences or help measure advertising performance. This does not mean that submitting an enquiry gives permission for every advertising use."
+   ],
+   [
+    "h2",
+    "11. Children"
+   ],
+   [
+    "p",
+    "Our website is intended for businesses and professional users. It is not directed at children under 16, and we do not knowingly collect their personal information."
+   ],
+   [
+    "p",
+    "If you believe a child has submitted information, contact us so we can investigate and take appropriate action."
+   ],
+   [
+    "h2",
+    "12. External Websites"
+   ],
+   [
+    "p",
+    "Links and booking services may take you to websites operated by other organisations. Those services have their own privacy policies and practices."
+   ],
+   [
+    "p",
+    "Our policy does not govern information you provide directly to those services, except where that information is subsequently received and used by Fekra Tech for the purposes described here."
+   ],
+   [
+    "h2",
+    "13. Policy Updates"
+   ],
+   [
+    "p",
+    "We may update this policy when our activities, services or legal requirements change. The effective date identifies the published version."
+   ],
+   [
+    "p",
+    "Where required, we provide notice of significant changes or obtain fresh consent."
+   ],
+   [
+    "h2",
+    "14. Contact"
+   ],
+   [
+    "p",
+    "For questions about this policy or the handling of your personal information, contact:"
+   ],
+   [
+    "p",
+    "Fekra Tech"
+   ],
+   [
+    "p",
+    "Email: info@fekra-egy.com"
+   ],
+   [
+    "p",
+    "Recruitment: careers@fekra-egy.com"
+   ],
+   [
+    "p",
+    "Telephone: +20 110 113 3572"
+   ]
+  ],
+  "effective": "Effective date: 1 October 2026"
+ },
+ "terms-and-conditions": {
+  "title": "Terms & Conditions",
+  "blocks": [
+   [
+    "p",
+    "These Terms & Conditions govern your use of https://www.fekra-egy.com/ and its public content. The website is operated by Fekra Tech (“Fekra”, “we”, “us” or “our”)."
+   ],
+   [
+    "p",
+    "By using this website, you agree to these terms. If you do not agree, please discontinue use."
+   ],
+   [
+    "h2",
+    "1. Website Purpose"
+   ],
+   [
+    "p",
+    "Our website provides information about Fekra Tech, our services, career opportunities and related business activities."
+   ],
+   [
+    "p",
+    "Submitting an enquiry, applying for a role, downloading information or booking a meeting does not create a services contract, employment relationship or guarantee of engagement."
+   ],
+   [
+    "p",
+    "The scope, fees, deliverables, responsibilities and other terms of any paid service or employment arrangement are agreed separately in writing."
+   ],
+   [
+    "p",
+    "Where you have a separate agreement with us, that agreement governs the relevant engagement."
+   ],
+   [
+    "h2",
+    "2. Permitted Use"
+   ],
+   [
+    "p",
+    "You may browse public pages, share links and use our forms for legitimate business enquiries or applications."
+   ],
+   [
+    "p",
+    "You must use the website lawfully and provide information that you are authorised to submit."
+   ],
+   [
+    "p",
+    "You must not:"
+   ],
+   [
+    "li",
+    "Attempt unauthorised access to accounts, systems, personal information or restricted files."
+   ],
+   [
+    "li",
+    "Introduce malware or interfere with the operation or security of the website."
+   ],
+   [
+    "li",
+    "Bypass security controls or conduct abusive automated activity."
+   ],
+   [
+    "li",
+    "Submit spam, impersonate another person or provide deliberately misleading information."
+   ],
+   [
+    "li",
+    "Upload unlawful material or information that infringes another person’s rights."
+   ],
+   [
+    "li",
+    "Submit third-party confidential information without permission."
+   ],
+   [
+    "li",
+    "Reproduce or commercially exploit substantial website content without permission, unless applicable law allows it."
+   ],
+   [
+    "h2",
+    "3. Intellectual Property"
+   ],
+   [
+    "p",
+    "Website content, designs, text, images and brand assets belong to Fekra Tech or their respective rights holders."
+   ],
+   [
+    "p",
+    "You may view content for your personal or internal business purposes and share links to public pages. Other reproduction, distribution or commercial use requires permission unless permitted by law."
+   ],
+   [
+    "p",
+    "Third-party names, logos and trademarks remain the property of their owners. Their appearance does not grant you a licence to use them."
+   ],
+   [
+    "h2",
+    "4. Information You Submit"
+   ],
+   [
+    "p",
+    "You retain your rights in the information and materials you submit."
+   ],
+   [
+    "p",
+    "You authorise us to receive, store and review those materials for the relevant enquiry, application or other disclosed purpose, as described in our Privacy Policy."
+   ],
+   [
+    "p",
+    "Do not include passwords, payment credentials, trade secrets or highly confidential project materials in a general contact form. Contact us first if a confidentiality arrangement is needed."
+   ],
+   [
+    "p",
+    "You are responsible for ensuring that submitted information is accurate to the best of your knowledge and that you have the right to provide it."
+   ],
+   [
+    "h2",
+    "5. Recruitment"
+   ],
+   [
+    "p",
+    "Job listings and application forms do not guarantee an interview, offer or placement."
+   ],
+   [
+    "p",
+    "Vacancies, requirements and recruitment timelines may change. Any employment or staffing arrangement is subject to the relevant selection process and a separate agreement."
+   ],
+   [
+    "p",
+    "Application information is handled according to our Privacy Policy."
+   ],
+   [
+    "h2",
+    "6. Accuracy and Availability"
+   ],
+   [
+    "p",
+    "We aim to provide accurate information and maintain website availability. However, content, service descriptions and vacancies may change."
+   ],
+   [
+    "p",
+    "We may correct errors, perform maintenance or modify, suspend or discontinue parts of the website where reasonably necessary."
+   ],
+   [
+    "p",
+    "Please confirm important commercial or employment information directly with our team before relying on it."
+   ],
+   [
+    "h2",
+    "7. External Services"
+   ],
+   [
+    "p",
+    "Our website may link to external websites or services, including LinkedIn and Calendly."
+   ],
+   [
+    "p",
+    "Those services operate under their own terms and policies. We do not control their availability or all of their content."
+   ],
+   [
+    "p",
+    "You are responsible for reviewing the terms relevant to your use of an external service."
+   ],
+   [
+    "h2",
+    "8. Privacy and Cookies"
+   ],
+   [
+    "p",
+    "Our Privacy Policy explains how we handle personal information."
+   ],
+   [
+    "p",
+    "Our Cookie Policy explains cookies and related browser technologies. Optional tracking choices can be managed through Cookie Preferences in the website footer."
+   ],
+   [
+    "p",
+    "Agreement to these website terms does not replace separate consent where consent is required."
+   ],
+   [
+    "h2",
+    "9. Responsibility and Liability"
+   ],
+   [
+    "p",
+    "To the extent permitted by applicable law, Fekra Tech is not responsible for indirect or consequential loss resulting from website interruptions, third-party services or reliance on general website information without confirmation."
+   ],
+   [
+    "p",
+    "Nothing in these terms excludes liability or limits rights that cannot lawfully be excluded or limited."
+   ],
+   [
+    "p",
+    "Responsibility for paid services, deliverables or employment arrangements is governed by the relevant separate agreement and applicable law."
+   ],
+   [
+    "h2",
+    "10. Restricting Access"
+   ],
+   [
+    "p",
+    "We may restrict access or remove submitted material where reasonably necessary to address unlawful activity, security threats, misuse or a breach of these terms."
+   ],
+   [
+    "p",
+    "Where required by law, we provide appropriate notice."
+   ],
+   [
+    "h2",
+    "11. Applicable Law and Disputes"
+   ],
+   [
+    "p",
+    "These terms are subject to applicable law, including any mandatory protections or jurisdiction rules that apply to you."
+   ],
+   [
+    "p",
+    "Any governing law or dispute resolution provisions in a separate written agreement apply to the engagement covered by that agreement."
+   ],
+   [
+    "p",
+    "For a concern about the website, please first contact info@fekra-egy.com so we can seek to resolve it."
+   ],
+   [
+    "h2",
+    "12. Changes to These Terms"
+   ],
+   [
+    "p",
+    "We may update these terms as the website or legal requirements change. The updated version will be published with its effective date."
+   ],
+   [
+    "p",
+    "Changes to these website terms do not automatically amend a separate signed agreement."
+   ],
+   [
+    "p",
+    "If a provision is found unenforceable, the remaining provisions continue to apply to the extent permitted by law."
+   ],
+   [
+    "h2",
+    "13. Contact"
+   ],
+   [
+    "p",
+    "Fekra Tech"
+   ],
+   [
+    "p",
+    "Email: info@fekra-egy.com"
+   ],
+   [
+    "p",
+    "Telephone: +20 110 113 3572"
+   ],
+   [
+    "p",
+    "Website: https://www.fekra-egy.com/"
+   ]
+  ],
+  "effective": "Effective date: 1 October 2026"
+ },
+ "cookie-policy": {
+  "title": "Cookie Policy",
+  "blocks": [
+   [
+    "p",
+    "This Cookie Policy explains how Fekra Tech uses cookies and similar technologies on https://www.fekra-egy.com/ and how you can manage your choices."
+   ],
+   [
+    "p",
+    "Read this policy together with our Privacy Policy."
+   ],
+   [
+    "h2",
+    "1. Cookies and Similar Technologies"
+   ],
+   [
+    "p",
+    "Cookies are small records stored in your browser by a website. They can remember settings, maintain sessions or recognise a browser across visits."
+   ],
+   [
+    "p",
+    "Similar technologies include local storage, tags and browser identifiers. A tool may transmit information without storing a cookie, so our optional tracking choices cover relevant technologies as well as cookies."
+   ],
+   [
+    "p",
+    "Some technologies support necessary website functions. Others support preferences, analytics or advertising."
+   ],
+   [
+    "h2",
+    "2. Necessary Technologies"
+   ],
+   [
+    "p",
+    "Necessary technologies support website operation and security. They are not used to build advertising audiences."
+   ],
+   [
+    "p",
+    "These include:"
+   ],
+   [
+    "li",
+    "fekra_consent: remembers your analytics and marketing choices for six months."
+   ],
+   [
+    "li",
+    "NEXT_LOCALE: remembers your selected website language for up to one year."
+   ],
+   [
+    "li",
+    "payload-token: maintains an authenticated content management session for authorised staff. It is not an ordinary visitor cookie."
+   ],
+   [
+    "li",
+    "Security and form verification technologies: help detect abuse and verify form submissions, including checks provided by Cloudflare."
+   ],
+   [
+    "p",
+    "Staff session and security storage durations depend on the relevant session and security function."
+   ],
+   [
+    "p",
+    "Necessary technologies do not require acceptance of optional analytics or marketing categories."
+   ],
+   [
+    "h2",
+    "3. Preference Storage"
+   ],
+   [
+    "p",
+    "The website can remember your selected light or dark theme using browser local storage."
+   ],
+   [
+    "p",
+    "This preference remains on your device until it is replaced or cleared. It is separate from consent to analytics or advertising."
+   ],
+   [
+    "p",
+    "You can remove stored preferences through your browser settings."
+   ],
+   [
+    "h2",
+    "4. Analytics Technologies"
+   ],
+   [
+    "p",
+    "Where enabled and with your analytics consent, Google Analytics helps us understand website visits, page use and outcomes such as enquiries."
+   ],
+   [
+    "p",
+    "Google Tag Manager manages configured tags. The tags it loads must follow the consent requirements applicable to their purposes."
+   ],
+   [
+    "p",
+    "Google Analytics may use cookies such as _ga and _ga_*. Their configured lifetime may be up to two years. Expiry can be refreshed by subsequent visits, depending on configuration."
+   ],
+   [
+    "p",
+    "Analytics information may include browser and device details, visited pages, referring sources and website interactions."
+   ],
+   [
+    "p",
+    "You can decline analytics and continue using the website."
+   ],
+   [
+    "h2",
+    "5. Marketing Technologies"
+   ],
+   [
+    "p",
+    "Where enabled and with your marketing consent, the LinkedIn Insight Tag helps measure advertising visits and conversions and may support website audiences for relevant advertising."
+   ],
+   [
+    "p",
+    "Information processed may include browser identifiers, device information, visited page URLs, timestamps and website interactions."
+   ],
+   [
+    "p",
+    "LinkedIn may use cookies or related identifiers whose names and durations depend on the enabled features, browser and LinkedIn’s settings. Current information is available in LinkedIn’s Cookie Policy:"
+   ],
+   [
+    "p",
+    "https://www.linkedin.com/legal/cookie-policy"
+   ],
+   [
+    "p",
+    "We do not intentionally include enquiry messages, CV contents or sensitive personal information in advertising event data."
+   ],
+   [
+    "p",
+    "Submitting an enquiry does not automatically mean that you agree to marketing cookies."
+   ],
+   [
+    "h2",
+    "6. Your Consent Choices"
+   ],
+   [
+    "p",
+    "Optional analytics and marketing categories are off by default until you make a choice."
+   ],
+   [
+    "p",
+    "You can select:"
+   ],
+   [
+    "li",
+    "Accept all: allow both optional categories."
+   ],
+   [
+    "li",
+    "Essential only: decline both optional categories."
+   ],
+   [
+    "li",
+    "Manage preferences: choose analytics and marketing separately."
+   ],
+   [
+    "p",
+    "Necessary website functions remain available regardless of your optional choices."
+   ],
+   [
+    "p",
+    "Consent settings apply to the browser and device where you make the selection. You may need to choose again after clearing browser storage, using another browser or when your saved choice expires."
+   ],
+   [
+    "p",
+    "Google consent settings and other tag controls are used to communicate your choices. Each optional tool must follow the relevant category; enabling one category does not authorise unrelated tracking."
+   ],
+   [
+    "h2",
+    "7. Changing or Withdrawing Consent"
+   ],
+   [
+    "p",
+    "Open Cookie Preferences in the website footer at any time, change your selections and choose Save preferences."
+   ],
+   [
+    "p",
+    "After withdrawing consent, reload the page so the updated loading rules apply to previously loaded optional tools."
+   ],
+   [
+    "p",
+    "Withdrawal applies to future optional collection. It does not automatically delete information already lawfully received by a provider."
+   ],
+   [
+    "p",
+    "Cookies already stored may remain until they expire or you delete them through your browser settings."
+   ],
+   [
+    "h2",
+    "8. Browser Controls"
+   ],
+   [
+    "p",
+    "Most browsers allow you to view, delete or restrict cookies and other stored website data."
+   ],
+   [
+    "p",
+    "Blocking necessary technologies may affect language settings, security verification, staff login or other website functions."
+   ],
+   [
+    "p",
+    "Deleting browser storage also removes saved cookie choices and may cause the consent banner to appear again."
+   ],
+   [
+    "h2",
+    "9. External Websites"
+   ],
+   [
+    "p",
+    "Links to LinkedIn, Calendly and other websites take you to services that manage their own cookies and privacy choices."
+   ],
+   [
+    "p",
+    "Accepting marketing cookies on the Fekra Tech website is not required to follow an ordinary external link or book a meeting on Calendly."
+   ],
+   [
+    "p",
+    "Review the relevant provider’s policies when using those services."
+   ],
+   [
+    "h2",
+    "10. Policy Updates"
+   ],
+   [
+    "p",
+    "We may update this policy when website technologies or their purposes change."
+   ],
+   [
+    "p",
+    "Where a change requires a new consent, we will request it. The effective date identifies the published version."
+   ],
+   [
+    "h2",
+    "11. Contact"
+   ],
+   [
+    "p",
+    "For questions about cookies or your choices, contact:"
+   ],
+   [
+    "p",
+    "Fekra Tech"
+   ],
+   [
+    "p",
+    "Email: info@fekra-egy.com"
+   ],
+   [
+    "p",
+    "Telephone: +20 110 113 3572"
+   ]
+  ],
+  "effective": "Effective date: 1 October 2026"
+ }
+}

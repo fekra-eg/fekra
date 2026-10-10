@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { Cookie } from 'lucide-react'
 import { useId } from 'react'
 
+import { OPEN_COOKIE_PREFERENCES } from '@/components/analytics/CookiePreferences'
 import { Button } from '@/components/ui/Button'
 import type { Dictionary } from '@/i18n/getDictionary'
 import { type Locale, localeHref } from '@/i18n/routing'
@@ -44,6 +45,9 @@ export function ConsentBanner({ dict, locale, enabled }: { dict: Dictionary; loc
         <Button className="min-w-0 px-3 py-2.5 text-sm leading-5 whitespace-normal" onClick={() => decide(true, true)}>{dict.consent.acceptAll}</Button>
         <Button className="min-w-0 px-3 py-2.5 text-sm leading-5 whitespace-normal" variant="secondary" onClick={() => decide(false, false)}>
           {dict.consent.essentialOnly}
+        </Button>
+        <Button className="col-span-2 min-w-0 px-3 py-2.5 text-sm leading-5 whitespace-normal" variant="secondary" onClick={() => window.dispatchEvent(new Event(OPEN_COOKIE_PREFERENCES))}>
+          {dict.consent.managePreferences}
         </Button>
       </div>
     </div>

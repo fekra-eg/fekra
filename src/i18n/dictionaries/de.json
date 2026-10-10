@@ -191,10 +191,11 @@
     "reference": "Referenz"
   },
   "consent": {
-    "title": "Wir verwenden Cookies",
-    "body": "Essenzielle Cookies halten die Website funktionsfähig. Analyse- und Marketing-Cookies sind optional.",
+    "title": "Ihre Cookie-Auswahl",
+    "body": "Wir verwenden notwendige Technologien, damit diese Website sicher und funktionsfähig bleibt. Mit Ihrer Erlaubnis nutzen wir außerdem Analysetools, um Besuche zu verstehen, und Marketingtools, um Kampagnen zu messen und, falls aktiviert, relevante Werbung zu unterstützen. Sie können alle optionalen Kategorien akzeptieren, nur notwendige Technologien verwenden oder Ihre Einstellungen verwalten.",
     "acceptAll": "Alle akzeptieren",
-    "essentialOnly": "Nur essenzielle",
+    "essentialOnly": "Nur notwendige",
+    "managePreferences": "Einstellungen verwalten",
     "preferences": "Einstellungen",
     "save": "Auswahl speichern",
     "analytics": "Analyse",

@@ -191,10 +191,11 @@
     "reference": "Reference"
   },
   "consent": {
-    "title": "We use cookies",
-    "body": "Essential cookies keep the site working. Analytics and marketing cookies are optional.",
+    "title": "Your cookie choices",
+    "body": "We use necessary technologies to keep this website secure and working. With your permission, we also use analytics to understand visits and marketing tools to measure campaigns and, where enabled, support relevant advertising. You can accept all optional categories, use necessary technologies only or manage your preferences.",
     "acceptAll": "Accept all",
     "essentialOnly": "Essential only",
+    "managePreferences": "Manage preferences",
     "preferences": "Preferences",
     "save": "Save choices",
     "analytics": "Analytics",
