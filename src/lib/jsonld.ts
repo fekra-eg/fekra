@@ -62,7 +62,9 @@ export function websiteSchema(locale: Locale) {
     '@type': 'WebSite',
     '@id': `${siteUrl()}/#website`,
     url: siteUrl(),
-    name: 'FEKRA',
+    // Google's site name (the label above the result) comes from here (19.4).
+    name: 'FekraTech',
+    alternateName: ['Fekra Tech', 'FEKRA', 'فكرة'],
     inLanguage: locale,
     publisher: { '@id': `${siteUrl()}/#organization` },
   }

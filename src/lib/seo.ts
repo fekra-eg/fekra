@@ -17,6 +17,8 @@ type SeoInput = {
   type?: 'website' | 'article'
   publishedTime?: string
   modifiedTime?: string
+  /** false = emit `title` as-is, without the `| FEKRA` suffix (home page). */
+  brand?: boolean
 }
 
 /**
@@ -40,6 +42,7 @@ export function buildMetadata({
   type = 'website',
   publishedTime,
   modifiedTime,
+  brand = true,
 }: SeoInput): Metadata {
   const base = siteUrl()
   const published = (availableLocales?.length ? availableLocales : [DEFAULT_LOCALE]).filter((l): l is Locale =>
@@ -52,7 +55,7 @@ export function buildMetadata({
 
   const canonical = canonicalOverride || absoluteUrl(path, locale)
   const unbrandedTitle = title.replace(/(?:\s*\|\s*FEKRA)+$/i, '').trim()
-  const brandedTitle = `${unbrandedTitle} | FEKRA`
+  const brandedTitle = brand ? `${unbrandedTitle} | FEKRA` : unbrandedTitle
   // Every page gets a share card (FK-33); JPG because LinkedIn's WebP support is unreliable.
   const card = image?.url ? image : DEFAULT_OG_IMAGE
   const ogImage = [{ url: new URL(card.url, base).toString(), width: card.width ?? 1200, height: card.height ?? 630, alt: card.alt ?? title }]
@@ -73,7 +76,7 @@ export function buildMetadata({
       title: brandedTitle,
       description,
       url: canonical,
-      siteName: 'FEKRA',
+      siteName: 'FekraTech',
       locale: LOCALE_META[locale].hreflang,
       images: ogImage,
       ...(type === 'article' ? { publishedTime, modifiedTime } : {}),

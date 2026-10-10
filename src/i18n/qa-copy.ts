@@ -51,6 +51,16 @@ export function correctQaDocument<T>(value: T, locale: Locale): T {
   return value
 }
 
+// The home <title> Google shows as the result headline — kept out of the CMS so
+// a "Home" meta title can never ship again.
+export const homeTitle: Record<Locale, string> = {
+  en: 'FekraTech: Your Trusted Technology & Outsourcing Partner',
+  ar: 'فكرة تك: شريكك الموثوق في التكنولوجيا والتعهيد',
+  de: 'FekraTech: Ihr verlässlicher Technologie- und Outsourcing-Partner',
+  fr: 'FekraTech : votre partenaire de confiance en technologie et outsourcing',
+  es: 'FekraTech: tu socio de confianza en tecnología y outsourcing',
+}
+
 export const homeDescription: Record<Locale, string> = {
   en: 'Build and scale your technology team with FEKRA. Hire vetted software, AI, and QA engineers through flexible team extension and dedicated delivery models.',
   ar: 'ابنِ فريقك التقني ووسّعه مع فكرة. وظّف مهندسي برمجيات وذكاء اصطناعي وجودة مختارين بعناية، بنماذج مرنة لتوسيع الفرق والتسليم المتخصص.',
