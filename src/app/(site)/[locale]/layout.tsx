@@ -154,7 +154,7 @@ export default async function SiteLayout({
           <ConsentBanner dict={dict} locale={locale} enabled={(settings.consentMode ?? 'opt-in') === 'opt-in'} />
           <Analytics
             gtmId={settings.gtmContainerId}
-            ga4Id={settings.ga4MeasurementId}
+            ga4Id={settings.ga4MeasurementId || 'G-C39M5MW6D8'}
             linkedinPartnerId={settings.linkedinPartnerId}
             mode={settings.consentMode ?? 'opt-in'}
           />
