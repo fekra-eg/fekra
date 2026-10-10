@@ -1,12 +1,13 @@
 /**
  * Replaces the Privacy Policy, Terms & Conditions and Cookie Policy pages with
  * the approved 1 October 2026 copy (Fekra_Tech_Website_Policies_01_October_2026.docx,
- * exported verbatim to legal-policies-2026-10.json).
+ * exported verbatim to legal-policies-2026-10.json, Arabic in legal-policies-2026-10.ar.json).
  *
  *   pnpm tsx scripts/legal-policies-2026-10.ts          # dry run
  *   pnpm tsx scripts/legal-policies-2026-10.ts --write  # backup, then apply
  *
- * Only the English layout changes; slug, meta and availableLocales stay as they are.
+ * Writes en, then ar onto the same blocks (layout is shared, only text is localized).
+ * Slug, meta and availableLocales stay as they are.
  */
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { getPayload } from 'payload'
@@ -14,12 +15,12 @@ import { getPayload } from 'payload'
 import config from '../src/payload.config'
 
 type Block = ['h2' | 'h3' | 'p' | 'li', string]
-const pages = JSON.parse(readFileSync(new URL('./legal-policies-2026-10.json', import.meta.url), 'utf8')) as Record<
-  string,
-  { title: string; effective: string; blocks: Block[] }
->
+type Copy = Record<string, { title: string; effective: string; blocks: Block[] }>
+const load = (file: string) => JSON.parse(readFileSync(new URL(file, import.meta.url), 'utf8')) as Copy
+const pages = load('./legal-policies-2026-10.json')
+const arabic = load('./legal-policies-2026-10.ar.json')
 
-const node = { format: '', indent: 0, version: 1, direction: 'ltr' as const }
+let node = { format: '', indent: 0, version: 1, direction: 'ltr' as 'ltr' | 'rtl' }
 const text = (value: string) => ({ type: 'text', text: value, format: 0, style: '', mode: 'normal', detail: 0, version: 1 })
 // Emails and URLs in the copy become real links.
 const inline = (value: string) =>
@@ -32,7 +33,8 @@ const inline = (value: string) =>
     )
     .filter((child) => child.type !== 'text' || (child as { text: string }).text)
 
-function lexical(blocks: Block[]) {
+function lexical(blocks: Block[], direction: 'ltr' | 'rtl' = 'ltr') {
+  node = { ...node, direction }
   const children: unknown[] = []
   for (const [kind, value] of blocks) {
     if (kind === 'li') {
@@ -75,6 +77,14 @@ for (const [slug, page] of Object.entries(pages)) {
     ? await payload.update({ collection: 'pages', id: existing.id, locale: 'en', data: data as never })
     : await payload.create({ collection: 'pages', locale: 'en', data: { ...data, slug, availableLocales: ['en'] } as never })
   if (saved._status !== 'published') throw new Error(`/${slug} left as "${saved._status}".`)
+
+  const ar = arabic[slug]!
+  const layout = (saved.layout as { blockType: string }[]).map((row) =>
+    row.blockType === 'hero' ? { ...row, heading: ar.title, body: ar.effective }
+    : row.blockType === 'richText' ? { ...row, content: lexical(ar.blocks, 'rtl') }
+    : row,
+  )
+  await payload.update({ collection: 'pages', id: saved.id, locale: 'ar', data: { title: ar.title, layout, _status: 'published' } as never })
 }
 
 console.log(write ? 'Policies updated.' : 'Dry run. Use --write to apply.')
