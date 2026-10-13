@@ -108,7 +108,14 @@ export default buildConfig({
   admin: {
     user: Users.slug,
     importMap: { baseDir: path.resolve(dirname) },
-    meta: { titleSuffix: ' · FEKRA CMS' },
+    meta: {
+      titleSuffix: ' · FEKRA CMS',
+      // The FEKRA mark, not Payload's default favicon.
+      icons: [
+        { rel: 'icon', type: 'image/svg+xml', url: '/icon.svg' },
+        { rel: 'apple-touch-icon', type: 'image/png', url: '/apple-icon.png' },
+      ],
+    },
     components: {
       graphics: {
         Logo: '@/payload/admin/Logo#Logo',
