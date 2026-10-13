@@ -7,7 +7,6 @@ import { Cover } from '@/components/blog/Cover'
 import { HeroBand } from '@/components/blog/HeroBand'
 import { BLOG_HTML_CLASS, blogHtmlInline, htmlReadingMinutes } from '@/lib/blog-html'
 import { extractHeadings, readingMinutes } from '@/components/blog/lexical'
-import { NewsletterPanel } from '@/components/blog/NewsletterPanel'
 import { PostCard, categoryTitle, formatDate, type PostSummary } from '@/components/blog/PostCard'
 import { ReadingProgress } from '@/components/blog/ReadingProgress'
 import { ShareButtons } from '@/components/blog/ShareButtons'
@@ -279,12 +278,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ locale
           </div>
         </section>
       ) : null}
-
-      <section className="pb-24">
-        <div className="container-wide">
-          <NewsletterPanel dict={dict} locale={locale} />
-        </div>
-      </section>
 
       <JsonLd
         data={[

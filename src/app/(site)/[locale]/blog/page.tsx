@@ -2,7 +2,6 @@ import { notFound } from 'next/navigation'
 
 import { sitelinkCopy } from '@/i18n/qa-copy'
 import { BlogIndex } from '@/components/blog/BlogIndex'
-import { NewsletterPanel } from '@/components/blog/NewsletterPanel'
 import type { PostSummary } from '@/components/blog/PostCard'
 import { getDictionary } from '@/i18n/getDictionary'
 import { isLocale, LOCALES } from '@/i18n/routing'
@@ -59,12 +58,6 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
     <>
       <JsonLd data={breadcrumbSchema([{ name: dict.nav.home, path: '/' }, { name: dict.nav.blog, path: '/blog' }], locale)} />
       <BlogIndex posts={posts.docs} locale={locale} dict={dict} topics={topics} />
-
-      <section className="bg-background-subtle pb-24">
-        <div className="container-wide">
-          <NewsletterPanel dict={dict} locale={locale} />
-        </div>
-      </section>
     </>
   )
 }
