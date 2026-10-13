@@ -44,16 +44,9 @@ const run = async () => {
       | { id: number; layout?: Block[] }
       | undefined
 
-  // Same shared sections as every other technology page; hero, skills and FAQ are swapped per role.
+  // Same shared sections as every other technology page; hero and FAQ are swapped per role.
   const template = stripIds((await find('hire-front-end-developers'))?.layout ?? []) as Block[]
   if (!template.length) throw new Error('Template page hire-front-end-developers not found')
-  const templateTech = template.find((block) => block.blockType === 'techStack') as
-    | { groups?: Array<{ items?: Array<{ name: string; logo?: unknown }> }> }
-    | undefined
-  const logos = new Map(
-    (templateTech?.groups ?? []).flatMap((group) => group.items ?? []).map((item) => [item.name.toLowerCase(), item.logo]),
-  )
-
   const layoutFor = (page: RolePage): Block[] =>
     template.map((block) => {
       if (block.blockType === 'serviceHero')
@@ -63,15 +56,6 @@ const run = async () => {
           body: page.body.join('\n'),
           closer: page.summary,
           highlights: serviceHighlights.map((text) => ({ text })),
-        }
-      if (block.blockType === 'techStack')
-        return {
-          ...block,
-          heading: 'Skills Covered',
-          groups: page.skills.map(([name, items]) => ({
-            name,
-            items: items.map((item) => ({ name: item, logo: logos.get(item.toLowerCase()) ?? null })),
-          })),
         }
       if (block.blockType === 'faq')
         return {
