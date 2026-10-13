@@ -7,6 +7,8 @@ import type { PostSummary } from '@/components/blog/PostCard'
 import { getDictionary } from '@/i18n/getDictionary'
 import { isLocale, LOCALES } from '@/i18n/routing'
 import { findDocs } from '@/lib/payload'
+import { JsonLd } from '@/components/JsonLd'
+import { breadcrumbSchema } from '@/lib/jsonld'
 import { buildMetadata } from '@/lib/seo'
 
 export const revalidate = 900
@@ -55,6 +57,7 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
 
   return (
     <>
+      <JsonLd data={breadcrumbSchema([{ name: dict.nav.home, path: '/' }, { name: dict.nav.blog, path: '/blog' }], locale)} />
       <BlogIndex posts={posts.docs} locale={locale} dict={dict} topics={topics} />
 
       <section className="bg-background-subtle pb-24">

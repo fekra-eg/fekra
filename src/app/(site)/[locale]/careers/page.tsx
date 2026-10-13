@@ -4,10 +4,12 @@ import { notFound } from 'next/navigation'
 import { Users } from 'lucide-react'
 
 import { getDictionary } from '@/i18n/getDictionary'
-import { isLocale, type Locale } from '@/i18n/routing'
+import { LOCALES, isLocale, type Locale } from '@/i18n/routing'
 import { findDocs, getGlobal } from '@/lib/payload'
 import { ContactSection } from '@/components/blocks/ContactSection'
 import type { SettingsLite } from '../page-types'
+import { JsonLd } from '@/components/JsonLd'
+import { breadcrumbSchema } from '@/lib/jsonld'
 import { buildMetadata } from '@/lib/seo'
 
 import type { JobDoc } from '../page-types'
@@ -24,6 +26,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     ...sitelinkCopy[locale].careers,
     path: '/careers',
     locale,
+    availableLocales: [...LOCALES],
   })
 }
 
@@ -58,6 +61,7 @@ export default async function CareersIndex({ params }: { params: Promise<{ local
 
   return (
     <>
+      <JsonLd data={breadcrumbSchema([{ name: dict.nav.home, path: '/' }, { name: dict.nav.careers, path: '/careers' }], locale)} />
       {/* A team-led hero with a direct jump to the current openings. */}
       <section className="relative isolate mt-[calc(var(--header-block)*-1)] overflow-hidden pt-[calc(var(--header-block)+clamp(2.5rem,7vw,5.5rem))] pb-14 md:pb-20">
         <div

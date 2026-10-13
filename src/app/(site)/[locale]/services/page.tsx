@@ -5,8 +5,10 @@ import { ArrowUpRight, Check } from 'lucide-react'
 
 import { BidiText } from '@/components/BidiText'
 import { getDictionary } from '@/i18n/getDictionary'
-import { isLocale, localeHref } from '@/i18n/routing'
+import { LOCALES, isLocale, localeHref } from '@/i18n/routing'
 import { findDocs } from '@/lib/payload'
+import { JsonLd } from '@/components/JsonLd'
+import { breadcrumbSchema } from '@/lib/jsonld'
 import { buildMetadata } from '@/lib/seo'
 
 import type { ServiceDoc } from '../page-types'
@@ -16,7 +18,7 @@ export const revalidate = 3600
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
   if (!isLocale(locale)) return {}
-  return buildMetadata({ ...sitelinkCopy[locale].services, path: '/services', locale })
+  return buildMetadata({ ...sitelinkCopy[locale].services, path: '/services', locale, availableLocales: [...LOCALES] })
 }
 
 /**
@@ -45,6 +47,8 @@ export default async function ServicesIndex({ params }: { params: Promise<{ loca
   const roots = docs.filter((s) => !s.parent)
 
   return (
+    <>
+      <JsonLd data={breadcrumbSchema([{ name: dict.nav.home, path: '/' }, { name: dict.nav.services, path: '/services' }], locale)} />
     <section className="relative isolate mt-[calc(var(--header-block)*-1)] pt-[calc(var(--header-block)+clamp(3rem,7vw,6rem))] pb-16 md:pb-24">
       <div
         aria-hidden
@@ -109,5 +113,6 @@ export default async function ServicesIndex({ params }: { params: Promise<{ loca
         </div>
       </div>
     </section>
+    </>
   )
 }

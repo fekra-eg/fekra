@@ -79,12 +79,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ['/services', 0.9],
     ['/careers', 0.8],
     ['/contact', 0.8],
-    ['/meeting', 0.7],
   ]
   const listings: MetadataRoute.Sitemap = LISTINGS.map(([path, priority]) =>
     entry(path, [...PUBLIC_LOCALES], undefined, priority),
   )
-  const coded = new Set(['home', ...LISTINGS.map(([path]) => path.slice(1))])
+  // /meeting is a redirect to Calendly, so it is owned but never listed.
+  const coded = new Set(['home', 'meeting', ...LISTINGS.map(([path]) => path.slice(1))])
 
   const fromCollection = (docs: Indexable[], collection: LinkableCollection, priority: number) =>
     docs

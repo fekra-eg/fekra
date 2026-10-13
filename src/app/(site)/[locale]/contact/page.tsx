@@ -6,6 +6,8 @@ import { RenderBlocks } from '@/components/blocks/RenderBlocks'
 import { getDictionary } from '@/i18n/getDictionary'
 import { isLocale, LOCALES } from '@/i18n/routing'
 import { findDoc, getGlobal } from '@/lib/payload'
+import { JsonLd } from '@/components/JsonLd'
+import { breadcrumbSchema } from '@/lib/jsonld'
 import { buildMetadata } from '@/lib/seo'
 
 import type { PageDoc, SettingsLite } from '../page-types'
@@ -41,18 +43,25 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
     getGlobal<SettingsLite>('site-settings', locale),
   ])
 
+  const crumbs = <JsonLd data={breadcrumbSchema([{ name: dict.nav.home, path: '/' }, { name: dict.nav.contact, path: '/contact' }], locale)} />
+
   if (page?.layout?.length) {
     return (
+      <>
+      {crumbs}
       <RenderBlocks
         blocks={page.layout}
         locale={locale}
         dict={dict}
         context={{ offices: settings.offices, calendlyUrl: settings.calendlyUrl }}
       />
+      </>
     )
   }
 
   return (
+    <>
+    {crumbs}
     <ContactSection
       block={{ blockType: 'contact', showForm: true, showOffices: true }}
       locale={locale}
@@ -60,5 +69,6 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
       offices={settings.offices as never}
       as="h1"
     />
+    </>
   )
 }
