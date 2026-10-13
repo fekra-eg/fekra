@@ -80,8 +80,9 @@ export async function RenderBlocks({
   if (context?.servicePage || blocks.some((block) => block.blockType === 'serviceHero')) {
     const home = await findDoc<{ layout?: BlockProps[] }>('pages', 'home', locale)
     const faq = findSharedSection('faq', home?.layout)
+    // Role pages keep their own questions (anchor `role-faq`, from seed:role-pages).
     if (faq) layout = layout.map((block) =>
-      block.blockType === 'faq' ? { ...faq, id: block.id ?? faq.id, anchor: block.anchor ?? faq.anchor } : block,
+      block.blockType === 'faq' && block.anchor !== 'role-faq' ? { ...faq, id: block.id ?? faq.id, anchor: block.anchor ?? faq.anchor } : block,
     )
     const testimonials = home?.layout?.find((block) => block.blockType === 'testimonials')
     if (testimonials) layout = layout.filter((block) => block.blockType !== 'testimonials').flatMap((block) =>

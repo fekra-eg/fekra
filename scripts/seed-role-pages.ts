@@ -76,6 +76,8 @@ const run = async () => {
       if (block.blockType === 'faq')
         return {
           ...block,
+          // Opts out of RenderBlocks' swap for the shared home FAQ.
+          anchor: 'role-faq',
           items: page.faqs.map(([question, answer]) => ({ question, answer: richText(answer) })),
         }
       return block
