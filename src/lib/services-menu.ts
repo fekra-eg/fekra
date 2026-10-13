@@ -163,28 +163,30 @@ const roleTitle = (technology: string, engineer: boolean, locale: Locale) => {
   return titles[locale]
 }
 
-// Technology pages whose slug isn't `hire-<tech>-developers`.
+// Role pages whose slug isn't `hire-<role title>`, keyed by the title minus
+// "Developers"/"Engineers".
 const ROLE_SLUGS: Record<string, string> = {
   '.NET': 'hire-dotnet-core-developers',
   'ASP.NET Core': 'hire-aspnet-developers',
-  'Full-Stack': 'hire-full-stack-developers',
+  'Full Stack': 'hire-full-stack-developers',
   'Manual QA': 'hire-manual-qa-testers',
   'Automation QA': 'hire-automation-qa-engineers',
-  // In-Demand roles with no page of their own go to the closest category.
-  'AI Developer': 'hire-ai-data-experts',
-  Data: 'hire-ai-data-experts',
-  AWS: 'hire-devops-cloud-engineers',
+  AI: 'hire-ai-engineers',
+  AWS: 'hire-aws-engineers',
 }
+
+const slugify = (title: string) =>
+  title.toLowerCase().replace(/\.net/g, 'dotnet').replace(/\./g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
 
 /** Explicit groups follow the approved comp independently of the CMS taxonomy. */
 export function buildServicesMenu(services: Service[], locale: Locale): ServicesMenu {
   const bySlug = new Map(services.map((service) => [service.slug, service]))
-  // A role links to its own technology page when one is published, else to its
-  // group — the menu used to send ~70 links to 8 pages (FK-24/27).
-  const roleSlug = (technology: string, fallback: string) => {
-    const tech = technology.replace(/ (Developers|Engineers)$/, '')
-    const slug = ROLE_SLUGS[tech] ?? `hire-${tech.toLowerCase().replace(/\./g, '').replace(/\s+/g, '-')}-developers`
-    return bySlug.has(slug) ? slug : fallback
+  // A role links to its own page when one is published, else to its group —
+  // the menu used to send ~70 links to 8 pages (FK-24/27). Takes the English
+  // title, so every locale resolves the same slug.
+  const roleSlug = (englishTitle: string, fallback: string) => {
+    const tech = englishTitle.replace(/ (Developers?|Engineers)$/, '')
+    return [ROLE_SLUGS[tech], `hire-${slugify(englishTitle)}`].find((slug) => slug && bySlug.has(slug)) ?? fallback
   }
   return groups.flatMap((group) => {
     const service = bySlug.get(group.slug)
@@ -204,10 +206,14 @@ export function buildServicesMenu(services: Service[], locale: Locale): Services
       ? group.roles.map((technology) => {
           return {
             title: roleTitle(technology, group.slug === 'hire-qa-engineers', locale),
-            slug: roleSlug(technology, group.slug),
+            slug: roleSlug(roleTitle(technology, group.slug === 'hire-qa-engineers', 'en'), group.slug),
           }
         })
-      : (service.menuRoles ?? []).map((role) => ({ title: role.label, slug: roleSlug(role.label, group.slug) }))
+      : (service.menuRoles ?? []).map((role, i) => ({
+          title: role.label,
+          // CMS labels are localized; the approved list holds the same roles in English.
+          slug: roleSlug(approvedArabicGroups[group.slug]?.roles[i] ?? role.label, group.slug),
+        }))
     return [{ title: service.title, slug: service.slug, roles }]
   })
 }

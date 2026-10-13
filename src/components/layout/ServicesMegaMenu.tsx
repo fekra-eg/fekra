@@ -17,7 +17,7 @@ const PLACEMENT: Record<string, string> = {
 
 export function ServicesMegaMenu({ services, locale, dict }: { services: ServicesMenu; locale: Locale; dict: Dictionary }) {
   return <div className="invisible fixed inset-x-0 top-full z-50 mx-auto max-w-[1240px] pt-2 opacity-0 transition-[opacity,visibility] group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
-    <div data-services-menu className="relative max-h-[min(510px,68dvh)] overflow-y-auto overscroll-contain rounded-[24px] border border-border bg-card px-7 pt-8 pb-7 shadow-lift">
+    <div data-services-menu className="relative max-h-[min(580px,80dvh)] overflow-y-auto overscroll-contain rounded-[24px] border border-border bg-card px-7 pt-8 pb-7 shadow-lift">
       <div className="grid grid-cols-5 items-start gap-x-6 gap-y-6">
         {services.map((service) => <div key={service.slug} className={PLACEMENT[service.slug]}>
           <Link href={localeHref(locale, `/services/${service.slug}`)} className="block pb-2 text-[13px]/5 font-bold text-navy-800 hover:text-primary dark:text-foreground"><BidiText>{service.title}</BidiText></Link>
