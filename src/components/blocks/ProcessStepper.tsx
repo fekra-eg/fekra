@@ -154,7 +154,9 @@ export function ProcessStepper({ steps, completed, resultLabel }: { steps: Step[
                       style={{ insetInlineEnd: 'calc(var(--fs) * -18.5px)' }}
                     />
                   ) : null}
-                  <span className="relative">{i + 1}</span>
+                  {/* Drawn from an attribute: the sr-only label beside it already
+                      says the number, and page text read "1 1 — …" (FK-66). */}
+                  <span data-text={i + 1} className="relative before:content-[attr(data-text)]" />
                 </button>
 
                 <button
@@ -266,11 +268,10 @@ export function ProcessStepper({ steps, completed, resultLabel }: { steps: Step[
           rock the funnel beside it. */}
       <div aria-hidden className="w-full max-w-[420px] self-center p-6 sm:min-h-[220px] lg:p-8">
         <div key={active} className="fk-enter [animation-duration:0.35s]">
-          {/* <p>, not a heading: a duplicate heading still reads to crawlers. */}
-          <p className="font-display text-2xl leading-tight font-bold text-navy-800 dark:text-foreground">
-            {step.title}
-          </p>
-          <p className="mt-3 text-base/7 text-ink-500 dark:text-muted-foreground">{step.body}</p>
+          {/* Mirrors the active step, whose text is already in the list. Drawn
+              from attributes so crawlers don't read every step twice (FK-66). */}
+          <p data-text={step.title} className="font-display text-2xl leading-tight font-bold text-navy-800 before:content-[attr(data-text)] dark:text-foreground" />
+          <p data-text={step.body} className="mt-3 text-base/7 text-ink-500 before:content-[attr(data-text)] dark:text-muted-foreground" />
         </div>
       </div>
     </div>
