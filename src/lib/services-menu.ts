@@ -20,6 +20,7 @@ const groups = [
       'ASP.NET Core',
       'PHP',
       'Laravel',
+      'Yii',
       'Golang',
     ],
   },
@@ -121,6 +122,7 @@ const approvedArabicGroups: Record<string, { title: string; roles: string[] }> =
       'ASP.NET Core Developers',
       'PHP Developers',
       'Laravel Developers',
+      'Yii Developers',
       'Golang Developers',
     ],
   },
@@ -168,6 +170,10 @@ const ROLE_SLUGS: Record<string, string> = {
   'Full-Stack': 'hire-full-stack-developers',
   'Manual QA': 'hire-manual-qa-testers',
   'Automation QA': 'hire-automation-qa-engineers',
+  // In-Demand roles with no page of their own go to the closest category.
+  'AI Developer': 'hire-ai-data-experts',
+  Data: 'hire-ai-data-experts',
+  AWS: 'hire-devops-cloud-engineers',
 }
 
 /** Explicit groups follow the approved comp independently of the CMS taxonomy. */
@@ -201,7 +207,7 @@ export function buildServicesMenu(services: Service[], locale: Locale): Services
             slug: roleSlug(technology, group.slug),
           }
         })
-      : (service.menuRoles ?? []).map((role) => ({ title: role.label, slug: group.slug }))
+      : (service.menuRoles ?? []).map((role) => ({ title: role.label, slug: roleSlug(role.label, group.slug) }))
     return [{ title: service.title, slug: service.slug, roles }]
   })
 }
