@@ -765,8 +765,11 @@
   transition: color 180ms, background-color 180ms, border-color 180ms, box-shadow 180ms, filter 180ms;
 }
 :is(button, a, summary, [tabindex]):focus:not(:focus-visible) { outline: none; }
+/* A <button> that reads as a text link: colour change on hover, never a fill. */
+.fk-link:hover { color: var(--foreground); }
+.fk-link:active { opacity: 0.75; }
 @media (hover: hover) {
-  :is(button:not([role="tab"]):not([data-process-control]), .fk-button, [role="button"]):not(:disabled):not([aria-disabled="true"]):hover,
+  :is(button:not([role="tab"]):not([data-process-control]):not(.fk-link), .fk-button, [role="button"]):not(:disabled):not([aria-disabled="true"]):hover,
   summary:hover .fk-button {
     background-color: var(--button-hover-bg, var(--control-hover-bg, #273969));
     background-image: none;
@@ -779,7 +782,7 @@
   summary:hover { background-color: color-mix(in srgb, var(--primary) 12%, var(--card)); }
 }
 /* Also visible on touch devices, where there is no hover. */
-:is(button:not([role="tab"]):not([data-process-control]), .fk-button, [role="button"]):not(:disabled):not([aria-disabled="true"]):active,
+:is(button:not([role="tab"]):not([data-process-control]):not(.fk-link), .fk-button, [role="button"]):not(:disabled):not([aria-disabled="true"]):active,
 summary:active .fk-button {
   background-color: var(--button-hover-bg, var(--control-hover-bg, #273969));
   background-image: none;

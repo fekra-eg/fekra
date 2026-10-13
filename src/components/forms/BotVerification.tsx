@@ -94,7 +94,7 @@ export function BotVerification({ locale, action, onReady, error }: {
       {answer && !correct ? <p id={`${id}-error`} role="alert" className="mt-1 text-sm text-danger-600">{copy.invalid}</p> : null}
     </div> : null}
     {failed || !sitekey ? <div role="alert" className="text-sm text-danger-600">{copy.unavailable}
-      <button type="button" onClick={() => { invalidate(); setFailed(false); setChallenge(null); setAnswer(''); setAttempt((value) => value + 1) }} className="ms-2 min-h-11 underline">{copy.retry}</button>
+      <button type="button" onClick={() => { invalidate(); setFailed(false); setChallenge(null); setAnswer(''); setAttempt((value) => value + 1) }} className="fk-link ms-2 min-h-11 underline underline-offset-4">{copy.retry}</button>
     </div> : null}
     {error && !(token && correct && !failed) ? <p role="alert" className="text-sm text-danger-600">{copy.required}</p> : null}
   </fieldset>

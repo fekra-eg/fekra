@@ -38,9 +38,8 @@ const SOCIAL_PATH: Record<string, string> = {
 const SOCIAL_VIEWBOX: Record<string, string> = {
   facebook: '-2.4 -2.4 28.8 28.8',
 }
-// Text-colour hover only. The vars opt Cookie Preferences (a <button>) out of
-// the global button hover fill so it matches the three links.
-const LEGAL_LINK = 'inline-flex min-h-11 items-center text-start transition-colors hover:text-foreground [--button-hover-bg:transparent] [--button-hover-border:transparent] [--button-hover-ink:var(--foreground)]'
+// fk-link keeps Cookie Preferences (a <button>) out of the button hover fill.
+const LEGAL_LINK = 'fk-link inline-flex min-h-11 items-center text-start transition-colors hover:text-foreground'
 const viewBoxFor = (platform: string) => SOCIAL_VIEWBOX[platform.toLowerCase()] ?? '0 0 24 24'
 
 import { NewsletterForm } from './NewsletterForm'
