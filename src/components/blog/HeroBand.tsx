@@ -6,14 +6,15 @@ import { cn } from '@/lib/cn'
  * Shared blog cover band — the brand-blue tinted hero used by BOTH the blog
  * index and every article page, so the cover treatment lives in one place.
  *
- * Unlike the reference site this header is sticky rather than fixed-overlay, so
- * the band is not pulled up under it; everything else is identical.
+ * The header is sticky with a pinned height (--header-block), so the band is
+ * pulled up under it — same as the careers and services heroes — instead of
+ * leaving a white strip between the header and the tint.
  */
 export function HeroBand({ children, className }: { children: ReactNode; className?: string }) {
   return (
     <section
       className={cn(
-        'relative bg-gradient-to-b from-blog-band-from via-blog-band-via to-blog-surface',
+        'relative mt-[calc(var(--header-block)*-1)] pt-[var(--header-block)] bg-gradient-to-b from-blog-band-from via-blog-band-via to-blog-surface',
         'dark:from-blog-ink dark:via-blog-ink dark:to-blog-ink',
         className,
       )}
