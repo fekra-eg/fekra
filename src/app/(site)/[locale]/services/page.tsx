@@ -9,6 +9,7 @@ import { LOCALES, isLocale, localeHref } from '@/i18n/routing'
 import { findDocs } from '@/lib/payload'
 import { JsonLd } from '@/components/JsonLd'
 import { breadcrumbSchema } from '@/lib/jsonld'
+import { redirectsAway } from '@/lib/redirects'
 import { buildMetadata } from '@/lib/seo'
 
 import type { ServiceDoc } from '../page-types'
@@ -44,7 +45,8 @@ export default async function ServicesIndex({ params }: { params: Promise<{ loca
   ])
 
   const parentId = (s: ServiceDoc) => (typeof s.parent === 'object' ? s.parent?.id : s.parent)
-  const roots = docs.filter((s) => !s.parent)
+  // Old seed placeholders 301 to their real pages (redirects.json); no card for them.
+  const roots = docs.filter((s) => !s.parent && !redirectsAway(`/services/${s.slug}`))
 
   return (
     <>

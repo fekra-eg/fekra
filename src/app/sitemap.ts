@@ -3,6 +3,7 @@ import type { MetadataRoute } from 'next'
 import { DEFAULT_LOCALE, PUBLIC_LOCALES, type Locale } from '@/i18n/routing'
 import { payloadClient } from '@/lib/payload'
 import { isComingSoon } from '@/lib/site-mode'
+import { redirectsAway } from '@/lib/redirects'
 import { absoluteUrl, documentPath, type LinkableCollection } from '@/lib/urls'
 
 export const revalidate = 3600
@@ -90,7 +91,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     docs
       // noindex, hidden and closed roles never appear — the sitemap and the
       // robots directives must not contradict each other (19.11).
-      .filter((doc) => !doc.meta?.noindex && !doc.hideFromSitemap && doc.roleStatus !== 'closed')
+      .filter((doc) => !doc.meta?.noindex && !doc.hideFromSitemap && doc.roleStatus !== 'closed' && !redirectsAway(documentPath(collection, doc.slug)))
       .map((doc) => entry(documentPath(collection, doc.slug), localesOf(doc), doc.updatedAt, priority))
 
   return [
