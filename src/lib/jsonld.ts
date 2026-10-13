@@ -21,7 +21,6 @@ export function organizationSchema(settings: {
   siteName?: string | null
   legalName?: string | null
   tagline?: string | null
-  logoUrl?: string | null
   socialProfiles?: { url: string }[] | null
   offices?: Office[] | null
 }) {
@@ -36,7 +35,10 @@ export function organizationSchema(settings: {
     legalName: settings.legalName ?? undefined,
     description: settings.tagline ?? undefined,
     url: siteUrl(),
-    logo: settings.logoUrl ?? undefined,
+    // On-domain and the same mark as the favicon, so Search shows one brand
+    // icon; the CMS upload was an off-site webp (Google wants a crawlable,
+    // square raster of at least 112px).
+    logo: `${siteUrl()}/icon-512.png`,
     sameAs: settings.socialProfiles?.map((s) => s.url).filter(Boolean),
     address: hq
       ? {

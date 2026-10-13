@@ -11,7 +11,7 @@ import { DENIED, readConsent, writeConsent, type ConsentState } from '@/lib/cons
 /** Fired by the consent banner's "Manage preferences" button. */
 export const OPEN_COOKIE_PREFERENCES = 'fekra:cookie-preferences'
 
-export function CookiePreferences({ locale }: { locale: Locale }) {
+export function CookiePreferences({ locale, className }: { locale: Locale; className?: string }) {
   const labels = batchTwo[locale]
   const copy = cookiePreferencesCopy[locale]
   const dialog = useRef<HTMLDialogElement>(null)
@@ -39,7 +39,7 @@ export function CookiePreferences({ locale }: { locale: Locale }) {
   }
   const policyLink = 'font-semibold text-primary underline underline-offset-4'
   return <>
-    <button type="button" onClick={open} className="inline-flex min-h-11 items-center text-start transition-colors hover:text-foreground">{labels.preferences}</button>
+    <button type="button" onClick={open} className={className}>{labels.preferences}</button>
     <dialog ref={dialog} aria-labelledby="cookie-preferences-title" onClick={(event) => {
       if (event.target !== event.currentTarget) return
       const rect = event.currentTarget.getBoundingClientRect()

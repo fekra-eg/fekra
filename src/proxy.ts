@@ -36,6 +36,13 @@ function remember(response: NextResponse, locale: string, request: NextRequest) 
  * while the public site is closed.
  */
 const COMING_SOON = isComingSoon()
+
+/**
+ * Old WordPress industry pages with no successor. They used to 308 to "/",
+ * which Google reads as a soft 404 and kept showing as sitelinks (Ecommerce,
+ * Media, Education). 410 Gone drops them from the index fastest.
+ */
+const RETIRED = /^\/(agritech|ecommerce|education|finance|food|games|healthcare|insurance|media|real-estate|sports|logistics|ev-charging(-2)?|ind(\/[^/]+)?|industriess(\/[^/]+)?)\/?$/
 const SOON_PATH = '/coming-soon'
 
 /**
@@ -75,6 +82,8 @@ export default async function proxy(request: NextRequest) {
   if (isLocale(segment) && !isPublicLocale(segment)) {
     return withGuards(NextResponse.redirect(new URL((pathname.slice(segment.length + 1) || '/') + search, request.url), 307), request)
   }
+
+  if (RETIRED.test(pathname)) return withGuards(await notFoundResponse(DEFAULT_LOCALE, 410), request)
 
   const route = cmsRoute(pathname)
   // Draft previews keep their existing authenticated render path. Public
@@ -121,8 +130,7 @@ export default async function proxy(request: NextRequest) {
   return withGuards(remember(response, DEFAULT_LOCALE, request), request)
 }
 
-async function notFoundResponse(locale: typeof DEFAULT_LOCALE | 'ar' | 'de' | 'fr' | 'es') {
-  const status = 404
+async function notFoundResponse(locale: typeof DEFAULT_LOCALE | 'ar' | 'de' | 'fr' | 'es', status: 404 | 410 = 404) {
   const dict = await getDictionary(locale)
   const copy = dict.notFound
   const escape = (value: string) => value.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!)

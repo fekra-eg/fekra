@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { notFound } from 'next/navigation'
 
-import { mediaUrl } from '@/components/blocks/types'
 import { LocaleStatusProvider } from '@/components/LocaleStatusProvider'
 import { Analytics } from '@/components/analytics/Analytics'
 import { ConsentBanner } from '@/components/analytics/ConsentBanner'
@@ -99,7 +98,6 @@ export default async function SiteLayout({
 
   const servicesMenu = buildServicesMenu(servicesDocs.docs, locale)
   const siteName = settings.siteName ?? 'FEKRA'
-  const logoUrl = settings.logoLight?.url ? mediaUrl(settings.logoLight) : null
 
   return (
     // 14.5 — lang and dir are emitted per locale, not patched in on the client.
@@ -166,7 +164,6 @@ export default async function SiteLayout({
               siteName,
               legalName: settings.legalName,
               tagline: settings.tagline,
-              logoUrl,
               socialProfiles: settings.socialProfiles,
               offices: settings.offices,
             }),

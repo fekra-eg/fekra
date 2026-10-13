@@ -38,6 +38,9 @@ const SOCIAL_PATH: Record<string, string> = {
 const SOCIAL_VIEWBOX: Record<string, string> = {
   facebook: '-2.4 -2.4 28.8 28.8',
 }
+// All four legal links share the global fk-button hover/active state, so
+// Cookie Preferences (a <button>) no longer looks different from the links.
+const LEGAL_LINK = 'fk-button inline-flex min-h-11 items-center rounded-md px-2.5 text-start'
 const viewBoxFor = (platform: string) => SOCIAL_VIEWBOX[platform.toLowerCase()] ?? '0 0 24 24'
 
 import { NewsletterForm } from './NewsletterForm'
@@ -223,15 +226,15 @@ export function Footer({
         <div className="container-site flex flex-col gap-4 py-5 text-xs text-muted-foreground md:flex-row md:items-center md:justify-between">
           <p>{data.copyright ?? `© ${new Date().getFullYear()} ${siteName}. All rights reserved.`}</p>
           <div className="flex flex-wrap items-center gap-5">
-            <ul className="flex flex-wrap gap-4">
+            <ul className="-ms-2.5 flex flex-wrap gap-1">
               {legal.map((link) => (
                 <li key={link!.href}>
-                  <Link href={link!.href} className="inline-flex min-h-11 items-center transition-colors hover:text-foreground">
+                  <Link href={link!.href} className={LEGAL_LINK}>
                     {link!.label}
                   </Link>
                 </li>
               ))}
-              <li><CookiePreferences locale={locale} /></li>
+              <li><CookiePreferences locale={locale} className={LEGAL_LINK} /></li>
             </ul>
             {socials?.length ? (
               <ul className="flex items-center gap-5">
