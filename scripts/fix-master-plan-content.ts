@@ -71,7 +71,7 @@ const run = async () => {
 
   // FK-78
   for (const locale of Object.keys(HERO_WORDS) as ('de' | 'fr' | 'es')[]) {
-    const home = (await payload.find({ collection: 'pages', where: { slug: { equals: 'home' } }, locale, fallbackLocale: false as never, limit: 1, depth: 0 })).docs[0] as Doc | undefined
+    const home = (await payload.find({ collection: 'pages', where: { slug: { equals: 'home' } }, locale, limit: 1, depth: 0 })).docs[0] as Doc | undefined
     if (!home?.layout) continue
     let changed = false
     const layout = home.layout.map((block) => {
@@ -105,7 +105,7 @@ const run = async () => {
 
   // FK-73
   for (const collection of ['pages', 'services', 'posts', 'jobs', 'categories'] as const) {
-    const { docs } = await payload.find({ collection, locale: 'ar', fallbackLocale: false as never, limit: 500, depth: 0 })
+    const { docs } = await payload.find({ collection, locale: 'ar', limit: 500, depth: 0 })
     for (const doc of docs as unknown as Doc[]) {
       if (!hasArabicDigits(doc)) continue
       log(`Western digits in ${collection}/${doc.slug}`)
@@ -113,7 +113,7 @@ const run = async () => {
     }
   }
   for (const slug of ['header', 'footer', 'site-settings']) {
-    const global = (await payload.findGlobal({ slug: slug as never, locale: 'ar', fallbackLocale: false as never, depth: 0 })) as Doc
+    const global = (await payload.findGlobal({ slug: slug as never, locale: 'ar', depth: 0 })) as Doc
     if (!hasArabicDigits(global)) continue
     log(`Western digits in global ${slug}`)
     if (apply) await payload.updateGlobal({ slug: slug as never, locale: 'ar', data: strip(westernDigits(global) as Doc), depth: 0, context: ctx } as never)
