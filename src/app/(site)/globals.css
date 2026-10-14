@@ -797,3 +797,19 @@ summary:active .fk-button {
   opacity: 0.5;
   filter: none;
 }
+
+/*
+ * FK-74: German, French and Spanish nav labels are ~25% longer and wrap or
+ * clip between xl and 2xl, so those locales keep the compact menu until 2xl.
+ */
+@media (min-width: 80rem) and (max-width: 95.99rem) {
+  html:is([lang='de'], [lang='fr'], [lang='es']) :is([data-main-nav], [data-header-ctas]) {
+    display: none;
+  }
+  html:is([lang='de'], [lang='fr'], [lang='es']) [aria-controls='mobile-menu'] {
+    display: grid;
+  }
+  html:is([lang='de'], [lang='fr'], [lang='es']) #mobile-menu[open] {
+    display: block;
+  }
+}

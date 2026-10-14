@@ -20,6 +20,8 @@ type Indexable = {
 /** One entry per canonical URL with its hreflang alternates (18.5 / 19.11). */
 function entry(path: string, locales: Locale[], lastModified?: string, priority = 0.7): MetadataRoute.Sitemap[number] {
   const languages = Object.fromEntries(locales.map((l) => [l, absoluteUrl(path, l)]))
+  // Same x-default as the page head (FK-64 / DQ-14).
+  if (locales.includes(DEFAULT_LOCALE)) languages['x-default'] = absoluteUrl(path, DEFAULT_LOCALE)
   return {
     url: absoluteUrl(path, DEFAULT_LOCALE),
     lastModified: lastModified ? new Date(lastModified) : undefined,

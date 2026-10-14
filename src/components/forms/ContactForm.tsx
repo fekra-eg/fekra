@@ -122,6 +122,18 @@ export function ContactForm({ dict, locale }: { dict: Dictionary; locale: Locale
         {(props) => <Input {...props} name="phone" type="tel" autoComplete="tel" inputMode="tel" />}
       </Field>
 
+      <Field hideLabel label={dict.form.country} error={messageFor('country')}>
+        {(props) => <Input {...props} name="country" autoComplete="country-name" />}
+      </Field>
+
+      <Field hideLabel label={dict.form.roleNeeded} error={messageFor('roleNeeded')}>
+        {(props) => <Input {...props} name="roleNeeded" />}
+      </Field>
+
+      <Field hideLabel label={dict.form.teamSize} error={messageFor('teamSize')}>
+        {(props) => <Input {...props} name="teamSize" inputMode="numeric" />}
+      </Field>
+
       <Field hideLabel label={dict.form.subject} required error={messageFor('subject')}>
         {(props) => <Input {...props} name="subject" />}
       </Field>

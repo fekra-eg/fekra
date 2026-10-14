@@ -37,6 +37,8 @@ export function BlogIndex({
   dict: Dictionary
   topics: string[]
 }) {
+  // FK-40: a topic pill with no posts behind it leads to an empty grid.
+  const liveTopics = topics.filter((topic) => posts.some((post) => matchesTopic(post, topic)))
   const [active, setActive] = useState('all')
   const [query, setQuery] = useState('')
   const articleWord = locale === 'ar'
@@ -67,7 +69,7 @@ export function BlogIndex({
                 readers get describes the blog (FK-30). */}
             <h1 className="sr-only">{dict.blog.subtitle}</h1>
             <p className="text-[clamp(2rem,4vw,3.25rem)] leading-[1.12] font-extrabold tracking-tight text-slate-900 dark:text-white">
-              {dict.blog.heroPre} <span className="text-blog-500">{new Intl.NumberFormat(locale).format(posts.length)}</span>
+              {dict.blog.heroPre} <span className="text-blog-500">{new Intl.NumberFormat(locale, { numberingSystem: 'latn' }).format(posts.length)}</span>
               <br />
               <span className="text-blog-500">{articleWord}</span> {dict.blog.heroPost}
             </p>
@@ -93,10 +95,10 @@ export function BlogIndex({
             </div>
           </div>
 
-          {topics.length ? (
+          {liveTopics.length ? (
             <div className="mt-9">
               <TopicPills
-                topics={topics}
+                topics={liveTopics}
                 allLabel={dict.blog.allCategories}
                 moreLabel={dict.blog.more}
                 active={active}

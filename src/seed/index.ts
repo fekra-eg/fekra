@@ -654,7 +654,7 @@ const run = async () => {
     ['icon-1.svg', 'icon-2.svg', 'icon-3.svg'].map((f) => upsertMedia(payload, f, '')),
   )
   const tiles = await Promise.all(
-    HERO_PHOTOS.map((photo) => upsertMedia(payload, photo.file, photo.alt, 'hero')),
+    HERO_PHOTOS.map((photo) => upsertMedia(payload, photo.file, photo.alt.en, 'hero')),
   )
 
   /*

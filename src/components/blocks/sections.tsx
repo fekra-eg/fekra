@@ -233,7 +233,7 @@ export function HeroSection({
   const mosaic = (block.mosaic ?? []).map((item) => {
     if (item.kind === 'stat') return item
     const source = item.image as MediaDoc | undefined
-    const replacement = defaultHeroPhoto(source?.url, photoIndex++)
+    const replacement = defaultHeroPhoto(source?.url, photoIndex++, locale)
     return replacement ? { ...item, image: replacement } : item
   })
   const Title = isFirst ? 'h1' : 'h2'

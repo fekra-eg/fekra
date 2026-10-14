@@ -24,6 +24,7 @@
     "seed:team": "cross-env NODE_OPTIONS=\"--no-deprecation --import=tsx/esm\" node --env-file-if-exists=.env.local --env-file-if-exists=.env scripts/seed-team.ts",
     "seed:services": "cross-env NODE_OPTIONS=\"--no-deprecation --import=tsx/esm\" node --env-file-if-exists=.env.local --env-file-if-exists=.env scripts/seed-services.ts",
     "seed:role-pages": "cross-env NODE_OPTIONS=\"--no-deprecation --import=tsx/esm\" node --env-file-if-exists=.env.local --env-file-if-exists=.env scripts/seed-role-pages.ts",
+    "fix:content": "cross-env NODE_OPTIONS=\"--no-deprecation --import=tsx/esm\" node --env-file-if-exists=.env.local --env-file-if-exists=.env scripts/fix-master-plan-content.ts",
     "seed:contact": "cross-env NODE_OPTIONS=\"--no-deprecation --import=tsx/esm\" node --env-file-if-exists=.env.local --env-file-if-exists=.env scripts/seed-contact.ts",
     "seed:jobs": "cross-env NODE_OPTIONS=\"--no-deprecation --import=tsx/esm\" node --env-file-if-exists=.env.local --env-file-if-exists=.env scripts/seed-jobs.ts",
     "check:i18n": "cross-env NODE_OPTIONS=--no-deprecation tsx scripts/check-i18n.ts",

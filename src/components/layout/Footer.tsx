@@ -15,6 +15,17 @@ import { resolveLink, type PayloadLink } from '@/lib/resolveLink'
  * icons, and pulling a whole icon pack for four glyphs is not worth it, so the
  * paths are inline. Anything unmapped falls back to a text label.
  */
+const SOCIAL_ON: Record<Locale, string> = { en: 'on', ar: 'على', de: 'auf', fr: 'sur', es: 'en' }
+const SOCIAL_NAME: Record<string, string> = {
+  linkedin: 'LinkedIn',
+  facebook: 'Facebook',
+  youtube: 'YouTube',
+  whatsapp: 'WhatsApp',
+  instagram: 'Instagram',
+  x: 'X',
+  twitter: 'X',
+}
+
 const SOCIAL_PATH: Record<string, string> = {
   linkedin:
     'M6.94 5a2 2 0 1 1-4-.002 2 2 0 0 1 4 .002zM7 8.48H3V21h4V8.48zm6.32 0H9.34V21h3.94v-6.57c0-3.66 4.77-4 4.77 0V21H22v-7.93c0-6.17-7.06-5.94-8.72-2.91l.04-1.68z',
@@ -77,6 +88,9 @@ export function Footer({
   socials?: { platform: string; url: string }[] | null
 }) {
   const labels = batchTwo[locale]
+  // FK-83: "FEKRA on LinkedIn" in the page language, not the raw platform key.
+  const socialLabel = (platform: string) =>
+    `${siteName} ${SOCIAL_ON[locale]} ${SOCIAL_NAME[platform.toLowerCase()] ?? platform}`
   const requiredLegal = [
     { href: localeHref(locale, '/privacy-policy'), label: labels.privacy },
     { href: localeHref(locale, '/terms-and-conditions'), label: labels.terms },
@@ -109,7 +123,7 @@ export function Footer({
                       href={s.url}
                       target="_blank"
                       rel="noopener noreferrer me"
-                      aria-label={s.platform}
+                      aria-label={socialLabel(s.platform)}
                       className="fk-button fk-button--secondary inline-grid size-11 place-items-center rounded-lg bg-card text-navy-800 shadow-card transition-colors dark:text-foreground"
                     >
                       {path ? (
@@ -245,7 +259,7 @@ export function Footer({
                         href={s.url}
                         target="_blank"
                         rel="noopener noreferrer me"
-                        aria-label={s.platform}
+                        aria-label={socialLabel(s.platform)}
                         className="fk-button fk-button--secondary inline-grid size-11 place-items-center transition-colors"
                       >
                         <svg viewBox={viewBoxFor(s.platform)} fill="currentColor" className="size-4" aria-hidden>

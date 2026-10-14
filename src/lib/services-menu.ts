@@ -1,4 +1,5 @@
 import arabicServices from '@/i18n/dictionaries/ar-services.json'
+import serviceLabels from '@/i18n/dictionaries/services-labels.json'
 import type { Locale } from '@/i18n/routing'
 import type { ServicesMenu } from '@/components/layout/Header'
 
@@ -202,18 +203,25 @@ export function buildServicesMenu(services: Service[], locale: Locale): Services
         },
       ]
     }
+    // FK-77/78: the CMS menu roles were never translated for de/fr/es, so
+    // labels come from the dictionary, keyed by the English title.
+    const labels = (serviceLabels as Record<string, Record<string, string>>)[locale]
     const roles = group.roles.length
       ? group.roles.map((technology) => {
+          const english = roleTitle(technology, group.slug === 'hire-qa-engineers', 'en')
           return {
-            title: roleTitle(technology, group.slug === 'hire-qa-engineers', locale),
-            slug: roleSlug(roleTitle(technology, group.slug === 'hire-qa-engineers', 'en'), group.slug),
+            title: labels?.[english] ?? roleTitle(technology, group.slug === 'hire-qa-engineers', locale),
+            slug: roleSlug(english, group.slug),
           }
         })
-      : (service.menuRoles ?? []).map((role, i) => ({
-          title: role.label,
-          // CMS labels are localized; the approved list holds the same roles in English.
-          slug: roleSlug(approvedArabicGroups[group.slug]?.roles[i] ?? role.label, group.slug),
-        }))
+      : (service.menuRoles ?? []).map((role, i) => {
+          // The approved list holds the same roles in English, in CMS order.
+          const english = approvedArabicGroups[group.slug]?.roles[i] ?? role.label
+          return {
+            title: labels?.[english] ?? (locale === 'en' ? english : role.label),
+            slug: roleSlug(english, group.slug),
+          }
+        })
     return [{ title: service.title, slug: service.slug, roles }]
   })
 }

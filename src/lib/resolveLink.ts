@@ -42,7 +42,6 @@ export function resolveLink(link: PayloadLink | null | undefined, locale: Locale
 
   if (link.type === 'route') {
     if (link.route === '/meet-fika-ai') return { ...common, href: localeHref(locale, '/fika'), external: false }
-    if (link.route === '/services') return { ...common, href: localeHref(locale, '/services/hire-dedicated-developers'), activeHref: localeHref(locale, '/services'), external: false }
     if (link.route === '/meeting') return { ...common, href: BOOKING_URL, external: true }
     return link.route ? { ...common, href: localeHref(locale, link.route), external: false } : null
   }

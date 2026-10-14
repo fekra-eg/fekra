@@ -141,6 +141,8 @@ export async function POST(request: Request) {
           subject: `New application: ${job.title}`,
           replyTo: data.email,
           adminPath: `/admin/collections/job-applications/${application.id}`,
+          // The CV itself, so the team can read it straight from the inbox.
+          attachments: [{ filename: `CV - ${data.fullName.replace(/[^\p{L}\p{N} .'-]/gu, '').trim() || 'applicant'}${safeName.slice(safeName.lastIndexOf('.'))}`, content: buffer }],
           rows: [
             ['Role', String(job.title)],
             ['Name', data.fullName],

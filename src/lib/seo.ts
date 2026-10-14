@@ -28,7 +28,14 @@ type SeoInput = {
  * hreflang only lists locales that actually have an approved translation —
  * pointing at a fallback page would be a reciprocity error.
  */
-const DEFAULT_OG_IMAGE = { url: '/images/og-default.jpg', width: 1200, height: 630, alt: 'Fekra Tech — vetted engineering teams from Egypt' }
+const DEFAULT_OG_IMAGE = { url: '/images/og-default.jpg', width: 1200, height: 630 }
+const DEFAULT_OG_ALT: Record<Locale, string> = {
+  en: 'Fekra Tech — vetted engineering teams from Egypt',
+  ar: 'Fekra Tech — فرق هندسية مختارة بعناية من مصر',
+  de: 'Fekra Tech — geprüfte Engineering-Teams aus Ägypten',
+  fr: 'Fekra Tech — des équipes d’ingénieurs vérifiées depuis l’Égypte',
+  es: 'Fekra Tech — equipos de ingeniería verificados desde Egipto',
+}
 
 export function buildMetadata({
   title,
@@ -57,7 +64,7 @@ export function buildMetadata({
   const unbrandedTitle = title.replace(/(?:\s*\|\s*(?:FEKRA|Fekra\s?Tech))+$/i, '').trim()
   const brandedTitle = brand ? `${unbrandedTitle} | Fekra Tech` : unbrandedTitle
   // Every page gets a share card (FK-33); JPG because LinkedIn's WebP support is unreliable.
-  const card = image?.url ? image : DEFAULT_OG_IMAGE
+  const card = image?.url ? image : { ...DEFAULT_OG_IMAGE, alt: DEFAULT_OG_ALT[locale] ?? DEFAULT_OG_ALT.en }
   const ogImage = [{ url: new URL(card.url, base).toString(), width: card.width ?? 1200, height: card.height ?? 630, alt: card.alt ?? title }]
 
   return {

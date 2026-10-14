@@ -30,6 +30,8 @@ export function formatDate(value: string, locale: Locale): string {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
+    // FK-73: Western digits on every locale, Arabic included.
+    numberingSystem: 'latn',
   }).format(date)
 }
 

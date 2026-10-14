@@ -157,7 +157,7 @@ export function Header({
 
           <ThemeToggle label={dict.theme.toggle} />
 
-          <div className="hidden xl:flex xl:items-center xl:gap-2 xl:ps-1">
+          <div data-header-ctas className="hidden xl:flex xl:items-center xl:gap-2 xl:ps-1">
             {ctas.map((cta) => (
               <LinkButton
                 key={cta.link!.href}

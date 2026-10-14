@@ -61,7 +61,7 @@ ${actions ? `<tr><td style="padding:20px 28px 20px">${actions}</td></tr>` : ''}
  */
 export async function notify(
   payload: Payload,
-  { to, subject, rows, replyTo, adminPath }: {
+  { to, subject, rows, replyTo, adminPath, attachments }: {
     to: string[]
     subject: string
     rows: [string, string | undefined][]
@@ -69,6 +69,7 @@ export async function notify(
     replyTo?: string
     /** e.g. `/admin/collections/job-applications/12` — becomes an "Open in admin" button. */
     adminPath?: string
+    attachments?: { filename: string; content: Buffer }[]
   },
 ): Promise<void> {
   if (!to.length) {
@@ -82,6 +83,7 @@ export async function notify(
       subject,
       replyTo,
       html: render({ heading: subject, rows, replyTo, adminPath }),
+      attachments,
     })
   } catch (error) {
     payload.logger.error({ err: error }, `Failed to send notification "${subject}"`)

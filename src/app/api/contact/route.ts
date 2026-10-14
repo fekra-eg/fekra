@@ -58,6 +58,14 @@ export async function POST(request: Request) {
 
   const payload = await payloadClient()
 
+  const brief = (
+    [
+      ['Country', data.country],
+      ['Role / stack needed', data.roleNeeded],
+      ['Team size', data.teamSize],
+    ] as [string, string | undefined][]
+  ).filter(([, value]) => value)
+
   try {
     const submission = await payload.create({
       collection: 'contact-submissions',
@@ -73,7 +81,8 @@ export async function POST(request: Request) {
         phone: data.phone || undefined,
         company: data.company,
         subject: data.subject,
-        message: data.message,
+        // FK-21: the lead brief rides along in the message, so the table needs no migration.
+        message: [data.message, ...brief.map(([label, value]) => `${label}: ${value}`)].join('\n'),
         locale: data.locale,
         sourcePath: data.sourcePath,
         utmSource: data.utmSource,
@@ -108,6 +117,7 @@ export async function POST(request: Request) {
             ['Email', data.email],
             ['Phone', data.phone],
             ['Company', data.company],
+            ...brief,
             ['Message', data.message],
             ['Page', data.sourcePath],
             ['Campaign', data.utmCampaign],
