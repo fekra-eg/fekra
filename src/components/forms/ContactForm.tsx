@@ -150,7 +150,7 @@ export function ContactForm({ dict, locale }: { dict: Dictionary; locale: Locale
             required
             aria-invalid={Boolean(errors.consent)}
             aria-describedby={errors.consent ? 'contact-consent-error' : undefined}
-            className="mt-0.5 size-5"
+            className="mt-0.5 size-5 shrink-0"
           />
           <span>{dict.form.consent}</span>
         </label>

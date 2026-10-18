@@ -243,7 +243,7 @@ export function ApplicationForm({
           required
           aria-invalid={Boolean(errors.consent)}
           aria-describedby={errors.consent ? `${formId}-consent-error` : undefined}
-          className="mt-0.5 size-5 accent-primary"
+          className="mt-0.5 size-5 shrink-0 accent-primary"
         />
         <span>
           {dict.form.consent}

@@ -152,7 +152,8 @@ const run = async () => {
   if (!version) throw new Error('Chrome did not open a debugging port')
 
   const results = []
-  for (const vp of VIEWPORTS) {
+  // ONLY=mobile narrows the sweep to viewports whose name contains it.
+  for (const vp of VIEWPORTS.filter((v) => !process.env.ONLY || v.name.includes(process.env.ONLY))) {
     for (const path of PAGES) {
       const target = await (await fetch(`http://127.0.0.1:${port}/json/new?about:blank`, { method: 'PUT' })).json()
       const cdp = await connect(target.webSocketDebuggerUrl)

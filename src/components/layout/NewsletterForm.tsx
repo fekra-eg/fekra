@@ -60,12 +60,12 @@ export function NewsletterForm({ dict, locale }: { dict: Dictionary; locale: Loc
            past the viewport on narrow phones. */
         className="h-13 min-w-0 flex-1 rounded-pill border border-input bg-card px-4 text-sm"
       />
-      <Button type="submit" disabled={state === 'sending' || !valid || !botReady} className="h-13 px-8">
+      <Button type="submit" disabled={state === 'sending' || !valid || !botReady} className="h-13 w-full px-8 sm:w-auto">
         {state === 'sending' ? dict.form.submitting : dict.form.subscribe}
         <ArrowRight className="icon-flip size-4" aria-hidden />
       </Button>
       {errors.email ? <p id="newsletter-email-error" role="alert" className="w-full text-sm text-danger-600">{dict.form.errors.email}</p> : null}
-      <div className="w-full"><BotVerification key={verification} locale={locale} action="newsletter" onReady={setBotReady} /></div>
+      <div className="mt-2 w-full"><BotVerification key={verification} locale={locale} action="newsletter" onReady={setBotReady} /></div>
       {state === 'error' ? (
         <p role="alert" className="w-full text-sm text-danger-600">
           {dict.form.error}

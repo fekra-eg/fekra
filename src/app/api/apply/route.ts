@@ -66,8 +66,46 @@ export async function POST(request: Request) {
   }
 
   const payload = await payloadClient()
+  const buffer = Buffer.from(await file.arrayBuffer())
+  const extension = file.name.slice(file.name.lastIndexOf('.')).toLowerCase()
+
+  /*
+   * The application is saved (or already was), so the candidate is done
+   * waiting. Notifying the team runs after the response — and outside the try,
+   * where a failed recipient lookup used to fall into the cleanup branch below
+   * and delete the CV of an application that had been stored.
+   */
+  const notifyTeam = (jobTitle: string, adminPath: string, resubmitted = false) => after(async () => {
+    try {
+      const settings = await payload.findGlobal({
+        slug: 'site-settings',
+        depth: 0,
+        select: { careersEmails: true },
+      })
+      await notify(payload, {
+        to: (settings.careersEmails as string[] | undefined) ?? [],
+        subject: `${resubmitted ? 'Re-submitted' : 'New'} application: ${jobTitle}`,
+        replyTo: data.email,
+        adminPath,
+        // The CV itself, so the team can read it straight from the inbox.
+        attachments: [{ filename: `CV - ${data.fullName.replace(/[^\p{L}\p{N} .'-]/gu, '').trim() || 'applicant'}${extension}`, content: buffer }],
+        rows: [
+          ['Role', jobTitle],
+          ['Name', data.fullName],
+          ['Email', data.email],
+          ['Phone', data.phone],
+          ['LinkedIn', data.linkedin],
+          ['Language', data.locale],
+          ['Note', data.coverNote],
+        ],
+      })
+    } catch (error) {
+      payload.logger.error({ err: error }, 'application notification failed')
+    }
+  })
 
   let uploadedId: string | number | null = null
+  let jobTitle = ''
   try {
     // `select` skips the joins across every localized/rich-text column — only
     // three fields decide whether the role accepts applications.
@@ -80,15 +118,15 @@ export async function POST(request: Request) {
     if (!job || job.roleStatus !== 'open' || job._status !== 'published') {
       return NextResponse.json({ error: 'closed', fields: { cv: 'required' } }, { status: 409 })
     }
+    jobTitle = String(job.title)
 
     // 10.7 — the unique index rejects a duplicate; no read-then-write race.
     const dedupeKey = createHash('sha256')
       .update(`${data.email.toLowerCase()}:${jobId}`)
       .digest('hex')
 
-    const buffer = Buffer.from(await file.arrayBuffer())
     // Never trust the client filename on disk — Payload gets a safe, derived name.
-    const safeName = `${dedupeKey.slice(0, 12)}${file.name.slice(file.name.lastIndexOf('.')).toLowerCase()}`
+    const safeName = `${dedupeKey.slice(0, 12)}${extension}`
 
     const uploaded = await payload.create({
       collection: 'applicant-files',
@@ -123,40 +161,7 @@ export async function POST(request: Request) {
       },
     })
 
-    /*
-     * Same as the contact route: the application is saved, so the candidate is
-     * done waiting. Notifying the team runs after the response — and outside
-     * the try, where a failed recipient lookup used to fall into the cleanup
-     * branch below and delete the CV of an application that had been stored.
-     */
-    after(async () => {
-      try {
-        const settings = await payload.findGlobal({
-          slug: 'site-settings',
-          depth: 0,
-          select: { careersEmails: true },
-        })
-        await notify(payload, {
-          to: (settings.careersEmails as string[] | undefined) ?? [],
-          subject: `New application: ${job.title}`,
-          replyTo: data.email,
-          adminPath: `/admin/collections/job-applications/${application.id}`,
-          // The CV itself, so the team can read it straight from the inbox.
-          attachments: [{ filename: `CV - ${data.fullName.replace(/[^\p{L}\p{N} .'-]/gu, '').trim() || 'applicant'}${safeName.slice(safeName.lastIndexOf('.'))}`, content: buffer }],
-          rows: [
-            ['Role', String(job.title)],
-            ['Name', data.fullName],
-            ['Email', data.email],
-            ['Phone', data.phone],
-            ['LinkedIn', data.linkedin],
-            ['Note', data.coverNote],
-          ],
-        })
-      } catch (error) {
-        payload.logger.error({ err: error }, 'application notification failed')
-      }
-    })
-
+    notifyTeam(jobTitle, `/admin/collections/job-applications/${application.id}`)
     return NextResponse.json({ ok: true })
   } catch (error) {
     const message = error instanceof Error ? error.message : ''
@@ -173,8 +178,11 @@ export async function POST(request: Request) {
           )
         })
     }
-    // A duplicate is a success from the candidate's point of view (10.7).
+    // A duplicate is a success from the candidate's point of view (10.7) —
+    // and still reaches the team, who otherwise never see the second attempt
+    // (a newer CV, or the same person applying again from another language).
     if (message.includes('dedupeKey') || message.includes('duplicate key')) {
+      notifyTeam(jobTitle, '/admin/collections/job-applications', true)
       return NextResponse.json({ ok: true, duplicate: true })
     }
     payload.logger.error({ err: error }, 'application submission failed')

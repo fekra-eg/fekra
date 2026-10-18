@@ -82,7 +82,7 @@ export function LanguageSwitcher({
         aria-busy={pending}
         aria-expanded={open}
         aria-haspopup="menu"
-        className="inline-flex h-11 items-center gap-2 rounded-pill px-3 text-sm font-medium text-foreground transition-colors hover:bg-background-subtle"
+        className="inline-flex h-11 items-center gap-1.5 rounded-pill px-2 text-sm sm:gap-2 sm:px-3 font-medium text-foreground transition-colors hover:bg-background-subtle"
       >
         {pending ? <LoaderCircle className="size-4 animate-spin motion-reduce:animate-none" aria-hidden /> : <Globe className="size-4" aria-hidden />}
         <span className="uppercase">{pending ? targetLocale : current}</span>

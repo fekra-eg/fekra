@@ -7,19 +7,30 @@ import { z } from 'zod'
  */
 
 /** 11.2 — accepts international formats instead of forcing a local shape. */
+/** Arabic-Indic (٠-٩) and Persian (۰-۹) digits, as typed on an Arabic keyboard, to ASCII. */
+const asciiDigits = (value: string) =>
+  value.replace(/[\u0660-\u0669\u06F0-\u06F9]/g, (digit) => String(digit.charCodeAt(0) & 0xf))
+
 const phone = z
   .string()
   .trim()
+  .overwrite(asciiDigits)
   .regex(/^\+?[\d\s().-]{7,20}$/, 'phone')
   .refine((value) => value.replace(/\D/g, '').length >= 7, 'phone')
 
+/**
+ * Tracking metadata the visitor never sees. Clipped, never rejected: a long
+ * referrer (percent-encoded Arabic slugs triple in length) used to fail
+ * validation on a field with no visible error, so the form silently stalled.
+ */
+const clip = (max: number) => z.string().transform((value) => value.slice(0, max)).optional()
 const attribution = z.object({
-  locale: z.string().max(5).optional(),
-  sourcePath: z.string().max(512).optional(),
-  utmSource: z.string().max(128).optional(),
-  utmMedium: z.string().max(128).optional(),
-  utmCampaign: z.string().max(128).optional(),
-  referrer: z.string().max(512).optional(),
+  locale: clip(5),
+  sourcePath: clip(512),
+  utmSource: clip(128),
+  utmMedium: clip(128),
+  utmCampaign: clip(128),
+  referrer: clip(512),
 })
 
 /**

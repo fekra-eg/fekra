@@ -77,11 +77,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Paths that a coded route owns. A CMS page with the same slug (`contact`)
   // only supplies that route's content — emitting it again from the pages
   // collection put the URL in the sitemap twice (1.11 / 18.5).
+  // The approved sitelinks — Services, About, Blog, Contact, Careers — sit
+  // directly under the homepage; everything else ranks below them.
   const LISTINGS: [path: string, priority: number][] = [
-    ['/blog', 0.8],
     ['/services', 0.9],
-    ['/careers', 0.8],
-    ['/contact', 0.8],
+    ['/blog', 0.9],
+    ['/contact', 0.9],
+    ['/careers', 0.9],
   ]
   const listings: MetadataRoute.Sitemap = LISTINGS.map(([path, priority]) =>
     entry(path, [...PUBLIC_LOCALES], undefined, priority),
@@ -99,12 +101,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     entry('/', [...PUBLIC_LOCALES], undefined, 1),
     ...listings,
+    ...fromCollection(pages.filter((p) => p.slug === 'about'), 'pages', 0.9),
     ...fromCollection(
-      pages.filter((p) => !coded.has(p.slug)),
+      pages.filter((p) => !coded.has(p.slug) && p.slug !== 'about'),
       'pages',
       0.7,
     ),
-    ...fromCollection(services, 'services', 0.9),
+    ...fromCollection(services, 'services', 0.8),
     ...fromCollection(posts, 'posts', 0.6),
     ...fromCollection(jobs, 'jobs', 0.6),
   ]

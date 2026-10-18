@@ -3,6 +3,12 @@
 Covers checklist section 25.9 (technical handover documentation) and the environment,
 integration and ownership items it depends on.
 
+**Live site:** https://www.fekra-egy.com · **Repository:** github.com/fekra-eg/fekra ·
+**Hosting:** Vercel project `fekra` · **Updated:** 14 Oct 2026 (master `280f493`)
+
+Companion documents: `docs/SEVERITY-REGISTER.md` (open defects and launch gates, 24.15) and
+`docs/REGIONAL-ACCESS.md` (regional access test and known limitations, 23.10 / 23.11 / 25.5).
+
 ---
 
 ## 1. Architecture
@@ -26,15 +32,17 @@ One Next.js application contains both the public site and the CMS.
                      └──────────────┘   └────────────────────┘
 ```
 
-Rendering: public pages are statically generated and revalidated on a timer, plus an
-immediate purge when an editor publishes (`src/payload/hooks/revalidate.ts`). Nothing on a
+Rendering: public pages are designed to be statically generated and revalidated on a timer,
+plus an immediate purge when an editor publishes (`src/payload/hooks/revalidate.ts`).
+**Known regression (14 Oct 2026):** production currently serves every HTML page as
+`private, no-store`, so pages render per request. See severity register S-02. Nothing on a
 public page requires client-side data fetching to be readable (19.2).
 
 ## 2. Environments (3.4)
 
 | Environment | Branch | Indexable | Database |
 | --- | --- | --- | --- |
-| Production | `main` | yes | production Postgres |
+| Production | production branch set in Vercel → Settings → Git | yes | production Postgres |
 | Staging / preview | any PR | **no** — `X-Robots-Tag: noindex` at the edge and `robots.txt` disallow-all | staging Postgres |
 | Local | — | no | `docker compose up -d db` |
 
@@ -67,7 +75,7 @@ pnpm build          # fails loudly if the database is unreachable
 pnpm start
 ```
 
-On Vercel: push to `main` → build → promote. Every PR gets a preview deployment, which is
+On Vercel: push to the production branch (Vercel → Settings → Git) → build → promote. Every PR gets a preview deployment, which is
 the staging review environment. Each release is traceable to a commit SHA in the Vercel
 dashboard.
 
@@ -87,10 +95,11 @@ pnpm payload migrate            # run as a release step
 
 | Integration | Where it is configured | Notes |
 | --- | --- | --- |
-| Calendly | Site Settings → Integrations → `calendlyUrl` | Loads only after marketing consent; a direct link is always shown as the fallback. |
-| GA4 / GTM | Site Settings → Integrations | GTM takes precedence — if a container ID is set, direct GA4 is not injected, so page views cannot double. |
-| LinkedIn Insight | Site Settings → Integrations | Marketing consent only. |
-| Search Console | Site Settings → SEO → verification token | Submit `https://<domain>/sitemap.xml` after go-live. |
+| Calendly | Site Settings → Integrations → `calendlyUrl` | `/meeting` and `/book-a-call` redirect to `calendly.com/fekra-egy-info/30min`. Completed bookings are therefore not visible to site analytics. |
+| GA4 | Site Settings → Integrations | Live: `G-C39M5MW6D8`, loaded directly (no GTM), only after analytics consent. If a GTM container is ever added, GA4 is no longer injected directly, so page views cannot double. |
+| LinkedIn Insight | Site Settings → Integrations | Supported, marketing consent only; **Partner ID not set yet**. |
+| Search Console | Verification file in `public/` | Sitemap: `https://www.fekra-egy.com/sitemap.xml`. |
+| Cloudflare Turnstile | `NEXT_PUBLIC_TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY`, `TURNSTILE_HOSTNAMES` env | Bot check on every form; falls back to a maths question if Turnstile cannot load. |
 | Resend | `RESEND_API_KEY` env | Verify the sending domain (SPF/DKIM) before launch or notifications land in spam. |
 | Supabase Storage | env | One bucket, `fekra_assets`: media under `media/`, CVs under `applications/`. Keep it private — files stream through `/cms-api` and CV links are signed for 5 minutes. |
 
@@ -127,8 +136,12 @@ carry no information — those render with an empty alt attribute.
 | Job application | `POST /api/apply` | `job-applications` + `applicant-files` | Site Settings → `careersEmails` |
 | Newsletter | `POST /api/newsletter` | `contact-submissions` | — |
 
-Protection: rate limit per IP, hidden honeypot field, and a minimum fill time. All three are
-invisible to real users — there is no CAPTCHA friction on a sales form.
+Protection: rate limit per IP, hidden honeypot field, a minimum fill time, and Cloudflare
+Turnstile (falling back to a short maths question if Turnstile cannot load).
+
+Since 14 Oct 2026 the careers notification email **attaches the applicant's CV**. A copy of
+every CV therefore also lives in the `careersEmails` inboxes. Include those inboxes in the
+retention decision below.
 
 CVs are stored in a collection the public cannot read, under the `applications/` prefix, and
 served through signed URLs that expire in five minutes. Only logged-in CMS users can open
@@ -146,26 +159,35 @@ with FEKRA and add a scheduled job if one is required.
   and take a manual snapshot immediately before any migration or cutover.
 - Media/CV objects are versioned by the storage provider; enable object versioning on the bucket.
 
-## 9. Ownership checklist (25.8)
+## 9. Ownership and access transfer (25.8)
 
-Transfer to FEKRA before sign-off:
+No credentials are written in this document. Transfer each service by **inviting a
+FEKRA-owned account as Owner/Admin**, then removing developer accounts once FEKRA confirms
+access. Do not share passwords.
 
-- [ ] Git repository — FEKRA account has **Owner**
-- [ ] Vercel project — FEKRA account has **Owner**
-- [ ] Domain registrar and DNS
-- [ ] Database provider
-- [ ] `fekra_assets` bucket created, S3 access keys issued, `pnpm check:storage` passing
-- [ ] Resend (or the final email provider)
-- [ ] Google Analytics 4 property and GTM container
-- [ ] Google Search Console property
-- [ ] Calendly account
-- [ ] CMS admin account, with the seeded password changed
+| Service | What it holds | Current location (14 Oct 2026) | Transfer action | FEKRA confirms |
+| --- | --- | --- | --- | --- |
+| GitHub | Source code | Org `fekra-eg`, repo `fekra` | FEKRA account = org **Owner**; enable branch protection | ☐ |
+| Vercel | Hosting, deploys, env vars, logs | Project `fekra` | Transfer project to a FEKRA team, or add FEKRA as **Owner** | ☐ |
+| Domain registrar | `fekra-egy.com` (expires 08 Jul 2027) | PDR Ltd via Hostinger | Confirm the account is FEKRA's; turn on auto-renew | ☐ |
+| DNS | A/CNAME for www, MX for email | Hostinger (`main-hosting.eu`) | FEKRA holds the login | ☐ |
+| Supabase | Postgres database + `fekra_assets` storage (media, CVs) | Region `eu-north-1` | Add FEKRA as **Owner**; confirm backups | ☐ |
+| Resend | Notification email | `RESEND_API_KEY` in Vercel | Add FEKRA as admin; verify SPF/DKIM | ☐ |
+| Cloudflare Turnstile | Form bot protection | Keys in Vercel env | Move widget to FEKRA's Cloudflare account, or add FEKRA | ☐ |
+| Google Analytics 4 | Property `G-C39M5MW6D8` | — | FEKRA account = property **Administrator** | ☐ |
+| Google Search Console | `fekra-egy.com` property | Verified by file | FEKRA account = **Owner** | ☐ |
+| Calendly | Booking page `fekra-egy-info/30min` | FEKRA account | Confirm display name (was "Ferka Tech") | ☐ |
+| LinkedIn Campaign Manager | Insight Tag (not active) | — | FEKRA supplies the Partner ID | ☐ |
+| CMS (`/admin`) | Content, submissions, CVs | Payload users | FEKRA admin user created; seeded password changed; developer users removed after handover | ☐ |
+| Google Workspace | Company email (MX) | FEKRA | Not part of this project | — |
+
+Signed off for FEKRA: ______________________  Date: __________
 
 ## 10. Routine maintenance
 
 | Task | Cadence |
 | --- | --- |
-| `pnpm outdated` and patch security advisories | monthly |
+| `pnpm audit --prod` / `pnpm outdated` and patch security advisories | monthly (open: S-01) |
 | `pnpm check:links https://<domain>` | after any content migration or nav change |
 | Search Console coverage and Core Web Vitals review | monthly |
 | Review `contact-submissions` / `job-applications` retention | quarterly |

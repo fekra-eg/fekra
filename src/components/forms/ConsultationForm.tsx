@@ -133,7 +133,7 @@ export function ConsultationForm({
           </fieldset>
 
           <label className="mt-4 flex min-h-11 items-start gap-3 text-sm text-muted-foreground">
-            <input type="checkbox" name="consent" aria-invalid={Boolean(errors.consent)} aria-describedby={errors.consent ? 'consult-consent-error' : undefined} required className="mt-0.5 size-5" />
+            <input type="checkbox" name="consent" aria-invalid={Boolean(errors.consent)} aria-describedby={errors.consent ? 'consult-consent-error' : undefined} required className="mt-0.5 size-5 shrink-0" />
             <span>{dict.form.consent}</span>
           </label>
           {errors.consent ? <p id="consult-consent-error" role="alert" className="text-sm text-danger-600">{messageFor('consent')}</p> : null}

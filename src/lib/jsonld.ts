@@ -155,6 +155,10 @@ export function jobPostingSchema(job: {
     employmentType: job.employmentType ?? 'FULL_TIME',
     hiringOrganization: { '@type': 'Organization', name: job.organizationName, sameAs: siteUrl() },
     jobLocationType: job.workModel === 'remote' ? 'TELECOMMUTE' : undefined,
+    // Google rejects a TELECOMMUTE posting without the country it hires from.
+    applicantLocationRequirements: job.workModel === 'remote' && job.countryCode
+      ? { '@type': 'Country', name: job.countryCode }
+      : undefined,
     jobLocation: {
       '@type': 'Place',
       address: {

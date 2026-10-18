@@ -97,11 +97,11 @@ export default async function ArticlePage({ params }: { params: Promise<{ locale
 
       <HeroBand>
         <div className="container-wide py-10 sm:py-14">
-          <nav aria-label={dict.common.breadcrumb} className="mb-8 text-sm text-slate-500 dark:text-slate-400">
+          <nav aria-label={dict.common.breadcrumb} className="mb-6 text-sm text-slate-500 dark:text-slate-400">
             <ol className="flex flex-wrap items-center gap-2">
               {crumbs.slice(0, -1).map((crumb) => (
                 <li key={crumb.path} className="flex items-center gap-2">
-                  <Link href={localeHref(locale, crumb.path)} className="hover:text-blog-600">
+                  <Link href={localeHref(locale, crumb.path)} className="inline-flex min-h-11 items-center hover:text-blog-600">
                     {crumb.name}
                   </Link>
                   <span aria-hidden>/</span>

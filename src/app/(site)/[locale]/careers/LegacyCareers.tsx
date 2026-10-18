@@ -10,6 +10,7 @@ import { localeHref, type Locale } from '@/i18n/routing'
 import careersCopy from '@/i18n/careers.json'
 import { englishJobNotice, jobCopyLanguage } from '@/i18n/job-copy'
 import type { JobDoc } from '../page-types'
+import { PaginatedJobs } from './PaginatedJobs'
 import styles from './careers.module.css'
 
 const people = [
@@ -80,7 +81,7 @@ export function LegacyCareers({ jobs, dict, locale }: { jobs: JobDoc[]; dict: Di
         <p className={styles.subtitle}>{copy.openingsBody}</p>
         {locale !== 'en' && openings.some((job) => jobCopyLanguage(job, locale) === 'en') ? <p className={styles.subtitle}>{englishJobNotice[locale]}</p> : null}
         <div className={styles.jobs}>
-          {openings.length ? openings.map((job, index) => {
+          {openings.length ? <PaginatedJobs labels={{ nav: copy.pagination, previous: copy.previousPage, next: copy.nextPage, page: copy.page }} items={openings.map((job, index) => {
             const meta = sourceDetails[job.slug]
             return <details key={job.id} name="career-openings" className={styles.job}>
               <summary>
@@ -101,7 +102,7 @@ export function LegacyCareers({ jobs, dict, locale }: { jobs: JobDoc[]; dict: Di
                 <CareerApplication job={job} locale={locale} dict={dict} />
               </div>
             </details>
-          }) : <p>{dict.careers.empty}</p>}
+          })} /> : <p>{dict.careers.empty}</p>}
         </div>
       </section>
 

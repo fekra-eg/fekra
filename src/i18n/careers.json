@@ -45,7 +45,11 @@
       "Riyadh",
       "Dubai",
       "London"
-    ]
+    ],
+    "pagination": "Job openings pages",
+    "previousPage": "Previous page",
+    "nextPage": "Next page",
+    "page": "Page"
   },
   "ar": {
     "teamTitle": "تعرّف على فريقك القادم",
@@ -93,7 +97,11 @@
       "الرياض",
       "دبي",
       "لندن"
-    ]
+    ],
+    "pagination": "صفحات الوظائف المتاحة",
+    "previousPage": "الصفحة السابقة",
+    "nextPage": "الصفحة التالية",
+    "page": "الصفحة"
   },
   "de": {
     "teamTitle": "Lerne dein zukünftiges Team kennen",
@@ -141,7 +149,11 @@
       "Riad",
       "Dubai",
       "London"
-    ]
+    ],
+    "pagination": "Seiten der offenen Stellen",
+    "previousPage": "Vorherige Seite",
+    "nextPage": "Nächste Seite",
+    "page": "Seite"
   },
   "fr": {
     "teamTitle": "Rencontrez votre future équipe",
@@ -189,7 +201,11 @@
       "Riyad",
       "Dubaï",
       "Londres"
-    ]
+    ],
+    "pagination": "Pages des offres d’emploi",
+    "previousPage": "Page précédente",
+    "nextPage": "Page suivante",
+    "page": "Page"
   },
   "es": {
     "teamTitle": "Conoce a tu futuro equipo",
@@ -237,6 +253,10 @@
       "Riad",
       "Dubái",
       "Londres"
-    ]
+    ],
+    "pagination": "Páginas de vacantes",
+    "previousPage": "Página anterior",
+    "nextPage": "Página siguiente",
+    "page": "Página"
   }
 }

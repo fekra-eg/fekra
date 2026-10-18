@@ -43,6 +43,13 @@ const COMING_SOON = isComingSoon()
  * Media, Education). 410 Gone drops them from the index fastest.
  */
 const RETIRED = /^\/(agritech|ecommerce|education|finance|food|games|healthcare|insurance|media|real-estate|sports|logistics|ev-charging(-2)?|ind(\/[^/]+)?|industriess(\/[^/]+)?)\/?$/
+/**
+ * WordPress leftovers Google still crawls: Yoast sitemaps (still listed in old
+ * Search Console submissions), feeds, tag/author archives and ?p= post IDs that
+ * otherwise render the homepage as a 200 duplicate. None has a successor.
+ */
+const WORDPRESS = /^\/((.*-)?sitemap(_index|\d+)?\.xml|(.+\/)?feed|author\/.+|tag\/.+|wp-login\.php|xmlrpc\.php|wp-(admin|content|includes|json)(\/.*)?)\/?$/
+const WORDPRESS_QUERY = /^\?(.+&)?(p|page_id|attachment_id|cat|s)=/
 const SOON_PATH = '/coming-soon'
 
 /**
@@ -83,7 +90,7 @@ export default async function proxy(request: NextRequest) {
     return withGuards(NextResponse.redirect(new URL((pathname.slice(segment.length + 1) || '/') + search, request.url), 307), request)
   }
 
-  if (RETIRED.test(pathname)) return withGuards(await notFoundResponse(DEFAULT_LOCALE, 410), request)
+  if (RETIRED.test(pathname) || (WORDPRESS.test(pathname) && pathname !== '/sitemap.xml') || (pathname === '/' && WORDPRESS_QUERY.test(search))) return withGuards(await notFoundResponse(DEFAULT_LOCALE, 410), request)
 
   const route = cmsRoute(pathname)
   // Draft previews keep their existing authenticated render path. Public
@@ -150,7 +157,11 @@ function withGuards(response: NextResponse, request: NextRequest) {
 
 export const config = {
   // Everything except Payload admin/API, Next internals, and files with an extension.
-  matcher: ['/((?!api|cms-api|admin|_next/static|_next/image|favicon.ico|.*\\..*).*)'],
+  matcher: [
+    '/((?!api|cms-api|admin|_next/static|_next/image|favicon.ico|.*\\..*).*)',
+    // The rule above skips anything with a dot; these WordPress files need the 410.
+    '/((?:.*-)?sitemap(?:_index|\\d+)\\.xml|.+-sitemap\\.xml|wp-login\\.php|xmlrpc\\.php|wp-content/.*|wp-includes/.*)',
+  ],
 }
 
 export const SUPPORTED = LOCALES

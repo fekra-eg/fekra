@@ -89,7 +89,7 @@ export default async function ServicePage({ params }: { params: Promise<{ locale
       />
 
       {service.relatedServices?.length ? (
-        <section className="container-site pb-[var(--section-y)]">
+        <section className="container-site py-[var(--section-y)]">
           <h2 className="text-2xl">{dict.common.learnMore}</h2>
           <ul className="mt-6 flex flex-wrap gap-3">
             {service.relatedServices
@@ -98,7 +98,7 @@ export default async function ServicePage({ params }: { params: Promise<{ locale
                 <li key={item.id}>
                   <Link
                     href={localeHref(locale, `/services/${item.slug}`)}
-                    className="fk-button fk-button--secondary rounded-pill border border-border px-4 py-2 text-sm"
+                    className="fk-button fk-button--secondary inline-flex min-h-11 items-center rounded-pill border border-border px-4 py-2 text-sm"
                   >
                     {item.title}
                   </Link>

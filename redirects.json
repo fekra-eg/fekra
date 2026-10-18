@@ -26,7 +26,7 @@
   { "from": "/blog/page/:n", "to": "/blog?page=:n", "permanent": true },
   { "from": "/category/:slug", "to": "/blog?category=:slug", "permanent": true },
   { "from": "/software-outsourcing-in-2026-when-it-works-when-it-fails-and-how-to-do-it-right", "to": "/blog/software-outsourcing-in-2026", "permanent": true },
-  { "from": "/how-we-reduce-hiring-risk-to-nearly-zero-for-global-companies", "to": "/blog/how-we-vet-the-top-3-percent", "permanent": true },
+  { "from": "/how-we-reduce-hiring-risk-to-nearly-zero-for-global-companies", "to": "/blog", "permanent": true },
   { "from": "/how-to-build-a-high-performance-remote-engineering-team-step-by-step-guide", "to": "/blog", "permanent": true },
   { "from": "/cut-tech-hiring-costs-by-60-without-losing-engineering-quality", "to": "/blog", "permanent": true },
   { "from": "/driving-digital-success-the-synergy-of-seo-outsourcing-and-it-consulting-services", "to": "/blog", "permanent": true },

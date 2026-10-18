@@ -79,7 +79,7 @@ export default async function JobPage({ params }: { params: Promise<{ locale: st
           <nav aria-label={dict.common.breadcrumb}>
             <Link
               href={localeHref(locale, '/careers')}
-              className="inline-flex items-center gap-2 text-sm text-ink-500 transition-colors hover:text-primary dark:text-muted-foreground"
+              className="inline-flex min-h-11 items-center gap-2 text-sm text-ink-500 transition-colors hover:text-primary dark:text-muted-foreground"
             >
               <ArrowLeft className="icon-flip size-4" aria-hidden />
               {dict.careers.backToRoles}

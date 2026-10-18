@@ -66,7 +66,7 @@ export function HeaderShell({ children }: { children: ReactNode }) {
           // The comp floats the pill on a narrow margin rather than centring a
           // narrower bar: roughly 40px of air each side, still capped so it
           // stops growing on very wide monitors.
-          'pointer-events-auto mx-auto flex h-16 max-w-[calc(100vw-16px)] items-center justify-between gap-3 rounded-[40px] sm:max-w-[min(1400px,92vw)] sm:gap-6',
+          'pointer-events-auto mx-auto flex h-16 max-w-[calc(100vw-16px)] items-center justify-between gap-2 rounded-[40px] sm:max-w-[min(1400px,92vw)] sm:gap-6',
           'border border-transparent bg-white/50 px-3 shadow-[0_1px_4px_0_rgba(25,33,61,0.06)] backdrop-blur-md sm:px-6 dark:bg-card/70',
           'transition-[max-width,border-radius,background-color,box-shadow,height,padding] duration-[600ms] ease-[var(--ease-morph)] motion-reduce:transition-none',
           // Scrolled: edge to edge, squared off, sitting on a hairline.

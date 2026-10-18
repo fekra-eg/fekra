@@ -106,7 +106,7 @@ export function Footer({
      * in the design, so any gap here breaks that join.
      */
     <footer className="border-t border-border bg-brand-50 dark:bg-background-subtle">
-      <div className="container-site grid gap-12 py-16 lg:grid-cols-[minmax(0,1fr)_auto_auto] lg:gap-20">
+      <div className="container-site grid gap-10 py-12 sm:gap-12 sm:py-16 lg:grid-cols-[minmax(0,1fr)_auto_auto] lg:gap-20">
         <div className="max-w-[340px]">
           <Link href={localeHref(locale, '/')} className="inline-flex min-h-11 items-center" aria-label={siteName}>
             <BrandLogo />
@@ -162,7 +162,7 @@ export function Footer({
             <h2 className="font-display text-sm font-bold tracking-[0.35px] text-navy-800 dark:text-foreground">
               {dict.nav.contact}
             </h2>
-            <ul className="mt-4 flex flex-col gap-3 text-sm text-muted-foreground">
+            <ul className="mt-2 flex flex-col text-sm text-muted-foreground">
               {contact.phone ? (
                 <li>
                   <a href={`tel:${contact.phone.replace(/\s/g, '')}`} className="inline-flex min-h-11 items-center transition-colors hover:text-foreground">
@@ -202,7 +202,7 @@ export function Footer({
       </div>
 
       {data.newsletter?.enabled ? (
-        <div className="container-site grid items-center gap-10 pb-16 lg:grid-cols-2">
+        <div className="container-site grid items-center gap-6 pb-12 sm:gap-10 sm:pb-16 lg:grid-cols-2">
           <div className="flex items-start gap-6">
             <Image
               aria-hidden
@@ -238,7 +238,7 @@ export function Footer({
         <div className="container-site flex flex-col gap-4 py-5 text-xs text-muted-foreground md:flex-row md:items-center md:justify-between">
           <p>{data.copyright ?? `© ${new Date().getFullYear()} ${siteName}. All rights reserved.`}</p>
           <div className="flex flex-wrap items-center gap-5">
-            <ul className="flex flex-wrap gap-4">
+            <ul className="flex flex-wrap gap-x-4">
               {legal.map((link) => (
                 <li key={link!.href}>
                   <Link href={link!.href} className={LEGAL_LINK}>
@@ -249,7 +249,7 @@ export function Footer({
               <li><CookiePreferences locale={locale} className={LEGAL_LINK} /></li>
             </ul>
             {socials?.length ? (
-              <ul className="flex items-center gap-5">
+              <ul className="hidden items-center gap-5 md:flex">
                 {socials.map((s) => {
                   const path = SOCIAL_PATH[s.platform.toLowerCase()]
                   if (!path) return null
