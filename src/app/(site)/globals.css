@@ -79,7 +79,7 @@
   --radius-industry: 30px;
   --color-ink-900: #192424;
   --color-ink-700: #424242;
-  --color-ink-500: #687170;
+  --color-ink-500: #646d6c; /* Figma #687170, darkened to clear 4.5:1 on the #f1f2f9 panels */
   --color-canvas: #f1f2f9;
   --color-canvas-2: #e1e2e8;
   --color-success-600: #047857;

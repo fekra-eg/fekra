@@ -1,5 +1,8 @@
 import { z } from 'zod'
 
+// Zod probes `new Function` for a faster parser; our CSP forbids eval, so the probe only logs a violation.
+z.config({ jitless: true })
+
 /**
  * One schema per form, used by the client for instant feedback AND by the route
  * handler as the authoritative check (21.2). The client copy is a convenience;

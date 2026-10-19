@@ -96,7 +96,7 @@ const nextConfig: NextConfig = {
    */
   // Keep prerendered routes in the client cache for five minutes. Dynamic
   // routes use Next's default so the Payload CMS does not delay transitions or its admin.
-  experimental: { globalNotFound: true, cpus: 2, staticGenerationMaxConcurrency: 1, staleTimes: { static: 300 } },
+  experimental: { globalNotFound: true, inlineCss: true, cpus: 2, staticGenerationMaxConcurrency: 1, staleTimes: { static: 300 } },
   // Isolated output allows QA builds without interfering with an open dev server.
   distDir: process.env.NEXT_DIST_DIR || '.next',
   // Trailing-slash policy is a canonical signal — keep it fixed forever (18.1/18.3).
