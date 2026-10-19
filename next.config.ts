@@ -136,7 +136,7 @@ const nextConfig: NextConfig = {
       // RFC 8288 discovery link on the homepages, for agents (isitagentready.com).
       {
         source: '/:locale(ar)?',
-        headers: [{ key: 'Link', value: '</sitemap.xml>; rel="describedby"; type="application/xml"' }],
+        headers: [{ key: 'Link', value: '</.well-known/api-catalog>; rel="api-catalog", </sitemap.xml>; rel="describedby"; type="application/xml"' }],
       },
       // Immutable, fingerprinted assets (17.10).
       {

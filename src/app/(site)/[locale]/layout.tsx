@@ -11,9 +11,10 @@ import { Header, type HeaderData } from '@/components/layout/Header'
 import { SmoothScroll } from '@/components/layout/SmoothScroll'
 import { ScrollReveal } from '@/components/ScrollReveal'
 import { TalkToFika } from '@/components/layout/TalkToFika'
+import { WebMcpTools } from '@/components/WebMcpTools'
 import { ThemeProvider } from '@/components/theme/ThemeProvider'
 import { getDictionary } from '@/i18n/getDictionary'
-import { PUBLIC_LOCALES, dir, isLocale } from '@/i18n/routing'
+import { PUBLIC_LOCALES, dir, isLocale, localeHref } from '@/i18n/routing'
 import { organizationSchema, websiteSchema } from '@/lib/jsonld'
 import { findDocs, getGlobal } from '@/lib/payload'
 import { isComingSoon } from '@/lib/site-mode'
@@ -148,6 +149,7 @@ export default async function SiteLayout({
             socials={settings.socialProfiles}
           />
 
+          <WebMcpTools localePrefix={localeHref(locale, '/').replace(/\/$/, '')} />
           <TalkToFika locale={locale} dict={dict} consentRequired={(settings.consentMode ?? 'opt-in') === 'opt-in'} />
           <ConsentBanner dict={dict} locale={locale} enabled={(settings.consentMode ?? 'opt-in') === 'opt-in'} />
           <Analytics

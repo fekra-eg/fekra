@@ -94,6 +94,12 @@ export default async function proxy(request: NextRequest) {
 
   if (RETIRED.test(pathname) || (WORDPRESS.test(pathname) && pathname !== '/sitemap.xml') || (pathname === '/' && WORDPRESS_QUERY.test(search))) return withGuards(await notFoundResponse(DEFAULT_LOCALE, 410), request)
 
+  // Markdown for Agents: same URL, markdown body. Browsers never send this.
+  if (request.headers.get('accept')?.includes('text/markdown')) {
+    requestHeaders.set('x-markdown-path', pathname + search)
+    return withGuards(NextResponse.rewrite(new URL('/api/markdown', request.url), { request: { headers: requestHeaders } }), request)
+  }
+
   const route = cmsRoute(pathname)
   // Draft previews keep their existing authenticated render path. Public
   // misses are answered before the layout can stream a misleading HTTP 200.
