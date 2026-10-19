@@ -200,7 +200,16 @@ const nextConfig: NextConfig = {
     ]
   },
 
-  turbopack: { root: path.resolve(dirname) },
+  turbopack: {
+    root: path.resolve(dirname),
+    // Next ships Array.at/flat, Object.hasOwn etc. polyfills to every browser;
+    // Lighthouse flags them as legacy JS. Keep only what our browserslist lacks.
+    resolveAlias: {
+      'next/dist/build/polyfills/polyfill-module': './src/polyfills/polyfill-module.js',
+      // Next's own client entry imports it relatively.
+      '../build/polyfills/polyfill-module': './src/polyfills/polyfill-module.js',
+    },
+  },
 }
 
 export default withPayload(nextConfig, { devBundleServerPackages: false })
