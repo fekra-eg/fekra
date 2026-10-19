@@ -33,6 +33,8 @@ export function LanguageSwitcher({
   // Back/Forward may restore a cached route without a document request. Keep
   // the remembered language aligned with the content actually on screen.
   useEffect(() => {
+    // Only on change: any cookie write keeps the page out of the back/forward cache.
+    if (document.cookie.split('; ').includes(`NEXT_LOCALE=${current}`)) return
     document.cookie = `NEXT_LOCALE=${current}; path=/; max-age=31536000; samesite=lax`
   }, [current, pathname])
 

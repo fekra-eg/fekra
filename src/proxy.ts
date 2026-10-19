@@ -25,6 +25,8 @@ const LOCALE_COOKIE = 'NEXT_LOCALE'
  */
 function remember(response: NextResponse, locale: string, request: NextRequest) {
   if (!isLocaleDocumentRequest(request.headers)) return response
+  // Re-setting an unchanged cookie still counts as a change and bars the page from the back/forward cache.
+  if (request.cookies.get(LOCALE_COOKIE)?.value === locale) return response
   response.cookies.set(LOCALE_COOKIE, locale, { path: '/', sameSite: 'lax', maxAge: 31536000 })
   return response
 }
