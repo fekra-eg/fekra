@@ -133,6 +133,11 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       { source: '/:path*', headers: securityHeaders },
+      // RFC 8288 discovery link on the homepages, for agents (isitagentready.com).
+      {
+        source: '/:locale(ar)?',
+        headers: [{ key: 'Link', value: '</sitemap.xml>; rel="describedby"; type="application/xml"' }],
+      },
       // Immutable, fingerprinted assets (17.10).
       {
         source: '/fonts/:path*',

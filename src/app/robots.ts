@@ -17,6 +17,8 @@ const AI_TRAINING_BOTS = ['GPTBot', 'CCBot', 'Google-Extended', 'anthropic-ai', 
 
 const PRIVATE_PATHS = ['/admin', '/cms-api', '/api', '/api/preview']
 
+const yn = (allowed: boolean) => (allowed ? 'yes' : 'no')
+
 export default async function robots(): Promise<MetadataRoute.Robots> {
   // 3.4 — staging is never crawlable, whatever the CMS says.
   if (process.env.NEXT_PUBLIC_ENV !== 'production') {
@@ -46,7 +48,15 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
   }
 
   const rules: MetadataRoute.Robots['rules'] = [
-    { userAgent: '*', allow: '/', disallow: PRIVATE_PATHS },
+    {
+      userAgent: '*',
+      allow: '/',
+      disallow: PRIVATE_PATHS,
+      // contentsignals.org — the same policy as the per-bot rules below, for agents that read it.
+      other: {
+        'Content-Signal': `search=${yn(policy.allowSearchEngines)}, ai-input=${yn(policy.allowAiSearchBots)}, ai-train=${yn(policy.allowAiTrainingBots)}`,
+      },
+    },
     ...SEARCH_BOTS.map((bot) => ({
       userAgent: bot,
       ...(policy.allowSearchEngines ? { allow: '/', disallow: PRIVATE_PATHS } : { disallow: '/' }),
