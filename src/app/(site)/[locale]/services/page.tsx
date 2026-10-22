@@ -5,7 +5,7 @@ import { ArrowUpRight, Check } from 'lucide-react'
 
 import { BidiText } from '@/components/BidiText'
 import { getDictionary } from '@/i18n/getDictionary'
-import { LOCALES, isLocale, localeHref } from '@/i18n/routing'
+import { DEFAULT_LOCALE, LOCALES, isLocale, localeHref, servesLocale } from '@/i18n/routing'
 import { findDocs } from '@/lib/payload'
 import { JsonLd } from '@/components/JsonLd'
 import { breadcrumbSchema } from '@/lib/jsonld'
@@ -19,7 +19,7 @@ export const revalidate = 3600
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
   if (!isLocale(locale)) return {}
-  return buildMetadata({ ...sitelinkCopy[locale].services, path: '/services', locale, availableLocales: [...LOCALES] })
+  return buildMetadata({ ...sitelinkCopy[locale].services, path: '/services', locale, availableLocales: [...LOCALES], template: 'services' })
 }
 
 /**
@@ -40,13 +40,16 @@ export default async function ServicesIndex({ params }: { params: Promise<{ loca
       sort: 'order',
       depth: 0,
       // Without a select this query joins every block table for every service.
-      select: { title: true, slug: true, summary: true, parent: true, order: true },
+      select: { title: true, slug: true, summary: true, parent: true, order: true, availableLocales: true },
     }),
   ])
 
   const parentId = (s: ServiceDoc) => (typeof s.parent === 'object' ? s.parent?.id : s.parent)
   // Old seed placeholders 301 to their real pages (redirects.json); no card for them.
   const roots = docs.filter((s) => !s.parent && !redirectsAway(`/services/${s.slug}`))
+  // Untranslated services link their English page and mark their English copy (T-01/T-09).
+  const lang = (s: ServiceDoc) => (servesLocale(s.availableLocales, locale) ? locale : DEFAULT_LOCALE)
+  const href = (s: ServiceDoc) => localeHref(lang(s), `/services/${s.slug}`)
 
   return (
     <>
@@ -76,14 +79,14 @@ export default async function ServicesIndex({ params }: { params: Promise<{ loca
                   <div>
                     <h2 className="font-display text-xl leading-7 font-bold text-navy-800 dark:text-foreground">
                       <Link
-                        href={localeHref(locale, `/services/${service.slug}`)}
+                        href={href(service)}
                         className="after:absolute after:inset-0 focus-visible:outline-none"
                       >
                         <BidiText>{service.title}</BidiText>
                       </Link>
                     </h2>
                     {service.summary ? (
-                      <p className="mt-3 text-sm/6 text-ink-500 dark:text-muted-foreground">{service.summary}</p>
+                      <p lang={lang(service) === locale ? undefined : lang(service)} className="mt-3 text-sm/6 text-ink-500 dark:text-muted-foreground">{service.summary}</p>
                     ) : null}
                   </div>
                   <span
@@ -99,7 +102,7 @@ export default async function ServicesIndex({ params }: { params: Promise<{ loca
                     {children.map((child) => (
                       <li key={child.id}>
                         <Link
-                          href={localeHref(locale, `/services/${child.slug}`)}
+                          href={href(child)}
                           className="flex min-h-11 items-center gap-2 rounded-xl px-2 text-sm text-ink-500 transition-colors hover:bg-brand-50 hover:text-primary dark:text-muted-foreground dark:hover:bg-background-subtle"
                         >
                           <Check className="size-3.5 shrink-0 text-primary" aria-hidden />

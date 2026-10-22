@@ -1,4 +1,5 @@
-import { Clock, Eye } from 'lucide-react'
+import { Clock } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
@@ -15,7 +16,7 @@ import { categoryTheme } from '@/components/blog/theme'
 import { JsonLd } from '@/components/JsonLd'
 import { RichText } from '@/components/RichText'
 import { getDictionary, t } from '@/i18n/getDictionary'
-import { isLocale, localeHref } from '@/i18n/routing'
+import { isLocale, localeHref, type Locale } from '@/i18n/routing'
 import { articleSchema, breadcrumbSchema } from '@/lib/jsonld'
 import { cn } from '@/lib/cn'
 import { findDoc, findDocs, staticSlugs } from '@/lib/payload'
@@ -34,17 +35,21 @@ export async function generateStaticParams({ params }: { params: { locale: strin
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }) {
   const { locale, slug } = await params
   if (!isLocale(locale)) return notFoundMetadata
-  const post = await findDoc<PostDoc>('posts', slug, locale)
+  const post = await findDoc<PostDoc>('posts', slug, locale, 2)
   if (!post) return notFoundMetadata
 
-  const image = post.meta?.image?.url ?? post.heroImage?.url
+  // Large previews and Discover need ≥1200px wide, and WebP is not shown everywhere (T-03):
+  // a smaller or WebP cover falls back to the blog share card.
+  const cover = post.meta?.image?.url ? post.meta.image : post.heroImage
+  const image = cover?.url && (cover.width ?? 0) >= 1200 && !/\.webp(\?|$)/i.test(cover.url) ? cover : null
   return buildMetadata({
     title: post.meta?.title ?? post.title,
     description: post.meta?.description ?? post.excerpt ?? undefined,
     path: `/blog/${slug}`,
     locale,
     availableLocales: post.availableLocales,
-    image: image ? { url: image } : null,
+    image: image ? { url: image.url!, width: image.width ?? undefined, height: image.height ?? undefined } : null,
+    template: 'blog',
     noindex: post.meta?.noindex,
     canonicalOverride: post.meta?.canonicalOverride,
     type: 'article',
@@ -57,7 +62,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ locale
   const { locale, slug } = await params
   if (!isLocale(locale)) notFound()
 
-  const [post, dict] = await Promise.all([findDoc<PostDoc>('posts', slug, locale), getDictionary(locale)])
+  const [post, dict] = await Promise.all([findDoc<PostDoc>('posts', slug, locale, 2), getDictionary(locale)])
   if (!post) notFound()
 
   const category = categoryTitle(post as unknown as PostSummary)
@@ -66,6 +71,9 @@ export default async function ArticlePage({ params }: { params: Promise<{ locale
   const headings = isHtml ? [] : extractHeadings(post.content)
   const minutes = isHtml ? htmlReadingMinutes(post.htmlContent!) : readingMinutes(post.content)
   const url = absoluteUrl(`/blog/${slug}`, locale)
+  // Depth 2 so the author's photo arrives populated with the author (FK-38).
+  const author = post.author?.name ? post.author : null
+  const authorPhoto = author && typeof author.photo === 'object' && author.photo?.url ? author.photo.url : null
 
   // Related posts: same category first, falling back to most recent, and never
   // the article you are already reading.
@@ -126,16 +134,20 @@ export default async function ArticlePage({ params }: { params: Promise<{ locale
               </h1>
 
               <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3 text-sm text-slate-500 dark:text-slate-400">
-                {post.author?.name ? (
-                  <span className="flex items-center gap-2.5">
-                    <span
-                      aria-hidden
-                      className="grid h-10 w-10 place-items-center rounded-full bg-blog-500 text-sm font-bold text-white shadow-sm ring-2 ring-white dark:ring-white/10"
-                    >
-                      {post.author.name.charAt(0)}
-                    </span>
-                    <span className="font-semibold text-slate-800 dark:text-slate-100">{post.author.name}</span>
-                  </span>
+                {author ? (
+                  <a href="#author" className="flex min-h-11 items-center gap-2.5">
+                    {authorPhoto ? (
+                      <Image src={authorPhoto} alt="" width={40} height={40} className="h-10 w-10 rounded-full object-cover ring-2 ring-white dark:ring-white/10" />
+                    ) : (
+                      <span
+                        aria-hidden
+                        className="grid h-10 w-10 place-items-center rounded-full bg-blog-500 text-sm font-bold text-white shadow-sm ring-2 ring-white dark:ring-white/10"
+                      >
+                        {author.name!.charAt(0)}
+                      </span>
+                    )}
+                    <span className="font-semibold text-slate-800 dark:text-slate-100">{author.name}</span>
+                  </a>
                 ) : null}
 
                 <span className="flex items-center gap-1.5">
@@ -202,7 +214,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ locale
               </div>
             ) : null}
 
-            {isHtml ? <InlineHtmlArticle source={post.htmlContent!} /> :
+            {isHtml ? <InlineHtmlArticle source={post.htmlContent!} locale={locale} /> :
               <RichText data={post.content} anchors variant="article" locale={locale} />}
 
             {post.tags?.length ? (
@@ -220,23 +232,32 @@ export default async function ArticlePage({ params }: { params: Promise<{ locale
 
             <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-slate-200 pt-6 dark:border-white/10">
               <ShareButtons url={url} title={post.title} label={dict.blog.share} />
-              <Link href={localeHref(locale, '/blog')} className="text-sm font-semibold text-blog-600 hover:underline">
+              <Link href={localeHref(locale, '/blog')} className="inline-flex min-h-11 items-center text-sm font-semibold text-blog-600 hover:underline">
                 {dict.blog.backToBlog}
               </Link>
             </div>
 
-            {post.author?.name ? (
-              <div className="mt-8 flex items-start gap-4 rounded-2xl border border-slate-200/70 bg-white p-6 dark:border-white/10 dark:bg-white/[0.04]">
-                <span
-                  aria-hidden
-                  className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-blog-500 text-xl font-bold text-white shadow-sm ring-2 ring-white dark:ring-white/10"
-                >
-                  {post.author.name.charAt(0)}
-                </span>
+            {author ? (
+              <div id="author" className="mt-8 flex scroll-mt-28 items-start gap-4 rounded-2xl border border-slate-200/70 bg-white p-6 dark:border-white/10 dark:bg-white/[0.04]">
+                {authorPhoto ? (
+                  <Image src={authorPhoto} alt="" width={56} height={56} className="h-14 w-14 shrink-0 rounded-full object-cover ring-2 ring-white dark:ring-white/10" />
+                ) : (
+                  <span
+                    aria-hidden
+                    className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-blog-500 text-xl font-bold text-white shadow-sm ring-2 ring-white dark:ring-white/10"
+                  >
+                    {author.name!.charAt(0)}
+                  </span>
+                )}
                 <div>
                   <p className="text-xs font-semibold tracking-wide text-blog-600 uppercase">{dict.blog.aboutAuthor}</p>
-                  <p className="mt-0.5 text-base font-bold text-slate-900 dark:text-white">{post.author.name}</p>
-                  <p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-300">{dict.blog.authorBio}</p>
+                  <p className="mt-0.5 text-base font-bold text-slate-900 dark:text-white">
+                    {author.linkedin ? (
+                      <a href={author.linkedin} rel="author noopener" target="_blank" className="hover:text-blog-600 hover:underline">{author.name}</a>
+                    ) : author.name}
+                  </p>
+                  {author.role ? <p className="text-sm text-slate-500 dark:text-slate-400">{author.role}</p> : null}
+                  <p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-300">{author.bio || dict.blog.authorBio}</p>
                 </div>
               </div>
             ) : null}
@@ -255,10 +276,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ locale
                 </Link>
               </div>
 
-              <p className="flex items-center gap-2 rounded-2xl border border-slate-200/70 bg-white px-5 py-4 text-sm text-slate-600 shadow-sm dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-300">
-                <Eye className="h-5 w-5 text-blog-500" aria-hidden />
-                {t(dict.common.minRead, { minutes })}
-              </p>
             </div>
           </aside>
         </div>
@@ -289,7 +306,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ locale
             imageUrl: post.heroImage?.url ?? null,
             publishedAt: post.publishedAt,
             updatedAt: post.updatedAt,
-            authorName: post.author?.name,
+            author: author ? { name: author.name!, jobTitle: author.role, url: author.linkedin, image: authorPhoto } : null,
           }),
           breadcrumbSchema(crumbs, locale),
         ]}
@@ -298,8 +315,8 @@ export default async function ArticlePage({ params }: { params: Promise<{ locale
   )
 }
 
-function InlineHtmlArticle({ source }: { source: string }) {
-  const { html, css } = blogHtmlInline(source)
+function InlineHtmlArticle({ source, locale }: { source: string; locale: Locale }) {
+  const { html, css } = blogHtmlInline(source, locale)
   return (
     <>
       <style>{css}</style>

@@ -79,14 +79,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // collection put the URL in the sitemap twice (1.11 / 18.5).
   // The approved sitelinks — Services, About, Blog, Contact, Careers — sit
   // directly under the homepage; everything else ranks below them.
-  const LISTINGS: [path: string, priority: number][] = [
-    ['/services', 0.9],
-    ['/blog', 0.9],
-    ['/contact', 0.9],
-    ['/careers', 0.9],
+  // Every entry carries a real lastmod (T-14): a listing changes when anything it lists does.
+  const latest = (docs: Indexable[]) =>
+    docs.map((d) => d.updatedAt).filter((d): d is string => Boolean(d)).sort().at(-1)
+  const pageUpdated = (slug: string) => pages.find((p) => p.slug === slug)?.updatedAt
+  const LISTINGS: [path: string, priority: number, lastModified: string | undefined][] = [
+    ['/services', 0.9, latest(services)],
+    ['/blog', 0.9, latest(posts)],
+    ['/contact', 0.9, pageUpdated('contact')],
+    ['/careers', 0.9, latest(jobs)],
   ]
-  const listings: MetadataRoute.Sitemap = LISTINGS.map(([path, priority]) =>
-    entry(path, [...PUBLIC_LOCALES], undefined, priority),
+  const listings: MetadataRoute.Sitemap = LISTINGS.map(([path, priority, lastModified]) =>
+    entry(path, [...PUBLIC_LOCALES], lastModified, priority),
   )
   // /meeting is a redirect to Calendly, so it is owned but never listed.
   const coded = new Set(['home', 'meeting', ...LISTINGS.map(([path]) => path.slice(1))])
@@ -99,7 +103,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .map((doc) => entry(documentPath(collection, doc.slug), localesOf(doc), doc.updatedAt, priority))
 
   return [
-    entry('/', [...PUBLIC_LOCALES], undefined, 1),
+    entry('/', [...PUBLIC_LOCALES], pageUpdated('home'), 1),
     ...listings,
     ...fromCollection(pages.filter((p) => p.slug === 'about'), 'pages', 0.9),
     ...fromCollection(

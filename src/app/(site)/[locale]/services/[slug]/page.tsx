@@ -4,9 +4,10 @@ import { notFound } from 'next/navigation'
 import { RenderBlocks } from '@/components/blocks/RenderBlocks'
 import { JsonLd } from '@/components/JsonLd'
 import { getDictionary } from '@/i18n/getDictionary'
-import { isLocale, localeHref } from '@/i18n/routing'
+import { isLocale, servesLocale, localeHref } from '@/i18n/routing'
 import { breadcrumbSchema, serviceSchema } from '@/lib/jsonld'
-import { findDoc, getGlobal, staticSlugs } from '@/lib/payload'
+import { findDoc, findDocs, getGlobal, staticSlugs } from '@/lib/payload'
+import { relatedRoleSlugs } from '@/lib/services-menu'
 import { buildMetadata, notFoundMetadata } from '@/lib/seo'
 
 import type { ServiceDoc, SettingsLite } from '../../page-types'
@@ -22,13 +23,14 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale, slug } = await params
   if (!isLocale(locale)) return notFoundMetadata
   const service = await findDoc<ServiceDoc>('services', slug, locale)
-  if (!service) return notFoundMetadata
+  if (!service || !servesLocale(service.availableLocales, locale)) return notFoundMetadata
 
   return buildMetadata({
     title: service.meta?.title ?? service.title,
     description: service.meta?.description ?? service.summary ?? undefined,
     path: `/services/${slug}`,
     locale,
+    template: 'services',
     availableLocales: service.availableLocales,
     image: service.meta?.image?.url ? { url: service.meta.image.url } : null,
     noindex: service.meta?.noindex,
@@ -40,12 +42,21 @@ export default async function ServicePage({ params }: { params: Promise<{ locale
   const { locale, slug } = await params
   if (!isLocale(locale)) notFound()
 
-  const [service, dict, settings] = await Promise.all([
+  const [service, dict, settings, { docs: allServices }] = await Promise.all([
     findDoc<ServiceDoc>('services', slug, locale),
     getDictionary(locale),
     getGlobal<SettingsLite>('site-settings', locale),
+    findDocs<ServiceDoc & { menuRoles?: { label: string }[] | null }>({
+      collection: 'services',
+      locale,
+      limit: 100,
+      depth: 0,
+      sort: 'order',
+      select: { title: true, slug: true, menuRoles: true, availableLocales: true },
+    }),
   ])
-  if (!service) notFound()
+  // No translation for this locale: 404, not English copy under a locale URL (T-01).
+  if (!service || !servesLocale(service.availableLocales, locale)) notFound()
 
   const parent = typeof service.parent === 'object' ? service.parent : null
   const crumbs = [
@@ -54,6 +65,12 @@ export default async function ServicePage({ params }: { params: Promise<{ locale
     ...(parent ? [{ name: parent.title, path: `/services/${parent.slug}` }] : []),
     { name: service.title, path: `/services/${slug}` },
   ]
+
+  // Related roles come from the approved menu group (T-17); the CMS list is the fallback.
+  const relatedSlugs = relatedRoleSlugs(allServices, slug)
+  const related = relatedSlugs
+    ? relatedSlugs.slice(0, 6).flatMap((s) => allServices.filter((doc) => doc.slug === s))
+    : (service.relatedServices ?? []).filter((item) => typeof item === 'object')
 
   // A serviceHero block carries the H1 itself; the plain header would double it.
   const hasHero = service.layout?.[0]?.blockType === 'serviceHero'
@@ -88,16 +105,14 @@ export default async function ServicePage({ params }: { params: Promise<{ locale
         context={{ offices: settings.offices, calendlyUrl: settings.calendlyUrl, servicePage: true }}
       />
 
-      {service.relatedServices?.length ? (
+      {related.length ? (
         <section className="container-site py-[var(--section-y)]">
-          <h2 className="text-2xl">{dict.common.learnMore}</h2>
+          <p className="font-display text-2xl font-bold">{dict.common.learnMore}</p>
           <ul className="mt-6 flex flex-wrap gap-3">
-            {service.relatedServices
-              .filter((item) => typeof item === 'object')
-              .map((item) => (
+            {related.map((item) => (
                 <li key={item.id}>
                   <Link
-                    href={localeHref(locale, `/services/${item.slug}`)}
+                    href={localeHref(servesLocale(item.availableLocales, locale) ? locale : 'en', `/services/${item.slug}`)}
                     className="fk-button fk-button--secondary inline-flex min-h-11 items-center rounded-pill border border-border px-4 py-2 text-sm"
                   >
                     {item.title}

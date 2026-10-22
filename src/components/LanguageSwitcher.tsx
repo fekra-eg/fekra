@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useMemo, useRef, useState, useTransition } from 'react'
 
-import { LOCALES, PUBLIC_LOCALES, LOCALE_META, type Locale, localeHref, splitLocale } from '@/i18n/routing'
+import { LOCALES, PUBLIC_LOCALES, LOCALE_META, type Locale, type LocaleAvailability, localeHref, splitLocale } from '@/i18n/routing'
 import { cn } from '@/lib/cn'
 
 /**
@@ -15,15 +15,19 @@ import { cn } from '@/lib/cn'
  */
 export function LanguageSwitcher({
   current,
-  available,
+  available: availableProp,
+  availability,
   labels,
 }: {
   current: Locale
   available?: Locale[]
+  /** Pages missing some locale: those locales are disabled, not 404 links (T-01). */
+  availability?: LocaleAvailability
   labels: { switch: string; unavailable: string }
 }) {
   const pathname = usePathname() ?? '/'
   const { rest } = splitLocale(pathname)
+  const available = availableProp ?? availability?.[rest]
   const [open, setOpen] = useState(false)
   const [pending, startTransition] = useTransition()
   const [targetLocale, setTargetLocale] = useState(current)

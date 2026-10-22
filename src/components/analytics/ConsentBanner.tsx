@@ -7,11 +7,11 @@ import { useId } from 'react'
 import { OPEN_COOKIE_PREFERENCES } from '@/components/analytics/CookiePreferences'
 import { Button } from '@/components/ui/Button'
 import type { Dictionary } from '@/i18n/getDictionary'
-import { type Locale, localeHref } from '@/i18n/routing'
+import { availableHref, type Locale, type LocaleAvailability } from '@/i18n/routing'
 import { writeConsent } from '@/lib/consent'
 import { useConsent } from '@/lib/useConsent'
 
-export function ConsentBanner({ dict, locale, enabled }: { dict: Dictionary; locale: Locale; enabled: boolean }) {
+export function ConsentBanner({ dict, locale, enabled, availability }: { dict: Dictionary; locale: Locale; enabled: boolean; availability?: LocaleAvailability }) {
   const consent = useConsent()
   const titleId = useId()
   const descriptionId = useId()
@@ -32,12 +32,12 @@ export function ConsentBanner({ dict, locale, enabled }: { dict: Dictionary; loc
         <span className="grid size-8 shrink-0 place-items-center rounded-full bg-primary/10 text-primary">
           <Cookie aria-hidden className="size-[18px]" />
         </span>
-        <h2 id={titleId} className="font-display text-base font-bold sm:text-lg">{dict.consent.title}</h2>
+        <p id={titleId} className="font-display text-base font-bold sm:text-lg">{dict.consent.title}</p>
       </div>
       <p id={descriptionId} className="mt-2 text-sm/6 text-muted-foreground">
         {dict.consent.body}{' '}
         {/* Consent is not informed without the detail behind it (1.10 / 21.8). */}
-        <Link href={localeHref(locale, '/cookie-policy')} className="rounded-sm font-semibold text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring">
+        <Link href={availableHref(locale, '/cookie-policy', availability)} className="rounded-sm font-semibold text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring">
           {dict.consent.cookiePolicy}
         </Link>
       </p>

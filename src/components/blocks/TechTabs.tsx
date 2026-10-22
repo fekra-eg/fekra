@@ -115,7 +115,13 @@ export function TechTabs({ groups }: { groups: TechGroup[] }) {
                       className="relative block"
                       style={logoMarkSize(item.width, item.height, 1) ?? { width: '100%', height: '100%' }}
                     >
-                      <Image src={item.src} alt="" fill sizes="104px" aria-hidden className="fk-art-image object-contain" />
+                      {/* Intrinsic width/height when known, so the HTML carries dimensions (T-22).
+                          The logo carries the name (T-23); the caption below is hidden from AT instead. */}
+                      {item.width && item.height ? (
+                        <Image src={item.src} alt={item.name} width={item.width} height={item.height} sizes="104px" className="fk-art-image size-full object-contain" />
+                      ) : (
+                        <Image src={item.src} alt={item.name} fill sizes="104px" className="fk-art-image object-contain" />
+                      )}
                     </span>
                   </span>
                 ) : (
@@ -124,7 +130,7 @@ export function TechTabs({ groups }: { groups: TechGroup[] }) {
                   </span>
                 )}
                 {item.src ? (
-                  <span className="text-sm/5 [overflow-wrap:anywhere] text-ink-700 sm:text-lg/7 dark:text-muted-foreground">{item.name}</span>
+                  <span aria-hidden className="text-sm/5 [overflow-wrap:anywhere] text-ink-700 sm:text-lg/7 dark:text-muted-foreground">{item.name}</span>
                 ) : null}
               </li>
             ))}

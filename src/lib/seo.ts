@@ -19,6 +19,8 @@ type SeoInput = {
   modifiedTime?: string
   /** false = emit `title` as-is, without the `| Fekra Tech` suffix (home page). */
   brand?: boolean
+  /** Share card for pages without their own image (T-18). */
+  template?: 'services' | 'careers' | 'blog'
 }
 
 /**
@@ -28,6 +30,9 @@ type SeoInput = {
  * hreflang only lists locales that actually have an approved translation —
  * pointing at a fallback page would be a reciprocity error.
  */
+/** og:locale wants language_TERRITORY (T-15). */
+const OG_LOCALE: Record<Locale, string> = { en: 'en_US', ar: 'ar_EG', de: 'de_DE', fr: 'fr_FR', es: 'es_ES' }
+
 const DEFAULT_OG_IMAGE = { url: '/images/og-default.jpg', width: 1200, height: 630 }
 const DEFAULT_OG_ALT: Record<Locale, string> = {
   en: 'Fekra Tech — vetted engineering teams from Egypt',
@@ -50,6 +55,7 @@ export function buildMetadata({
   publishedTime,
   modifiedTime,
   brand = true,
+  template,
 }: SeoInput): Metadata {
   const base = siteUrl()
   const published = (availableLocales?.length ? availableLocales : [DEFAULT_LOCALE]).filter((l): l is Locale =>
@@ -64,7 +70,8 @@ export function buildMetadata({
   const unbrandedTitle = title.replace(/(?:\s*\|\s*(?:FEKRA|Fekra\s?Tech))+$/i, '').trim()
   const brandedTitle = brand ? `${unbrandedTitle} | Fekra Tech` : unbrandedTitle
   // Every page gets a share card (FK-33); JPG because LinkedIn's WebP support is unreliable.
-  const card = image?.url ? image : { ...DEFAULT_OG_IMAGE, alt: DEFAULT_OG_ALT[locale] ?? DEFAULT_OG_ALT.en }
+  const fallback = template ? { ...DEFAULT_OG_IMAGE, url: `/og/${template}.png` } : DEFAULT_OG_IMAGE
+  const card = image?.url ? image : { ...fallback, alt: DEFAULT_OG_ALT[locale] ?? DEFAULT_OG_ALT.en }
   const ogImage = [{ url: new URL(card.url, base).toString(), width: card.width ?? 1200, height: card.height ?? 630, alt: card.alt ?? title }]
 
   return {
@@ -84,7 +91,8 @@ export function buildMetadata({
       description,
       url: canonical,
       siteName: 'Fekra Tech',
-      locale: LOCALE_META[locale].hreflang,
+      locale: OG_LOCALE[locale],
+      alternateLocale: published.filter((l) => l !== locale).map((l) => OG_LOCALE[l]),
       images: ogImage,
       ...(type === 'article' ? { publishedTime, modifiedTime } : {}),
     },

@@ -42,7 +42,7 @@ export function TableOfContents({ headings, title }: { headings: Heading[]; titl
         {title}
       </p>
 
-      <ul className="relative space-y-3">
+      <ul className="relative">
         <span
           aria-hidden
           className="absolute inset-y-1.5 start-[4.5px] z-0 w-0.5 rounded-full bg-slate-200 dark:bg-white/10"
@@ -55,7 +55,7 @@ export function TableOfContents({ headings, title }: { headings: Heading[]; titl
                 href={`#${heading.id}`}
                 aria-current={isActive ? 'location' : undefined}
                 className={cn(
-                  'flex gap-3 leading-relaxed transition-colors',
+                  'flex min-h-11 gap-3 py-2 leading-relaxed transition-colors',
                   heading.depth === 3 && 'ps-6',
                   isActive
                     ? 'font-semibold text-blog-600 dark:text-blog-300'

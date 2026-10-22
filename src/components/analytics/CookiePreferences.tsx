@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import { X } from 'lucide-react'
-import { type Locale, localeHref } from '@/i18n/routing'
+import { availableHref, type Locale, type LocaleAvailability } from '@/i18n/routing'
 import { batchTwo } from '@/i18n/batch-two'
 import { cookiePreferencesCopy } from '@/i18n/cookie-preferences'
 import { DENIED, readConsent, writeConsent, type ConsentState } from '@/lib/consent'
@@ -11,7 +11,7 @@ import { DENIED, readConsent, writeConsent, type ConsentState } from '@/lib/cons
 /** Fired by the consent banner's "Manage preferences" button. */
 export const OPEN_COOKIE_PREFERENCES = 'fekra:cookie-preferences'
 
-export function CookiePreferences({ locale, className }: { locale: Locale; className?: string }) {
+export function CookiePreferences({ locale, className, availability }: { locale: Locale; className?: string; availability?: LocaleAvailability }) {
   const labels = batchTwo[locale]
   const copy = cookiePreferencesCopy[locale]
   const dialog = useRef<HTMLDialogElement>(null)
@@ -46,7 +46,7 @@ export function CookiePreferences({ locale, className }: { locale: Locale; class
       if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dialog.current?.close()
     }} className="fixed inset-0 m-auto max-h-[calc(100dvh-32px)] w-[min(520px,calc(100%_-_32px))] max-w-none overflow-y-auto rounded-3xl border border-border bg-card p-6 text-foreground shadow-lift backdrop:bg-navy-800/40">
       <div className="flex items-center justify-between gap-3">
-        <h2 id="cookie-preferences-title" className="text-xl font-bold">{labels.preferences}</h2>
+        <p id="cookie-preferences-title" className="font-display text-xl font-bold">{labels.preferences}</p>
         <button type="button" onClick={() => dialog.current?.close()} aria-label={copy.close} className="grid size-11 shrink-0 place-items-center rounded-full hover:bg-background-subtle"><X aria-hidden className="size-5" /></button>
       </div>
       <p className="mt-3 text-sm/6 text-muted-foreground">{copy.intro} {copy.introNote}</p>
@@ -61,7 +61,7 @@ export function CookiePreferences({ locale, className }: { locale: Locale; class
         {(['analytics', 'marketing'] as const).map((category) => <div key={category} className="py-4">
           <label className="flex cursor-pointer items-center justify-between gap-4 text-base font-semibold">
             <span>{labels[category]} <span className="text-sm font-normal text-muted-foreground">— {copy.optional}</span></span>
-            <input type="checkbox" checked={choice[category]} onChange={(event) => setChoice((state) => ({ ...state, [category]: event.target.checked }))} className="size-5 accent-primary" />
+            <input type="checkbox" checked={choice[category]} onChange={(event) => setChoice((state) => ({ ...state, [category]: event.target.checked }))} className="size-5 shrink-0 accent-primary" />
           </label>
           <p className="mt-1 text-sm/6 text-muted-foreground">{copy[`${category}Body`]} {copy.offByDefault}</p>
         </div>)}
@@ -77,9 +77,9 @@ export function CookiePreferences({ locale, className }: { locale: Locale; class
       <p className="mt-3 text-xs/5 text-muted-foreground">{copy.changeMind}</p>
       <p className="mt-2 text-xs/5 text-muted-foreground">
         {copy.morePolicies}{' '}
-        <Link href={localeHref(locale, '/cookie-policy')} className={policyLink}>{copy.cookiePolicy}</Link>
+        <Link href={availableHref(locale, '/cookie-policy', availability)} className={policyLink}>{copy.cookiePolicy}</Link>
         {' · '}
-        <Link href={localeHref(locale, '/privacy-policy')} className={policyLink}>{copy.privacyPolicy}</Link>
+        <Link href={availableHref(locale, '/privacy-policy', availability)} className={policyLink}>{copy.privacyPolicy}</Link>
       </p>
     </dialog>
   </>

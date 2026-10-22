@@ -26,6 +26,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     ...sitelinkCopy[locale].careers,
     path: '/careers',
     locale,
+    template: 'careers',
     availableLocales: [...LOCALES],
   })
 }

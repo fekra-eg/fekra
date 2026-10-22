@@ -5,7 +5,7 @@ import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 import { ThemeToggle } from '@/components/theme/ThemeToggle'
 import { LinkButton } from '@/components/ui/Button'
 import type { Dictionary } from '@/i18n/getDictionary'
-import type { Locale } from '@/i18n/routing'
+import type { Locale, LocaleAvailability } from '@/i18n/routing'
 import { localeHref } from '@/i18n/routing'
 import { resolveLink, type PayloadLink } from '@/lib/resolveLink'
 
@@ -24,7 +24,8 @@ export type HeaderData = {
 export type ServicesMenu = {
   title: string
   slug: string
-  roles: { title: string; slug: string }[]
+  href: string
+  roles: { title: string; slug: string; href: string }[]
 }[]
 
 export function Header({
@@ -33,12 +34,14 @@ export function Header({
   dict,
   siteName,
   servicesMenu,
+  availability,
 }: {
   data: HeaderData
   locale: Locale
   dict: Dictionary
   siteName: string
   servicesMenu?: ServicesMenu
+  availability?: LocaleAvailability
 }) {
   const items = (data.items ?? [])
     .map((item) => ({
@@ -51,7 +54,7 @@ export function Header({
 
   if (locale === 'ar') {
     for (const item of items) for (const child of item.children) {
-      const service = servicesMenu?.find((service) => localeHref(locale, `/services/${service.slug}`) === child.link?.href)
+      const service = servicesMenu?.find((service) => service.href === child.link?.href)
       if (service && child.link) child.link = { ...child.link, label: service.title }
     }
   }
@@ -152,6 +155,7 @@ export function Header({
         <div className="flex shrink-0 items-center gap-1">
           <LanguageSwitcher
             current={locale}
+            availability={availability}
             labels={{ switch: dict.language.switch, unavailable: dict.language.unavailable }}
           />
 

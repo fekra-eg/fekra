@@ -18,6 +18,7 @@ import sharp from 'sharp'
 
 import { LOCALES } from './i18n/routing'
 import { MediaBlock } from './payload/blocks'
+import { Authors } from './payload/collections/Authors'
 import { Categories } from './payload/collections/Categories'
 import { Jobs } from './payload/collections/Jobs'
 import { Media } from './payload/collections/Media'
@@ -135,6 +136,7 @@ export default buildConfig({
   collections: [
     Pages,
     Posts,
+    Authors,
     Categories,
     Services,
     Jobs,

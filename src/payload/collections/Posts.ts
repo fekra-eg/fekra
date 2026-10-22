@@ -35,7 +35,8 @@ export const Posts: CollectionConfig = {
   versions: { drafts: { autosave: { interval: 10_000 } }, maxPerDoc: 25 },
   endpoints: [
     {
-      // POST /api/posts/:id/translate — English -> every other locale, saved as a draft for review.
+      // POST /api/posts/:id/translate — English -> each locale that is still empty, saved as a draft
+      // for review. Edited translations are kept (DEV-07); `{ overwrite: ['de'] }` retranslates one on purpose.
       path: '/:id/translate',
       method: 'post',
       handler: async (req) => {
@@ -44,7 +45,18 @@ export const Posts: CollectionConfig = {
         const post = await req.payload.findByID({
           collection: 'posts', id, locale: 'en', fallbackLocale: false, draft: true, depth: 0,
         })
-        const targets = LOCALES.filter((locale): locale is Exclude<Locale, 'en'> => locale !== 'en')
+        const body = (await req.json?.().catch(() => ({}))) as { overwrite?: unknown } | undefined
+        const overwrite = new Set(Array.isArray(body?.overwrite) ? body.overwrite.map(String) : [])
+        // Every locale's title at once: a translation exists once it is published or differs from English.
+        const titles = (await req.payload.findByID({
+          collection: 'posts', id, locale: 'all', fallbackLocale: false, draft: true, depth: 0, select: { title: true },
+        })).title as unknown as Partial<Record<Locale, string>>
+        const others = LOCALES.filter((locale): locale is Exclude<Locale, 'en'> => locale !== 'en')
+        const hasTranslation = (locale: Locale) =>
+          (post.availableLocales ?? []).includes(locale) || Boolean(titles?.[locale]?.trim() && titles[locale]!.trim() !== post.title.trim())
+        const skipped = others.filter((locale) => !overwrite.has(locale) && hasTranslation(locale))
+        const targets = others.filter((locale) => !skipped.includes(locale))
+        if (!targets.length) return Response.json({ translated: [], failed: [], skipped })
         // Translate in parallel, save one at a time: concurrent draft saves on one document would race.
         const results = await Promise.allSettled(targets.map((locale) => translatePost(post as TranslatablePost, locale)))
         const translated: string[] = []
@@ -70,7 +82,7 @@ export const Posts: CollectionConfig = {
           })
         }
         if (failed.length) req.payload.logger.error({ failed }, `Translation failed for post ${id}`)
-        return Response.json({ translated, failed }, { status: translated.length ? 200 : 502 })
+        return Response.json({ translated, failed, skipped }, { status: translated.length ? 200 : 502 })
       },
     },
   ],
@@ -140,8 +152,8 @@ export const Posts: CollectionConfig = {
                 {
                   name: 'author',
                   type: 'relationship',
-                  relationTo: 'users',
-                  admin: { width: '50%', description: 'Shown as the byline and used in Article schema (19.4).' },
+                  relationTo: 'authors',
+                  admin: { width: '50%', description: 'Shown as the byline and used as the Person author in Article schema (19.4 / FK-38).' },
                 },
               ],
             },

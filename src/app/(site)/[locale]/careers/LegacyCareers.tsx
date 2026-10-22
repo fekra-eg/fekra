@@ -33,6 +33,22 @@ const sourceDetails: Record<string, { years?: number; positions?: number; urgent
   'business-development-specialist': { urgent: true },
 }
 
+const LEVELS: Record<'senior' | 'intern', Record<Locale, string>> = {
+  senior: { en: 'Senior', ar: 'خبرة متقدمة', de: 'Senior', fr: 'Senior', es: 'Sénior' },
+  intern: { en: 'Internship', ar: 'تدريب', de: 'Praktikum', fr: 'Stage', es: 'Prácticas' },
+}
+
+/**
+ * Seniority for the card (FK-58). ponytail: derived from the slug, the type and
+ * the original page's years; add a `level` field to Jobs (needs a migration)
+ * when roles stop following that naming.
+ */
+function jobLevel(job: JobDoc, locale: Locale) {
+  if (job.employmentType === 'INTERN') return LEVELS.intern[locale]
+  if (/senior/.test(job.slug) || (sourceDetails[job.slug]?.years ?? 0) >= 5) return LEVELS.senior[locale]
+  return null
+}
+
 export function CareerApplication({ job, dict, locale, kind = 'job' }: {
   job: JobDoc; dict: Dictionary; locale: Locale; kind?: 'job' | 'internship' | 'future'
 }) {
@@ -88,9 +104,14 @@ export function LegacyCareers({ jobs, dict, locale }: { jobs: JobDoc[]; dict: Di
                 <span className={styles.number} style={{ backgroundColor: jobColors[index % jobColors.length] }}>{index + 1}</span>
                 <div className={styles.jobSummary}>
                   <h3><span lang={jobCopyLanguage(job, locale)}><BidiText>{job.title}</BidiText></span>{meta ? <span className={styles.badge}>{meta.urgent ? copy.urgent : copy.new}</span> : null}</h3>
+                  {/* The same fields on every card, in the same order (FK-58). */}
                   <div className={styles.meta}>
-                    {meta?.years ? <span>{copy.experience} <bdi dir="ltr">{meta.years}+</bdi> {copy.years}</span> : <span>{job.location}</span>}
-                    {meta?.positions ? <span>{copy.positions} <bdi>{meta.positions}</bdi></span> : null}
+                    {[
+                      [dict.careers.location, job.location],
+                      [dict.careers.employmentType, dict.careers.employmentTypes[job.employmentType as keyof typeof dict.careers.employmentTypes] ?? job.employmentType],
+                      [copy.experience.replace(/:$/, ''), jobLevel(job, locale)],
+                      [dict.careers.department, job.department],
+                    ].filter(([, value]) => value).map(([label, value]) => <span key={label}><span className="sr-only">{label}: </span>{value}</span>)}
                   </div>
                 </div>
                 <span className={`${styles.applyButton} fk-button fk-button--career`}>{dict.careers.applyNow}<ArrowRightCircle size={16} aria-hidden className="icon-flip" /></span>
@@ -98,8 +119,9 @@ export function LegacyCareers({ jobs, dict, locale }: { jobs: JobDoc[]; dict: Di
               <div className={styles.jobBody}>
                 {/* Apply Now opens the form in place; BotVerification waits until
                     the panel is visible, so closed panels stay cheap. */}
+                {/* One form per page (FK-57): each role applies on its own page. */}
                 <div><CareerDescription job={job} locale={locale} /><Link className={styles.detailsLink} href={localeHref(locale, `/careers/${job.slug}`)}>{copy.fullDetails}</Link></div>
-                <CareerApplication job={job} locale={locale} dict={dict} />
+                <Link className={`${styles.applyButton} fk-button fk-button--career self-start`} href={`${localeHref(locale, `/careers/${job.slug}`)}#apply`}>{dict.careers.applyNow}<ArrowRightCircle size={16} aria-hidden className="icon-flip" /></Link>
               </div>
             </details>
           })} /> : <p>{dict.careers.empty}</p>}
@@ -113,7 +135,10 @@ export function LegacyCareers({ jobs, dict, locale }: { jobs: JobDoc[]; dict: Di
             <p className={styles.subtitle}>{copy[`${kind}Subtitle`]}</p>
             <div className={styles.opportunityCopy}>{copy[`${kind}Body`].split('\n').map((paragraph) => <p key={paragraph}><BidiText>{paragraph}</BidiText></p>)}</div>
           </div>
-          <CareerApplication job={job} locale={locale} dict={dict} kind={kind} />
+          {/* The talent pool keeps the page's only form; the internship applies on its own page (FK-57). */}
+          {kind === 'future'
+            ? <CareerApplication job={job} locale={locale} dict={dict} kind={kind} />
+            : <Link className={`${styles.applyButton} fk-button fk-button--career self-start`} href={`${localeHref(locale, `/careers/${job.slug}`)}#apply`}>{copy.internshipForm}<ArrowRightCircle size={16} aria-hidden className="icon-flip" /></Link>}
         </div>
       </section> : null)}
 

@@ -23,7 +23,8 @@ export async function routeExists(collection: Collection, slug: string, locale: 
       select: { slug: true },
       where: { and: [
         { slug: { equals: slug } }, { _status: { equals: 'published' } },
-        ...(collection === 'posts' && locale !== 'en' ? [{ availableLocales: { contains: locale } }] : []),
+        // Untranslated locale copies are 404s (T-01). Jobs fall back to English with a notice.
+        ...(collection !== 'jobs' && locale !== 'en' ? [{ availableLocales: { contains: locale } }] : []),
       ] },
     })
     const exists = result.docs.length > 0

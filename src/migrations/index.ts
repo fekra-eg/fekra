@@ -20,6 +20,8 @@ import * as migration_20260829_202349_fika_page_blocks from './20260829_202349_f
 import * as migration_20260831_133059_shared_section_block from './20260831_133059_shared_section_block';
 import * as migration_20260927_225525_shared_section_testimonials from './20260927_225525_shared_section_testimonials';
 import * as migration_20261005_204118_blog_html_content from './20261005_204118_blog_html_content';
+import * as migration_20261020_091002_authors from './20261020_091002_authors';
+import * as migration_20261020_120000_s3_object_key from './20261020_120000_s3_object_key';
 
 export const migrations = [
   {
@@ -130,6 +132,16 @@ export const migrations = [
   {
     up: migration_20261005_204118_blog_html_content.up,
     down: migration_20261005_204118_blog_html_content.down,
-    name: '20261005_204118_blog_html_content'
+    name: '20261005_204118_blog_html_content',
+  },
+  {
+    up: migration_20261020_091002_authors.up,
+    down: migration_20261020_091002_authors.down,
+    name: '20261020_091002_authors'
+  },
+  {
+    up: migration_20261020_120000_s3_object_key.up,
+    down: migration_20261020_120000_s3_object_key.down,
+    name: '20261020_120000_s3_object_key',
   },
 ];

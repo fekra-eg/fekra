@@ -711,9 +711,10 @@ export function LogoCloudSection({ block }: { block: BlockProps; locale: Locale 
                     <Image
                       src={mediaUrl(image)}
                       alt={logo.name ?? image.alt ?? ''}
-                      fill
+                      // Intrinsic dimensions in the HTML when the upload has them (T-22).
+                      {...(image.width && image.height ? { width: image.width, height: image.height } : { fill: true })}
                       sizes="(max-width: 640px) 28vw, 160px"
-                      className="fk-art-image object-contain grayscale transition-[filter] duration-200 group-hover/client-logo:grayscale-0 dark:grayscale-0 motion-reduce:transition-none"
+                      className="fk-art-image size-full object-contain grayscale transition-[filter] duration-200 group-hover/client-logo:grayscale-0 dark:grayscale-0 motion-reduce:transition-none"
                     />
                   </span>
                 </li>

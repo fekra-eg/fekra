@@ -2,7 +2,6 @@
 
 import { useDeferredValue, useMemo, useState } from 'react'
 
-import { t } from '@/i18n/format'
 import type { Dictionary } from '@/i18n/getDictionary'
 import type { Locale } from '@/i18n/routing'
 
@@ -41,9 +40,7 @@ export function BlogIndex({
   const liveTopics = topics.filter((topic) => posts.some((post) => matchesTopic(post, topic)))
   const [active, setActive] = useState('all')
   const [query, setQuery] = useState('')
-  const articleWord = locale === 'ar'
-    ? (posts.length === 2 ? 'مقالتين' : posts.length % 100 >= 3 && posts.length % 100 <= 10 ? 'مقالات' : 'مقالة')
-    : posts.length === 1 ? ({ en: 'article', de: 'Artikel', fr: 'article', es: 'artículo' }[locale]) : dict.blog.heroWord
+  const articleWord = articleNoun(posts.length, locale)
   // Keeps typing responsive when the list is long.
   const deferredQuery = useDeferredValue(query)
 
@@ -114,7 +111,7 @@ export function BlogIndex({
         <div className="container-wide">
           {/* Announced so filtering is perceivable without sight (23.4). */}
           <p className="sr-only" role="status" aria-live="polite">
-            {t(dict.blog.resultCount, { count: grid.length })}
+            {grid.length} {articleNoun(grid.length, locale)}
           </p>
 
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
@@ -130,4 +127,17 @@ export function BlogIndex({
       </section>
     </>
   )
+}
+
+/** "1 article", "2 articles", Arabic dual/few — CLDR plural rules, never "1 articles" (T-13). */
+const ARTICLE_NOUN: Record<Locale, Partial<Record<Intl.LDMLPluralRule, string>> & { other: string }> = {
+  en: { one: 'article', other: 'articles' },
+  de: { other: 'Artikel' },
+  fr: { one: 'article', other: 'articles' },
+  es: { one: 'artículo', other: 'artículos' },
+  ar: { two: 'مقالتين', few: 'مقالات', other: 'مقالة' },
+}
+function articleNoun(count: number, locale: Locale) {
+  const forms = ARTICLE_NOUN[locale]
+  return forms[new Intl.PluralRules(locale).select(count)] ?? forms.other
 }

@@ -37,7 +37,7 @@ export type PostDoc = {
   htmlContent?: string | null
   layout?: BlockProps[] | null
   category?: { title?: string; slug?: string } | null
-  author?: { name?: string } | null
+  author?: { name?: string; role?: string | null; bio?: string | null; linkedin?: string | null; photo?: MediaDoc | number | null } | null
   tags?: string[] | null
   relatedPosts?: PostDoc[] | null
   publishedAt?: string | null

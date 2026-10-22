@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { convertLexicalToHTML } from '@payloadcms/richtext-lexical/html'
 import { notFound } from 'next/navigation'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 
@@ -6,10 +7,10 @@ import { JsonLd } from '@/components/JsonLd'
 import { getDictionary } from '@/i18n/getDictionary'
 import { isLocale, localeHref } from '@/i18n/routing'
 import { breadcrumbSchema, jobPostingSchema } from '@/lib/jsonld'
-import { findDoc, findDocs, getGlobal, staticSlugs } from '@/lib/payload'
+import { findDoc, findDocs, staticSlugs } from '@/lib/payload'
 import { buildMetadata, notFoundMetadata } from '@/lib/seo'
 
-import type { JobDoc, SettingsLite } from '../../page-types'
+import type { JobDoc } from '../../page-types'
 import { JobMeta, RoleRow, SectionLabel } from '../parts'
 import { CareerApplication, CareerDescription } from '../LegacyCareers'
 import styles from '../careers.module.css'
@@ -25,14 +26,19 @@ export async function generateStaticParams({ params }: { params: { locale: strin
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }) {
   const { locale, slug } = await params
   if (!isLocale(locale)) return notFoundMetadata
-  const job = await findDoc<JobDoc>('jobs', slug, locale)
+  const [job, dict] = await Promise.all([findDoc<JobDoc>('jobs', slug, locale), getDictionary(locale)])
   if (!job) return notFoundMetadata
 
+  // One pattern for every role (T-11): "<role> – Careers | Fekra Tech". CMS titles
+  // carried their own "| FEKRA Careers" / "| FEKRA Jobs" suffixes.
+  const role = (job.meta?.title ?? job.title).replace(/\s*[|–-]\s*(FEKRA|Fekra\s?Tech)\b.*$/i, '').trim()
+
   return buildMetadata({
-    title: job.meta?.title ?? job.title,
+    title: `${role} – ${dict.careers.title}`,
     description: job.meta?.description ?? job.summary ?? undefined,
     path: `/careers/${slug}`,
     locale,
+    template: 'careers',
     availableLocales: job.availableLocales,
     // A closed role stays reachable but leaves the index (10.9).
     noindex: job.meta?.noindex || job.roleStatus === 'closed',
@@ -44,10 +50,9 @@ export default async function JobPage({ params }: { params: Promise<{ locale: st
   const { locale, slug } = await params
   if (!isLocale(locale)) notFound()
 
-  const [job, dict, settings] = await Promise.all([
+  const [job, dict] = await Promise.all([
     findDoc<JobDoc>('jobs', slug, locale),
     getDictionary(locale),
-    getGlobal<SettingsLite>('site-settings', locale),
   ])
   if (!job) notFound()
 
@@ -146,16 +151,20 @@ export default async function JobPage({ params }: { params: Promise<{ locale: st
             ? [
                 jobPostingSchema({
                   title: job.title,
-                  description: job.summary ?? job.title,
+                  // Google wants the full description as HTML, not the one-line summary (T-04).
+                  description: [job.description, job.requirements, job.benefits]
+                    .filter((data) => data)
+                    .map((data) => convertLexicalToHTML({ data: data!, disableContainer: true }))
+                    .join('') || (job.summary ?? job.title),
                   path: `/careers/${slug}`,
                   locale,
                   publishedAt: job.publishedAt,
                   validThrough: job.validThrough,
                   employmentType: job.employmentType,
                   workModel: job.workModel,
-                  city: job.city ?? job.location,
+                  city: job.city,
                   countryCode: job.countryCode,
-                  organizationName: settings.siteName ?? 'FEKRA',
+                  organizationName: 'Fekra Tech',
                 }),
               ]
             : []),

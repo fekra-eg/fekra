@@ -59,7 +59,7 @@ export function HeaderShell({ children }: { children: ReactNode }) {
       //
       // The strip a shrunken bar leaves behind would swallow clicks meant for
       // the page, hence pointer events off here and back on for the bar.
-      className="group/header pointer-events-none sticky top-0 z-50 h-[var(--header-block)] px-3 pt-4 transition-[padding] duration-[600ms] ease-[var(--ease-morph)] motion-reduce:transition-none data-[scrolled=true]:px-0 data-[scrolled=true]:pt-0 sm:px-5 sm:pt-6 sm:data-[scrolled=true]:px-0 sm:data-[scrolled=true]:pt-0"
+      className="group/header pointer-events-none sticky top-0 z-50 h-[var(--header-block)] px-3 pt-4 max-[359px]:px-1.5 transition-[padding] duration-[600ms] ease-[var(--ease-morph)] motion-reduce:transition-none data-[scrolled=true]:px-0 data-[scrolled=true]:pt-0 sm:px-5 sm:pt-6 sm:data-[scrolled=true]:px-0 sm:data-[scrolled=true]:pt-0"
     >
       <div
         className={[
@@ -67,7 +67,7 @@ export function HeaderShell({ children }: { children: ReactNode }) {
           // narrower bar: roughly 40px of air each side, still capped so it
           // stops growing on very wide monitors.
           'pointer-events-auto mx-auto flex h-16 max-w-[calc(100vw-16px)] items-center justify-between gap-2 rounded-[40px] sm:max-w-[min(1400px,92vw)] sm:gap-6',
-          'border border-transparent bg-white/50 px-3 shadow-[0_1px_4px_0_rgba(25,33,61,0.06)] backdrop-blur-md sm:px-6 dark:bg-card/70',
+          'border border-transparent bg-white/50 px-3 max-[359px]:px-2 shadow-[0_1px_4px_0_rgba(25,33,61,0.06)] backdrop-blur-md sm:px-6 dark:bg-card/70',
           'transition-[max-width,border-radius,background-color,box-shadow,height,padding] duration-[600ms] ease-[var(--ease-morph)] motion-reduce:transition-none',
           // Scrolled: edge to edge, squared off, sitting on a hairline.
           //

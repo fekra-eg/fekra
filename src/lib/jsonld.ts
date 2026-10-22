@@ -33,13 +33,19 @@ export function organizationSchema(settings: {
     name: 'Fekra Tech',
     alternateName: settings.siteName ?? undefined,
     legalName: settings.legalName ?? undefined,
-    description: settings.tagline ?? undefined,
+    // A sentence about the company, not the tagline (T-08).
+    description:
+      'Fekra Tech is a software outsourcing company in Egypt providing vetted developers, dedicated engineering teams and custom software development.',
+    slogan: settings.tagline ?? undefined,
+    foundingDate: '2017',
+    areaServed: [...new Set(settings.offices?.map((o) => o.countryCode).filter(Boolean))],
     url: siteUrl(),
     // On-domain and the same mark as the favicon, so Search shows one brand
     // icon; the CMS upload was an off-site webp (Google wants a crawlable,
     // square raster of at least 112px).
     logo: `${siteUrl()}/icon-512.png`,
-    sameAs: settings.socialProfiles?.map((s) => s.url).filter(Boolean),
+    // Profiles only: a wa.me chat link is not an identity of the organisation (T-08).
+    sameAs: settings.socialProfiles?.map((s) => s.url).filter((url) => url && !/(^|\/\/)(wa\.me|api\.whatsapp\.com)\b/i.test(url)),
     address: hq
       ? {
           '@type': 'PostalAddress',
@@ -95,7 +101,8 @@ export function articleSchema(post: {
   imageUrl?: string | null
   publishedAt?: string | null
   updatedAt?: string | null
-  authorName?: string | null
+  /** FK-38: a real Person; without one the organisation stays the author. */
+  author?: { name: string; jobTitle?: string | null; url?: string | null; image?: string | null } | null
 }) {
   return {
     '@context': 'https://schema.org',
@@ -107,7 +114,17 @@ export function articleSchema(post: {
     inLanguage: post.locale,
     datePublished: post.publishedAt ?? undefined,
     dateModified: post.updatedAt ?? post.publishedAt ?? undefined,
-    author: post.authorName ? { '@type': 'Person', name: post.authorName } : { '@id': `${siteUrl()}/#organization` },
+    author: post.author
+      ? {
+          '@type': 'Person',
+          name: post.author.name,
+          jobTitle: post.author.jobTitle ?? undefined,
+          url: post.author.url ?? `${absoluteUrl(post.path, post.locale)}#author`,
+          sameAs: post.author.url ? [post.author.url] : undefined,
+          image: post.author.image ?? undefined,
+          worksFor: { '@id': `${siteUrl()}/#organization` },
+        }
+      : { '@id': `${siteUrl()}/#organization` },
     publisher: { '@id': `${siteUrl()}/#organization` },
   }
 }
@@ -143,6 +160,8 @@ export function jobPostingSchema(job: {
   const datePosted = job.publishedAt ?? new Date().toISOString()
   const validThrough =
     job.validThrough ?? new Date(new Date(datePosted).getTime() + 90 * 864e5).toISOString()
+  const remote = job.workModel === 'remote'
+  const country = job.countryCode ? new Intl.DisplayNames('en', { type: 'region' }).of(job.countryCode) : undefined
 
   return {
     '@context': 'https://schema.org',
@@ -153,20 +172,26 @@ export function jobPostingSchema(job: {
     datePosted,
     validThrough,
     employmentType: job.employmentType ?? 'FULL_TIME',
-    hiringOrganization: { '@type': 'Organization', name: job.organizationName, sameAs: siteUrl() },
-    jobLocationType: job.workModel === 'remote' ? 'TELECOMMUTE' : undefined,
-    // Google rejects a TELECOMMUTE posting without the country it hires from.
-    applicantLocationRequirements: job.workModel === 'remote' && job.countryCode
-      ? { '@type': 'Country', name: job.countryCode }
-      : undefined,
-    jobLocation: {
-      '@type': 'Place',
-      address: {
-        '@type': 'PostalAddress',
-        addressLocality: job.city ?? undefined,
-        addressCountry: job.countryCode ?? undefined,
-      },
+    hiringOrganization: {
+      '@type': 'Organization',
+      name: job.organizationName,
+      sameAs: siteUrl(),
+      logo: new URL('/icon-512.png', siteUrl()).toString(),
     },
+    jobLocationType: remote ? 'TELECOMMUTE' : undefined,
+    // Google rejects a TELECOMMUTE posting without the country it hires from (T-04).
+    applicantLocationRequirements: remote && country ? { '@type': 'Country', name: country } : undefined,
+    // A remote role has no workplace; never a fake "100% Remote — Egypt" locality.
+    jobLocation: remote
+      ? undefined
+      : {
+          '@type': 'Place',
+          address: {
+            '@type': 'PostalAddress',
+            addressLocality: job.city ?? undefined,
+            addressCountry: job.countryCode ?? undefined,
+          },
+        },
   }
 }
 

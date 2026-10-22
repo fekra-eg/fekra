@@ -1,4 +1,4 @@
-import { type Locale, localeHref } from '@/i18n/routing'
+import { DEFAULT_LOCALE, type Locale, localeHref, servesLocale } from '@/i18n/routing'
 import { documentHref, type LinkableCollection } from './urls'
 import { BOOKING_URL } from './booking'
 
@@ -9,7 +9,7 @@ export type PayloadLink = {
   url?: string | null
   newTab?: boolean | null
   analyticsId?: string | null
-  reference?: { relationTo: string; value: { slug?: string } | string } | null
+  reference?: { relationTo: string; value: { slug?: string; availableLocales?: string[] | null } | string } | null
 }
 
 export type ResolvedLink = {
@@ -52,9 +52,15 @@ export function resolveLink(link: PayloadLink | null | undefined, locale: Locale
   if (!slug) return null
   if (ref.relationTo === 'pages' && slug === 'meeting') return { ...common, href: BOOKING_URL, external: true }
 
+  // An untranslated page or service 404s in this locale (T-01): link its English page.
+  // Jobs fall back to English in place; coded routes serve every locale.
+  const translated =
+    typeof ref.value === 'string' || ref.relationTo === 'jobs' || (ref.relationTo === 'pages' && ['home', 'contact'].includes(slug)) ||
+    !('availableLocales' in ref.value) || servesLocale(ref.value.availableLocales, locale)
+
   return {
     ...common,
-    href: documentHref(ref.relationTo as LinkableCollection, slug, locale),
+    href: documentHref(ref.relationTo as LinkableCollection, slug, translated ? locale : DEFAULT_LOCALE),
     external: false,
   }
 }

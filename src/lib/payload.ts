@@ -5,10 +5,11 @@ import { draftMode } from 'next/headers'
 import { getPayload, type SelectType, type Where } from 'payload'
 import configPromise from '@payload-config'
 
-import type { Locale } from '@/i18n/routing'
+import { DEFAULT_LOCALE, PUBLIC_LOCALES, servesLocale, type Locale, type LocaleAvailability } from '@/i18n/routing'
 import { correctQaDocument } from '@/i18n/qa-copy'
 import { localizeJobLocation } from '@/i18n/job-copy'
 import { isComingSoon } from './site-mode'
+import { documentPath } from './urls'
 
 /** One Payload instance per server process. */
 export const payloadClient = async () => getPayload({ config: configPromise })
@@ -169,6 +170,8 @@ export async function staticSlugs(
       limit,
       depth: 0,
       select: { slug: true },
+      // Untranslated locale copies are 404s (T-01); do not prerender them.
+      where: locale !== DEFAULT_LOCALE && (collection === 'services' || collection === 'pages') ? { availableLocales: { contains: locale } } : {},
     })
     return docs.map(({ slug }) => ({ slug }))
   } catch (error) {
@@ -176,3 +179,30 @@ export async function staticSlugs(
     return []
   }
 }
+
+/** Coded routes that read a CMS page for content but serve every locale. */
+const CODED_PAGES = new Set(['home', 'contact', 'meeting'])
+
+/**
+ * Pages and services that are not served in every public locale, keyed by
+ * path. Links and the language switcher use it to point at the English page
+ * instead of a locale URL that 404s (T-01).
+ */
+export const localeAvailability = cache(async function localeAvailability(): Promise<LocaleAvailability> {
+  const map: LocaleAvailability = {}
+  for (const collection of ['pages', 'services'] as const) {
+    const { docs } = await findDocs<{ slug: string; availableLocales?: string[] | null }>({
+      collection,
+      locale: DEFAULT_LOCALE,
+      limit: 500,
+      depth: 0,
+      select: { slug: true, availableLocales: true },
+    })
+    for (const doc of docs) {
+      if (collection === 'pages' && CODED_PAGES.has(doc.slug)) continue
+      const locales = PUBLIC_LOCALES.filter((l) => servesLocale(doc.availableLocales, l))
+      if (locales.length < PUBLIC_LOCALES.length) map[documentPath(collection, doc.slug)] = locales
+    }
+  }
+  return map
+})

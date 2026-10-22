@@ -54,6 +54,24 @@ export function localeHref(locale: Locale, pathname = '/'): string {
   return locale === DEFAULT_LOCALE ? clean || '/' : `/${locale}${clean}`
 }
 
+/** Is a document with these `availableLocales` served in `locale`? Missing means English only. */
+export function servesLocale(availableLocales: readonly string[] | null | undefined, locale: Locale): boolean {
+  return (availableLocales?.length ? availableLocales : [DEFAULT_LOCALE]).includes(locale)
+}
+
+/** Path → the locales its document is served in, for documents missing some public locale (T-01). */
+export type LocaleAvailability = Record<string, Locale[]>
+
+/**
+ * localeHref, except a document with no `locale` translation links to its
+ * English page: untranslated locale URLs are 404s, never English copy under a
+ * German URL (T-01).
+ */
+export function availableHref(locale: Locale, path: string, availability?: LocaleAvailability): string {
+  const only = availability?.[path]
+  return localeHref(only && !only.includes(locale) ? DEFAULT_LOCALE : locale, path)
+}
+
 /** Inverse of localeHref: split an incoming pathname into locale + rest. */
 export function splitLocale(pathname: string): { locale: Locale; rest: string } {
   const [, maybe, ...others] = pathname.split('/')

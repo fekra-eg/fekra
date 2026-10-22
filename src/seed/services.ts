@@ -277,7 +277,7 @@ export async function seedApprovedServices(payload: PayloadLike, layoutFactory: 
         tone: family.tone,
         body:
           `${child.summary}\n` +
-          `FEKRA selects ${child.title.replace(/^Hire /, '').toLowerCase()} around your stack, delivery goals, collaboration hours, and preferred engagement model.\n` +
+          `FEKRA selects ${child.title.replace(/^Hire /, '')} around your stack, delivery goals, collaboration hours, and preferred engagement model.\n` +
           'Start with an individual specialist or a complete team, with recruitment, onboarding, HR, equipment, and ongoing support managed for you.',
       }
       const saved = await upsertService(payload, child.slug, {

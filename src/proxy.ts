@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server'
 
-import { DEFAULT_LOCALE, LOCALES, isLocale, isPublicLocale, negotiateLocale } from '@/i18n/routing'
+import { DEFAULT_LOCALE, LOCALES, isLocale, isPublicLocale } from '@/i18n/routing'
 import { isLocaleDocumentRequest } from '@/i18n/navigation'
 import { isComingSoon } from '@/lib/site-mode'
 import { cmsRoute, routeExists } from '@/lib/route-existence'
@@ -9,27 +9,11 @@ import { dir, localeHref } from '@/i18n/routing'
 
 const LOCALE_COOKIE = 'NEXT_LOCALE'
 
-/**
- * Remember the locale the visitor is actually looking at — but only on a real
- * page load. The language switcher warms every other locale with
- * router.prefetch(), and those background requests come through here too: when
- * they write the cookie, the last prefetch to land decides where "/" goes, so
- * an explicit language choice is silently overwritten a moment after the click.
- *
- * `sec-fetch-dest` is the only signal that can tell them apart — Next strips
- * its own flight headers (rsc, next-router-prefetch) before the proxy runs. A
- * navigation is `document`; a prefetch or client-side RSC fetch is `empty`.
- * Clients that send no such header (curl, pre-16.4 Safari) count as
- * navigations, which is the old behaviour. Switching still sticks without a
- * document request: LanguageSwitcher writes the cookie itself on click.
+/*
+ * The proxy never writes NEXT_LOCALE. A Set-Cookie on an HTML response makes
+ * the CDN refuse to cache it (DEV-02), and LanguageSwitcher already keeps the
+ * cookie in step with the page on screen, client-side.
  */
-function remember(response: NextResponse, locale: string, request: NextRequest) {
-  if (!isLocaleDocumentRequest(request.headers)) return response
-  // Re-setting an unchanged cookie still counts as a change and bars the page from the back/forward cache.
-  if (request.cookies.get(LOCALE_COOKIE)?.value === locale) return response
-  response.cookies.set(LOCALE_COOKIE, locale, { path: '/', sameSite: 'lax', maxAge: 31536000 })
-  return response
-}
 
 /**
  * Holding-page mode. Opt-in via env so it can never switch itself on at launch:
@@ -124,25 +108,24 @@ export default async function proxy(request: NextRequest) {
 
   // Already a prefixed locale (/ar/..., /de/...) — render as-is.
   if (isLocale(segment) && segment !== DEFAULT_LOCALE) {
-    return withGuards(remember(NextResponse.next({ request: { headers: requestHeaders } }), segment, request), request)
+    return withGuards(NextResponse.next({ request: { headers: requestHeaders } }), request)
   }
 
-  // Bare "/" with a remembered or negotiated non-default locale -> send there once.
+  /*
+   * Bare "/" goes to another locale only when the visitor chose it before (the
+   * switcher's NEXT_LOCALE cookie). Accept-Language never forces a redirect
+   * (DEV-11): the browser language is a guess, and crawlers carry no cookies,
+   * so they always get the English home they asked for.
+   */
   if (pathname === '/' && isLocaleDocumentRequest(request.headers)) {
     const remembered = request.cookies.get(LOCALE_COOKIE)?.value
-    const preferred = isLocale(remembered)
-      ? remembered
-      : negotiateLocale(request.headers.get('accept-language'))
-    if (preferred !== DEFAULT_LOCALE && isPublicLocale(preferred)) {
-      return withGuards(NextResponse.redirect(new URL(`/${preferred}${search}`, request.url), 307), request)
+    if (isLocale(remembered) && remembered !== DEFAULT_LOCALE && isPublicLocale(remembered)) {
+      return withGuards(NextResponse.redirect(new URL(`/${remembered}${search}`, request.url), 307), request)
     }
   }
 
   // Unprefixed path -> render the English tree without changing the visible URL.
-  // Remember the default locale too — otherwise a stale /ar cookie bounces "/"
-  // back to Arabic forever and switching to English never sticks.
-  const response = NextResponse.rewrite(new URL(`/${DEFAULT_LOCALE}${pathname}${search}`, request.url), { request: { headers: requestHeaders } })
-  return withGuards(remember(response, DEFAULT_LOCALE, request), request)
+  return withGuards(NextResponse.rewrite(new URL(`/${DEFAULT_LOCALE}${pathname}${search}`, request.url), { request: { headers: requestHeaders } }), request)
 }
 
 async function notFoundResponse(locale: typeof DEFAULT_LOCALE | 'ar' | 'de' | 'fr' | 'es', status: 404 | 410 = 404) {

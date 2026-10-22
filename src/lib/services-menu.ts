@@ -1,6 +1,6 @@
 import arabicServices from '@/i18n/dictionaries/ar-services.json'
 import serviceLabels from '@/i18n/dictionaries/services-labels.json'
-import type { Locale } from '@/i18n/routing'
+import { availableHref, type Locale, type LocaleAvailability } from '@/i18n/routing'
 import type { ServicesMenu } from '@/components/layout/Header'
 
 type Service = { slug: string; title: string; menuRoles?: { label: string }[] | null }
@@ -180,7 +180,7 @@ const slugify = (title: string) =>
   title.toLowerCase().replace(/\.net/g, 'dotnet').replace(/\./g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
 
 /** Explicit groups follow the approved comp independently of the CMS taxonomy. */
-export function buildServicesMenu(services: Service[], locale: Locale): ServicesMenu {
+export function buildServicesMenu(services: Service[], locale: Locale, availability?: LocaleAvailability): ServicesMenu {
   const bySlug = new Map(services.map((service) => [service.slug, service]))
   // A role links to its own page when one is published, else to its group —
   // the menu used to send ~70 links to 8 pages (FK-24/27). Takes the English
@@ -189,7 +189,11 @@ export function buildServicesMenu(services: Service[], locale: Locale): Services
     const tech = englishTitle.replace(/ (Developers?|Engineers)$/, '')
     return [ROLE_SLUGS[tech], `hire-${slugify(englishTitle)}`].find((slug) => slug && bySlug.has(slug)) ?? fallback
   }
-  return groups.flatMap((group) => {
+  const href = (slug: string) => availableHref(locale, `/services/${slug}`, availability)
+  // English labels are the page's own title, so one page never has two names (FK-25).
+  const label = (slug: string, fallback: string) => (locale === 'en' ? bySlug.get(slug)?.title ?? fallback : fallback)
+
+  const menu = groups.flatMap((group) => {
     const service = bySlug.get(group.slug)
     if (!service) return []
     if (locale === 'ar') {
@@ -224,4 +228,31 @@ export function buildServicesMenu(services: Service[], locale: Locale): Services
         })
     return [{ title: service.title, slug: service.slug, roles }]
   })
+
+  /*
+   * Each URL once (FK-25). Group headings own their slug; a role that falls
+   * back to its group, or also sits in a specific group, is dropped. The
+   * catch-all "In-Demand" group yields to the specific groups, so it is
+   * deduplicated last.
+   */
+  const seen = new Set(menu.map((group) => group.slug))
+  const order = [...menu.filter((g) => g.slug !== 'hire-in-demand-developers'), ...menu.filter((g) => g.slug === 'hire-in-demand-developers')]
+  const kept = new Map(
+    order.map((group) => [
+      group.slug,
+      group.roles.filter((role) => !seen.has(role.slug) && seen.add(role.slug)),
+    ]),
+  )
+  return menu.map((group) => ({
+    title: group.title,
+    slug: group.slug,
+    href: href(group.slug),
+    roles: kept.get(group.slug)!.map((role) => ({ title: label(role.slug, role.title), slug: role.slug, href: href(role.slug) })),
+  }))
+}
+
+/** Other roles in the same approved menu group: React relates to Angular and Vue, not Yii (T-17). */
+export function relatedRoleSlugs(services: Service[], slug: string): string[] | null {
+  const group = buildServicesMenu(services, 'en').find((g) => g.roles.some((role) => role.slug === slug))
+  return group ? group.roles.map((role) => role.slug).filter((other) => other !== slug) : null
 }

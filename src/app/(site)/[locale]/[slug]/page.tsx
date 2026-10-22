@@ -4,7 +4,7 @@ import { sitelinkCopy } from '@/i18n/qa-copy'
 import { RenderBlocks } from '@/components/blocks/RenderBlocks'
 import { JsonLd } from '@/components/JsonLd'
 import { getDictionary } from '@/i18n/getDictionary'
-import { isLocale } from '@/i18n/routing'
+import { isLocale, servesLocale } from '@/i18n/routing'
 import { breadcrumbSchema } from '@/lib/jsonld'
 import { findDoc, getGlobal, staticSlugs } from '@/lib/payload'
 import { buildMetadata, notFoundMetadata } from '@/lib/seo'
@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale, slug } = await params
   if (!isLocale(locale)) return notFoundMetadata
   const page = await findDoc<PageDoc>('pages', slug, locale)
-  if (!page) return notFoundMetadata
+  if (!page || !servesLocale(page.availableLocales, locale)) return notFoundMetadata
 
   return buildMetadata({
     title: page.meta?.title ?? page.title,
@@ -49,7 +49,8 @@ export default async function CmsPage({ params }: { params: Promise<{ locale: st
     getGlobal<SettingsLite>('site-settings', locale),
   ])
 
-  if (!page) notFound()
+  // No translation for this locale: 404, not English copy under a locale URL (T-01).
+  if (!page || !servesLocale(page.availableLocales, locale)) notFound()
 
   return (
     <>

@@ -16,7 +16,7 @@ import { ThemeProvider } from '@/components/theme/ThemeProvider'
 import { getDictionary } from '@/i18n/getDictionary'
 import { PUBLIC_LOCALES, dir, isLocale, localeHref } from '@/i18n/routing'
 import { organizationSchema, websiteSchema } from '@/lib/jsonld'
-import { findDocs, getGlobal } from '@/lib/payload'
+import { findDocs, getGlobal, localeAvailability } from '@/lib/payload'
 import { isComingSoon } from '@/lib/site-mode'
 import { inter, plexArabic, tajawal, urbanist } from '@/fonts'
 import { siteUrl } from '@/lib/urls'
@@ -74,7 +74,7 @@ export default async function SiteLayout({
   const { locale } = await params
   if (!isLocale(locale)) notFound()
 
-  const [dict, header, footer, settings, servicesDocs] = await Promise.all([
+  const [dict, header, footer, settings, servicesDocs, availability] = await Promise.all([
     getDictionary(locale),
     getGlobal<HeaderData>('header', locale),
     getGlobal<FooterData>('footer', locale),
@@ -95,9 +95,10 @@ export default async function SiteLayout({
       // destinations need. Role links point at their SEO pages, not the parent.
       select: { title: true, slug: true, parent: true, menuRoles: true, order: true },
     }),
+    localeAvailability(),
   ])
 
-  const servicesMenu = buildServicesMenu(servicesDocs.docs, locale)
+  const servicesMenu = buildServicesMenu(servicesDocs.docs, locale, availability)
   const siteName = settings.siteName ?? 'FEKRA'
 
   return (
@@ -136,6 +137,7 @@ export default async function SiteLayout({
             dict={dict}
             siteName={siteName}
             servicesMenu={servicesMenu}
+            availability={availability}
           />
 
           <main id="main"><LocaleStatusProvider messages={{ loading: dict.common.loading, error: dict.error }}>{children}</LocaleStatusProvider></main>
@@ -147,11 +149,12 @@ export default async function SiteLayout({
             siteName={siteName}
             offices={settings.offices}
             socials={settings.socialProfiles}
+            availability={availability}
           />
 
           <WebMcpTools localePrefix={localeHref(locale, '/').replace(/\/$/, '')} />
           <TalkToFika locale={locale} dict={dict} consentRequired={(settings.consentMode ?? 'opt-in') === 'opt-in'} />
-          <ConsentBanner dict={dict} locale={locale} enabled={(settings.consentMode ?? 'opt-in') === 'opt-in'} />
+          <ConsentBanner dict={dict} locale={locale} enabled={(settings.consentMode ?? 'opt-in') === 'opt-in'} availability={availability} />
           <Analytics
             gtmId={settings.gtmContainerId}
             ga4Id={settings.ga4MeasurementId || 'G-C39M5MW6D8'}

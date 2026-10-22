@@ -7,7 +7,7 @@ import { batchTwo } from '@/i18n/batch-two'
 
 
 import type { Dictionary } from '@/i18n/getDictionary'
-import { type Locale, localeHref } from '@/i18n/routing'
+import { availableHref, type Locale, type LocaleAvailability, localeHref } from '@/i18n/routing'
 import { resolveLink, type PayloadLink } from '@/lib/resolveLink'
 
 /*
@@ -79,6 +79,7 @@ export function Footer({
   siteName,
   offices,
   socials,
+  availability,
 }: {
   data: FooterData
   locale: Locale
@@ -86,15 +87,16 @@ export function Footer({
   siteName: string
   offices?: Office[] | null
   socials?: { platform: string; url: string }[] | null
+  availability?: LocaleAvailability
 }) {
   const labels = batchTwo[locale]
   // FK-83: "FEKRA on LinkedIn" in the page language, not the raw platform key.
   const socialLabel = (platform: string) =>
     `${siteName} ${SOCIAL_ON[locale]} ${SOCIAL_NAME[platform.toLowerCase()] ?? platform}`
   const requiredLegal = [
-    { href: localeHref(locale, '/privacy-policy'), label: labels.privacy },
-    { href: localeHref(locale, '/terms-and-conditions'), label: labels.terms },
-    { href: localeHref(locale, '/cookie-policy'), label: labels.cookies },
+    { href: availableHref(locale, '/privacy-policy', availability), label: labels.privacy },
+    { href: availableHref(locale, '/terms-and-conditions', availability), label: labels.terms },
+    { href: availableHref(locale, '/cookie-policy', availability), label: labels.cookies },
   ]
   const legal = [...requiredLegal, ...(data.legalLinks ?? []).map((l) => resolveLink(l.link, locale)).filter((link) => link && !requiredLegal.some((required) => required.href === link.href))]
   // The comp's "Contact Us" column is the head office's phone and email.
@@ -143,9 +145,9 @@ export function Footer({
 
         {offices?.length ? (
           <div>
-            <h2 className="font-display text-sm font-bold tracking-[0.35px] text-navy-800 dark:text-foreground">
+            <p className="font-display text-sm font-bold tracking-[0.35px] text-navy-800 dark:text-foreground">
               {dict.contact.offices}
-            </h2>
+            </p>
             <ul className="mt-4 flex flex-col gap-3 text-sm text-muted-foreground">
               {offices.map((office) => (
                 <li key={`${office.city}-${office.country}`}>
@@ -159,9 +161,9 @@ export function Footer({
 
         {contact ? (
           <div>
-            <h2 className="font-display text-sm font-bold tracking-[0.35px] text-navy-800 dark:text-foreground">
+            <p className="font-display text-sm font-bold tracking-[0.35px] text-navy-800 dark:text-foreground">
               {dict.nav.contact}
-            </h2>
+            </p>
             <ul className="mt-2 flex flex-col text-sm text-muted-foreground">
               {contact.phone ? (
                 <li>
@@ -183,7 +185,7 @@ export function Footer({
 
         {(data.columns ?? []).map((column) => (
           <nav key={column.title} aria-label={column.title}>
-            <h2 className="font-display text-sm font-bold tracking-[0.35px] text-navy-800 dark:text-foreground">{column.title}</h2>
+            <p className="font-display text-sm font-bold tracking-[0.35px] text-navy-800 dark:text-foreground">{column.title}</p>
             <ul className="mt-4 flex flex-col gap-3">
               {(column.links ?? []).map((entry) => {
                 const link = resolveLink(entry.link, locale)
@@ -214,9 +216,9 @@ export function Footer({
             />
             <div>
               {data.newsletter.heading ? (
-                <h2 className="font-display text-xl leading-snug font-bold text-navy-800 dark:text-foreground">
+                <p className="font-display text-xl leading-snug font-bold text-navy-800 dark:text-foreground">
                   {data.newsletter.heading}
-                </h2>
+                </p>
               ) : null}
               {data.newsletter.body ? (
                 <p className="mt-2 text-sm text-muted-foreground">{data.newsletter.body}</p>
@@ -246,7 +248,7 @@ export function Footer({
                   </Link>
                 </li>
               ))}
-              <li><CookiePreferences locale={locale} className={LEGAL_LINK} /></li>
+              <li><CookiePreferences locale={locale} className={LEGAL_LINK} availability={availability} /></li>
             </ul>
             {socials?.length ? (
               <ul className="hidden items-center gap-5 md:flex">
