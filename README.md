@@ -109,6 +109,7 @@ response, never on render, so a refresh cannot double-count (11.7 / 22.6).
 
 ## Documentation
 
+- `docs/cms-guide/README.md` — illustrated CMS user manual in PDF, editable Word, and Markdown
 - `docs/HANDOVER.md` — environments, deploy, integrations, CMS workflow, backups, ownership (25.9)
 - `docs/QA-MAP.md` — every checklist section mapped to where it is implemented and how to verify it
 - `postman/README.md` — API test collection: newsletter, contact, careers application, CMS auth and the publish lifecycle
