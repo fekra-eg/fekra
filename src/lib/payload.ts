@@ -26,6 +26,10 @@ type FindArgs = {
   /** Column allow-list. Skips the block-table joins entirely — the full-layout
       query for a list of services is heavy enough to hit statement timeouts. */
   select?: SelectType
+  /** Read the latest draft when draft mode is on. Only single-document reads
+      (findDoc) set this: a preview cookie outlives the preview, and lists read
+      as drafts put every untitled draft on /blog, the teasers and the menus. */
+  preview?: boolean
 }
 
 /**
@@ -55,8 +59,9 @@ export async function findDocs<T = unknown>({
   sort,
   depth = 1,
   select,
+  preview = false,
 }: FindArgs): Promise<{ docs: T[] }> {
-  const draft = await isDraft()
+  const draft = preview && (await isDraft())
   const payload = await payloadClient()
 
   // Only draft-enabled collections have a queryable `_status`; asking for it on
@@ -131,6 +136,7 @@ export const findDoc = cache(async function findDoc<T = unknown>(
     limit: 1,
     depth,
     where: { slug: { equals: slug } },
+    preview: true,
   })
   return docs[0] ?? null
 })
