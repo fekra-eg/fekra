@@ -229,30 +229,18 @@ export function buildServicesMenu(services: Service[], locale: Locale, availabil
     return [{ title: service.title, slug: service.slug, roles }]
   })
 
-  /*
-   * Each URL once (FK-25). Group headings own their slug; a role that falls
-   * back to its group, or also sits in a specific group, is dropped. The
-   * catch-all "In-Demand" group yields to the specific groups, so it is
-   * deduplicated last.
-   */
-  const seen = new Set(menu.map((group) => group.slug))
-  const order = [...menu.filter((g) => g.slug !== 'hire-in-demand-developers'), ...menu.filter((g) => g.slug === 'hire-in-demand-developers')]
-  const kept = new Map(
-    order.map((group) => [
-      group.slug,
-      group.roles.filter((role) => !seen.has(role.slug) && seen.add(role.slug)),
-    ]),
-  )
+  // The approved comp repeats roles across groups (In-Demand cross-links the
+  // popular ones), so every group keeps its full list.
   return menu.map((group) => ({
     title: group.title,
     slug: group.slug,
     href: href(group.slug),
-    roles: kept.get(group.slug)!.map((role) => ({ title: label(role.slug, role.title), slug: role.slug, href: href(role.slug) })),
+    roles: group.roles.map((role) => ({ title: label(role.slug, role.title), slug: role.slug, href: href(role.slug) })),
   }))
 }
 
 /** Other roles in the same approved menu group: React relates to Angular and Vue, not Yii (T-17). */
 export function relatedRoleSlugs(services: Service[], slug: string): string[] | null {
   const group = buildServicesMenu(services, 'en').find((g) => g.roles.some((role) => role.slug === slug))
-  return group ? group.roles.map((role) => role.slug).filter((other) => other !== slug) : null
+  return group ? [...new Set(group.roles.map((role) => role.slug))].filter((other) => other !== slug && other !== group.slug) : null
 }
