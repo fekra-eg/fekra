@@ -77,14 +77,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Paths that a coded route owns. A CMS page with the same slug (`contact`)
   // only supplies that route's content — emitting it again from the pages
   // collection put the URL in the sitemap twice (1.11 / 18.5).
-  // The approved sitelinks — Services, About, Blog, Contact, Careers — sit
+  // The approved sitelinks — About, Blog, Contact, Careers — sit
   // directly under the homepage; everything else ranks below them.
   // Every entry carries a real lastmod (T-14): a listing changes when anything it lists does.
   const latest = (docs: Indexable[]) =>
     docs.map((d) => d.updatedAt).filter((d): d is string => Boolean(d)).sort().at(-1)
   const pageUpdated = (slug: string) => pages.find((p) => p.slug === slug)?.updatedAt
   const LISTINGS: [path: string, priority: number, lastModified: string | undefined][] = [
-    ['/services', 0.9, latest(services)],
     ['/blog', 0.9, latest(posts)],
     ['/contact', 0.9, pageUpdated('contact')],
     ['/careers', 0.9, latest(jobs)],

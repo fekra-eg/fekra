@@ -90,7 +90,7 @@ export function ConsultationForm({
   }
 
   const input =
-    'w-full border-b border-[#bcbcbc] bg-transparent px-2 py-3 text-sm text-ink-900 placeholder:text-ink-900/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring dark:border-input dark:text-foreground dark:placeholder:text-muted-foreground'
+    'w-full border-b border-[#bcbcbc] bg-transparent px-2 py-2.5 text-sm text-ink-900 placeholder:text-ink-900/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring dark:border-input dark:text-foreground dark:placeholder:text-muted-foreground'
   const messageFor = (field: string) => errors[field] ? dict.form.errors[errors[field] as keyof typeof dict.form.errors] ?? dict.form.error : undefined
 
   return (
@@ -102,7 +102,7 @@ export function ConsultationForm({
           {dict.form.success}
         </p>
       ) : (
-        <form method="post" action="/api/contact" onSubmit={onSubmit} onChange={onFieldEvent} onBlur={onFieldEvent} noValidate className="@container mt-4 flex flex-col gap-2">
+        <form method="post" action="/api/contact" onSubmit={onSubmit} onChange={onFieldEvent} onBlur={onFieldEvent} noValidate className="@container mt-3 flex flex-col gap-1">
           {/* Honeypot — hidden from users and screen readers, irresistible to bots. */}
           <div aria-hidden hidden>
             <label htmlFor="consult-website">Website</label>
@@ -119,12 +119,12 @@ export function ConsultationForm({
             {(props) => <input {...props} name="phone" type="tel" autoComplete="tel" dir="ltr" className={input} />}
           </Field>
 
-          <fieldset className="mt-4" aria-describedby={errors.model ? 'consult-model-error' : undefined}>
-            <legend className="text-base text-ink-900 dark:text-foreground">{dict.form.hiringModel}</legend>
-            <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2">
+          <fieldset className="mt-3" aria-describedby={errors.model ? 'consult-model-error' : undefined}>
+            <legend className="text-sm font-medium text-ink-900 dark:text-foreground">{dict.form.hiringModel}</legend>
+            <div className="mt-1 flex flex-wrap gap-x-4">
               {MODELS.map((model) => (
-                <label key={model} className="flex min-h-11 items-center gap-2 text-sm text-ink-900 dark:text-foreground">
-                  <input type="radio" name="model" required value={{ fullTime: 'Full Time', partTime: 'Part Time', hourly: 'Hourly Time' }[model]} className="size-[18px] accent-primary" />
+                <label key={model} className="flex min-h-8 items-center gap-1.5 text-sm text-ink-900 dark:text-foreground">
+                  <input type="radio" name="model" required value={{ fullTime: 'Full Time', partTime: 'Part Time', hourly: 'Hourly Time' }[model]} className="size-4 accent-primary" />
                   {dict.form.hiringModels[model]}
                 </label>
               ))}
@@ -132,8 +132,8 @@ export function ConsultationForm({
             {errors.model ? <p id="consult-model-error" role="alert" className="text-sm text-danger-600">{messageFor('model')}</p> : null}
           </fieldset>
 
-          <label className="mt-4 flex min-h-11 items-start gap-3 text-sm text-muted-foreground">
-            <input type="checkbox" name="consent" aria-invalid={Boolean(errors.consent)} aria-describedby={errors.consent ? 'consult-consent-error' : undefined} required className="mt-0.5 size-5 shrink-0" />
+          <label className="mt-1 flex items-start gap-2 py-1 text-xs/5 text-muted-foreground">
+            <input type="checkbox" name="consent" aria-invalid={Boolean(errors.consent)} aria-describedby={errors.consent ? 'consult-consent-error' : undefined} required className="mt-0.5 size-4 shrink-0" />
             <span>{dict.form.consent}</span>
           </label>
           {errors.consent ? <p id="consult-consent-error" role="alert" className="text-sm text-danger-600">{messageFor('consent')}</p> : null}
@@ -144,11 +144,11 @@ export function ConsultationForm({
             </p>
           ) : null}
 
-          <BotVerification key={verification} locale={locale} action="consultation" onReady={setBotReady} error={errors.botToken} />
+          <BotVerification key={verification} locale={locale} action="consultation" onReady={setBotReady} error={errors.botToken} compact />
           <button
             type="submit"
             disabled={status === 'sending' || !valid || !botReady}
-            className="fk-button fk-button--primary mt-4 min-h-11 w-full rounded-[10px] bg-primary text-base text-primary-foreground transition-colors disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+            className="fk-button fk-button--primary mt-3 min-h-11 w-full rounded-[10px] bg-primary text-base text-primary-foreground transition-colors disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
           >
             {status === 'sending' ? dict.form.submitting : dict.form.hireDevelopers}
           </button>

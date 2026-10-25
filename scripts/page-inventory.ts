@@ -29,7 +29,6 @@ type Doc = {
 const CODED: Record<string, string> = {
   '/': 'app/(site)/[locale]/page.tsx + CMS Pages/home',
   '/blog': 'app/(site)/[locale]/blog/page.tsx (lists CMS Posts)',
-  '/services': 'app/(site)/[locale]/services/page.tsx (lists CMS Services)',
   '/careers': 'app/(site)/[locale]/careers/page.tsx (lists CMS Jobs)',
   '/contact': 'app/(site)/[locale]/contact/page.tsx + CMS Pages/contact',
   '/meeting': 'app/(site)/[locale]/meeting/page.tsx + Site Settings',
@@ -101,7 +100,7 @@ const run = async () => {
   push(jobs, 'jobs')
 
   // Listing routes have no CMS document of their own.
-  for (const path of ['/blog', '/services', '/careers', '/meeting']) {
+  for (const path of ['/blog', '/careers', '/meeting']) {
     if (!rows.some((r) => r.path === path)) {
       rows.push({
         path,

@@ -33,8 +33,13 @@ const services = slugs.map((slug) => ({
 
 for (const locale of ['en', 'ar', 'de'] as const) {
   const menu = buildServicesMenu(services, locale, availability)
-  const hrefs = menu.flatMap((group) => [group.href, ...group.roles.map((role) => role.href)])
-  assert.equal(new Set(hrefs).size, hrefs.length, `duplicate menu href in ${locale}: ${hrefs}`)
+  // Role pages may repeat across groups (In-Demand cross-links them); within a
+  // group each link appears once, and no role repeats its own heading.
+  for (const group of menu) {
+    const hrefs = group.roles.map((role) => role.href)
+    assert.equal(new Set(hrefs).size, hrefs.length, `duplicate role href in ${locale} ${group.slug}: ${hrefs}`)
+    assert.ok(!hrefs.includes(group.href), `role repeats its heading in ${locale} ${group.slug}: ${hrefs}`)
+  }
   const react = menu.flatMap((g) => g.roles).find((role) => role.slug === 'hire-react-developers')
   assert.equal(react?.href, locale === 'de' ? '/services/hire-react-developers' : locale === 'ar' ? '/ar/services/hire-react-developers' : '/services/hire-react-developers')
 }

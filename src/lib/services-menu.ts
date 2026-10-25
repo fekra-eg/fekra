@@ -229,18 +229,24 @@ export function buildServicesMenu(services: Service[], locale: Locale, availabil
     return [{ title: service.title, slug: service.slug, roles }]
   })
 
-  // The approved comp repeats roles across groups (In-Demand cross-links the
-  // popular ones), so every group keeps its full list.
+  /*
+   * The approved comp repeats role pages across groups — In-Demand cross-links
+   * the popular ones — so those stay. A role without its own page falls back
+   * to its own group's heading, and that link is dropped: the heading already
+   * says it (FK-25).
+   */
   return menu.map((group) => ({
     title: group.title,
     slug: group.slug,
     href: href(group.slug),
-    roles: group.roles.map((role) => ({ title: label(role.slug, role.title), slug: role.slug, href: href(role.slug) })),
+    roles: group.roles
+      .filter((role, i, roles) => role.slug !== group.slug && roles.findIndex((r) => r.slug === role.slug) === i)
+      .map((role) => ({ title: label(role.slug, role.title), slug: role.slug, href: href(role.slug) })),
   }))
 }
 
 /** Other roles in the same approved menu group: React relates to Angular and Vue, not Yii (T-17). */
 export function relatedRoleSlugs(services: Service[], slug: string): string[] | null {
   const group = buildServicesMenu(services, 'en').find((g) => g.roles.some((role) => role.slug === slug))
-  return group ? [...new Set(group.roles.map((role) => role.slug))].filter((other) => other !== slug && other !== group.slug) : null
+  return group ? group.roles.map((role) => role.slug).filter((other) => other !== slug) : null
 }

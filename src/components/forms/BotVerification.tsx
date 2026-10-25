@@ -14,8 +14,10 @@ type Turnstile = {
 declare global { interface Window { turnstile?: Turnstile } }
 type Challenge = { a: number; b: number; nonce: string; challenge: string }
 
-export function BotVerification({ locale, action, onReady, error }: {
+export function BotVerification({ locale, action, onReady, error, compact = false }: {
   locale: Locale; action: BotAction; onReady: (ready: boolean) => void; error?: string
+  /** The service-hero card: no visible heading, and the sum on one line ("3 + 9 = [ ]") as the comp draws it. */
+  compact?: boolean
 }) {
   const copy = botCopy[locale]
   const { resolvedTheme } = useTheme()
@@ -82,16 +84,18 @@ export function BotVerification({ locale, action, onReady, error }: {
   const correct = Boolean(challenge && /^\d{1,2}$/.test(answer.trim()) && Number(answer) === challenge.a + challenge.b)
   useEffect(() => { onReady(Boolean(token && correct && !failed)) }, [token, correct, failed, onReady])
 
-  return <fieldset ref={root} className="min-w-0 space-y-3" data-bot-verification>
-    <legend className="mb-2 text-sm font-medium">{copy.title}</legend>
+  return <fieldset ref={root} className={compact ? 'min-w-0 space-y-2' : 'min-w-0 space-y-3'} data-bot-verification>
+    <legend className={compact ? 'sr-only' : 'mb-2 text-sm font-medium'}>{copy.title}</legend>
     {sitekey && visible ? <Script id="fekra-turnstile" src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" onReady={() => setLoaded(true)} onError={() => setFailed(true)} /> : null}
     <div ref={container} className="min-w-0" />
     <input type="hidden" name="botToken" value={token} />
     <input type="hidden" name="botChallenge" value={challenge?.challenge ?? ''} />
-    {challenge ? <div>
-      <label htmlFor={id} className="block text-sm">{copy.question}: <bdi dir="ltr">{challenge.a} + {challenge.b} = ?</bdi></label>
-      <input id={id} name="botAnswer" value={answer} onChange={(event) => setAnswer(event.target.value.replace(/[٠-٩]/g, (digit) => String('٠١٢٣٤٥٦٧٨٩'.indexOf(digit))))} inputMode="numeric" autoComplete="off" required aria-invalid={Boolean(answer && !correct)} aria-describedby={answer && !correct ? `${id}-error` : undefined} className="mt-2 min-h-12 w-24 rounded-lg border-2 border-[#85858f] bg-background px-3 text-lg text-foreground focus:border-primary dark:border-[#898794]" />
-      {answer && !correct ? <p id={`${id}-error`} role="alert" className="mt-1 text-sm text-danger-600">{copy.invalid}</p> : null}
+    {challenge ? <div className={compact ? 'flex flex-wrap items-center gap-2' : undefined}>
+      {compact
+        ? <label htmlFor={id} className="text-sm"><span className="sr-only">{copy.question}: </span><bdi dir="ltr">{challenge.a} + {challenge.b} =</bdi></label>
+        : <label htmlFor={id} className="block text-sm">{copy.question}: <bdi dir="ltr">{challenge.a} + {challenge.b} = ?</bdi></label>}
+      <input id={id} name="botAnswer" value={answer} onChange={(event) => setAnswer(event.target.value.replace(/[٠-٩]/g, (digit) => String('٠١٢٣٤٥٦٧٨٩'.indexOf(digit))))} inputMode="numeric" autoComplete="off" required aria-invalid={Boolean(answer && !correct)} aria-describedby={answer && !correct ? `${id}-error` : undefined} className={compact ? 'h-9 w-14 rounded-md border border-[#85858f] bg-background px-2 text-base text-foreground focus:border-primary dark:border-[#898794]' : 'mt-2 min-h-12 w-24 rounded-lg border-2 border-[#85858f] bg-background px-3 text-lg text-foreground focus:border-primary dark:border-[#898794]'} />
+      {answer && !correct ? <p id={`${id}-error`} role="alert" className="mt-1 basis-full text-sm text-danger-600">{copy.invalid}</p> : null}
     </div> : null}
     {failed || !sitekey ? <div role="alert" className="text-sm text-danger-600">{copy.unavailable}
       <button type="button" onClick={() => { invalidate(); setFailed(false); setChallenge(null); setAnswer(''); setAttempt((value) => value + 1) }} className="fk-link ms-2 min-h-11 underline underline-offset-4">{copy.retry}</button>

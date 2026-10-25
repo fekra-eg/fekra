@@ -62,11 +62,11 @@ export function ServiceHeroSection({
           ) : null}
 
           {block.closer ? (
-            <p className="mt-4 text-base/6 font-bold text-[#001033] dark:text-foreground"><BidiText>{block.closer}</BidiText></p>
+            <p className="mt-1 text-base/6 font-bold text-[#001033] dark:text-foreground"><BidiText>{block.closer}</BidiText></p>
           ) : null}
 
           {block.highlights?.length ? (
-            <ul className="mt-10 grid gap-2.5 sm:grid-cols-3">
+            <ul className="mt-8 grid gap-2.5 sm:grid-cols-3">
               {block.highlights.map((item, index) => {
                 const icon = item.icon as MediaDoc | undefined
                 const iconSrc = icon?.url ? mediaUrl(icon) : ['/images/services/icon-cost.svg', '/images/services/icon-speed.png', '/images/services/icon-talent.svg'][index]
