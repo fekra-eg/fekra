@@ -4,19 +4,19 @@ import { Button, useConfig, useDocumentInfo, useFormModified } from '@payloadcms
 import { useState } from 'react'
 
 export function TranslateButton() {
-  const { id } = useDocumentInfo()
+  const { id, collectionSlug } = useDocumentInfo()
   const modified = useFormModified()
   const { config } = useConfig()
   const [busy, setBusy] = useState(false)
   const [message, setMessage] = useState('')
 
-  if (!id) return <p style={{ marginBottom: 24 }}>Save the English article first, then translate it.</p>
+  if (!id) return <p style={{ marginBottom: 24 }}>Save the English version first, then translate it.</p>
 
   async function translate() {
     setBusy(true)
     setMessage('Translating the languages that are still empty… this can take a minute.')
     try {
-      const res = await fetch(`${config.routes.api}/posts/${id}/translate`, { method: 'POST', credentials: 'include' })
+      const res = await fetch(`${config.routes.api}/${collectionSlug}/${id}/translate`, { method: 'POST', credentials: 'include' })
       const body = (await res.json().catch(() => ({}))) as { translated?: string[]; failed?: { locale: string; error: string }[]; skipped?: string[]; error?: string }
       const failed = body.failed?.map((f) => `${f.locale.toUpperCase()}: ${f.error}`).join(' · ')
       const kept = body.skipped?.length ? `Kept existing ${body.skipped.join(', ').toUpperCase()}.` : ''

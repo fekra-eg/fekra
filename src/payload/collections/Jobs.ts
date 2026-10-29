@@ -4,6 +4,8 @@ import { authenticated, publishedOrAuthenticated } from '../access'
 import { slugField } from '../fields/slug'
 import { revalidateDocument, revalidateOnDelete } from '../hooks/revalidate'
 import { previewUrl } from '../preview'
+import { translateEndpoint } from '../translate-endpoint'
+import { translateJob } from '@/lib/translate-post'
 
 export const Jobs: CollectionConfig = {
   slug: 'jobs',
@@ -22,6 +24,7 @@ export const Jobs: CollectionConfig = {
     delete: authenticated,
   },
   versions: { drafts: true, maxPerDoc: 10 },
+  endpoints: [translateEndpoint('jobs', translateJob)],
   hooks: {
     afterChange: [revalidateDocument('jobs', '/careers')],
     afterDelete: [revalidateOnDelete('jobs', '/careers')],
@@ -120,5 +123,10 @@ export const Jobs: CollectionConfig = {
       },
     },
     { name: 'publishedAt', type: 'date', admin: { position: 'sidebar' } },
+    {
+      name: 'translate',
+      type: 'ui',
+      admin: { position: 'sidebar', components: { Field: '@/components/admin/TranslateButton#TranslateButton' } },
+    },
   ],
 }

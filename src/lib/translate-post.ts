@@ -20,7 +20,7 @@ export type TranslatablePost = {
   meta?: { title?: string | null; description?: string | null } | null
 }
 
-function textNodes(node: LexicalNode | undefined, out: LexicalNode[] = []): LexicalNode[] {
+export function textNodes(node: LexicalNode | undefined, out: LexicalNode[] = []): LexicalNode[] {
   if (!node) return out
   if (node.type === 'text' && node.text?.trim()) out.push(node)
   for (const child of node.children ?? []) textNodes(child, out)
@@ -40,7 +40,7 @@ function clip(value: string, max: number) {
   return `${cut.slice(0, Math.max(cut.lastIndexOf(' '), max - 40))}…`
 }
 
-async function openai(system: string, input: unknown): Promise<Record<string, unknown>> {
+export async function openai(system: string, input: unknown): Promise<Record<string, unknown>> {
   const key = process.env.OPENAI_API_KEY
   if (!key) throw new Error('OPENAI_API_KEY is not set')
   const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -115,4 +115,54 @@ export async function translatePost(post: TranslatablePost, locale: Exclude<Loca
     data.content = content
   }
   return data
+}
+
+type RichText = { root: LexicalNode } | null | undefined
+export type TranslatableJob = {
+  title?: string | null
+  summary?: string | null
+  department?: string | null
+  location?: string | null
+  description?: RichText
+  requirements?: RichText
+  benefits?: RichText
+  meta?: { title?: string | null; description?: string | null } | null
+}
+
+/** Same contract as translatePost, for a careers role: three rich-text fields share one "texts" array. */
+export async function translateJob(job: TranslatableJob, locale: Exclude<Locale, 'en'>) {
+  const language = LANGUAGE[locale]
+  const rich = (['description', 'requirements', 'benefits'] as const).map((key) => [key, job[key] ? (structuredClone(job[key]) as { root: LexicalNode }) : null] as const)
+  const nodes = rich.flatMap(([, value]) => (value ? textNodes(value.root) : []))
+
+  const input = {
+    title: job.title ?? '',
+    summary: job.summary ?? '',
+    department: job.department ?? '',
+    location: job.location ?? '',
+    metaTitle: job.meta?.title ?? '',
+    metaDescription: job.meta?.description ?? '',
+    texts: nodes.map((node) => node.text!),
+  }
+  const system = [
+    `You are a professional translator for FEKRA, a software engineering outsourcing company. Translate this job posting's JSON from English to ${language}.`,
+    'Return a JSON object with exactly the same keys. "texts" must keep the same length and order; translate each item on its own (items are consecutive runs of one document, so keep leading/trailing spaces).',
+    'Empty strings stay empty. Keep brand and product names (FEKRA), technology names, city and country names in their usual local spelling, code, URLs, e-mail addresses and numbers unchanged.',
+    `Use a natural, professional recruiting tone for native ${language} readers. "metaDescription" must stay under ${EXCERPT_MAX} characters.`,
+  ].join(' ')
+
+  const out = await openai(system, input)
+  const str = (key: string) => (typeof out[key] === 'string' ? (out[key] as string) : '')
+  const texts = out.texts
+  if (!Array.isArray(texts) || texts.length !== nodes.length) throw new Error('OpenAI returned a different number of text blocks')
+  nodes.forEach((node, i) => { if (typeof texts[i] === 'string') node.text = texts[i] })
+
+  return {
+    title: str('title') || job.title,
+    summary: str('summary') || job.summary,
+    department: str('department') || job.department,
+    location: str('location') || job.location,
+    ...Object.fromEntries(rich.filter(([, value]) => value)),
+    meta: { title: str('metaTitle') || undefined, description: str('metaDescription') ? clip(str('metaDescription'), EXCERPT_MAX) : undefined },
+  }
 }
