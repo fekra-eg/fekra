@@ -623,19 +623,19 @@
     "fr": "Partenaire Platinum ISTQB",
     "es": "Socio Platinum de ISTQB"
   },
-  "Certificado ISO 9001": {
+  "ISO 9001 Certified": {
     "ar": "شهادة ISO 9001",
     "de": "ISO 9001 zertifiziert",
     "fr": "Certifié ISO 9001",
     "es": "Certificado ISO 9001"
   },
-  "Certificado ISO 27001": {
+  "ISO 27001 Certified": {
     "ar": "شهادة ISO 27001",
     "de": "ISO 27001 zertifiziert",
     "fr": "Certifié ISO 27001",
     "es": "Certificado ISO 27001"
   },
-  "Conforme con RGPD": {
+  "GDPR Compliant": {
     "ar": "متوافق مع اللائحة العامة لحماية البيانات (GDPR)",
     "de": "DSGVO-konform",
     "fr": "Conforme au RGPD",

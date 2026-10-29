@@ -49,6 +49,24 @@ const isCopy = (s: string) => s.length > 1 && /[a-zA-Z]/.test(s) && !/^(https?:|
 type Doc = Record<string, unknown> & { id: number | string; slug: string; availableLocales?: string[] | null }
 const copyOf = (d: Doc) => ({ title: d.title, summary: d.summary, layout: d.layout, meta: d.meta, menuRoles: d.menuRoles })
 
+type Row = Record<string, unknown>
+/**
+ * Logo names and tech-stack item names are not localized: a per-locale write
+ * stores them for every language. Put the English source back before writing.
+ */
+function keepShared(copy: { layout: unknown }, source: Doc): void {
+  const rows = (copy.layout ?? []) as Row[]
+  const src = (source.layout ?? []) as Row[]
+  rows.forEach((block, i) => {
+    if (block.blockType === 'logoCloud') block.logos = src[i]?.logos
+    if (block.blockType === 'techStack') {
+      ;((block.groups ?? []) as Row[]).forEach((group, j) => {
+        group.items = ((src[i]?.groups ?? []) as Row[])[j]?.items
+      })
+    }
+  })
+}
+
 /** Walk English and localized copies side by side; record each string pair. */
 function harvest(en: unknown, loc: unknown, key: string | null, out: Map<string, string>): void {
   if (key && NOT_COPY_FIELD.has(key)) return
@@ -131,6 +149,7 @@ for (const locale of LOCALES) {
   for (const d of docs) {
     if (d.availableLocales?.includes(locale) || (only && d.slug !== only)) continue
     const copy = translate(copyOf(d), null, MAP, locale, miss) as ReturnType<typeof copyOf>
+    keepShared(copy, d)
     if (!write) continue
     await payload.update({
       collection: 'services',
