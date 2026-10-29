@@ -135,10 +135,7 @@ export function LegacyCareers({ jobs, dict, locale }: { jobs: JobDoc[]; dict: Di
             <p className={styles.subtitle}>{copy[`${kind}Subtitle`]}</p>
             <div className={styles.opportunityCopy}>{copy[`${kind}Body`].split('\n').map((paragraph) => <p key={paragraph}><BidiText>{paragraph}</BidiText></p>)}</div>
           </div>
-          {/* The talent pool keeps the page's only form; the internship applies on its own page (FK-57). */}
-          {kind === 'future'
-            ? <CareerApplication job={job} locale={locale} dict={dict} kind={kind} />
-            : <Link className={`${styles.applyButton} fk-button fk-button--career self-start`} href={`${localeHref(locale, `/careers/${job.slug}`)}#apply`}>{copy.internshipForm}<ArrowRightCircle size={16} aria-hidden className="icon-flip" /></Link>}
+          <CareerApplication job={job} locale={locale} dict={dict} kind={kind} />
         </div>
       </section> : null)}
 
