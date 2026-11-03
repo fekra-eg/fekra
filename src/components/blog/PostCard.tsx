@@ -32,6 +32,8 @@ export function formatDate(value: string, locale: Locale): string {
     day: 'numeric',
     // FK-73: Western digits on every locale, Arabic included.
     numberingSystem: 'latn',
+    // The CMS date picker saves midnight Cairo time; in UTC that is the day before.
+    timeZone: 'Africa/Cairo',
   }).format(date)
 }
 

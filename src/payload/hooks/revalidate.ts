@@ -28,7 +28,8 @@ const purge = (paths: string[], req: { payload?: { logger?: { warn: (msg: string
   clearCmsMemo()
   try {
     revalidateTag('cms-public', { expire: 0 })
-    for (const path of paths) revalidatePath(path, 'page')
+    // Literal paths take no type; 'page' skipped the /sitemap.xml route handler.
+    for (const path of paths) revalidatePath(path)
   } catch (error) {
     req.payload?.logger?.warn(`revalidate skipped: ${error instanceof Error ? error.message : String(error)}`)
   }
