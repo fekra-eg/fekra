@@ -119,9 +119,8 @@ export function LegacyCareers({ jobs, dict, locale }: { jobs: JobDoc[]; dict: Di
               <div className={styles.jobBody}>
                 {/* Apply Now opens the form in place; BotVerification waits until
                     the panel is visible, so closed panels stay cheap. */}
-                {/* One form per page (FK-57): each role applies on its own page. */}
                 <div><CareerDescription job={job} locale={locale} /><Link className={styles.detailsLink} href={localeHref(locale, `/careers/${job.slug}`)}>{copy.fullDetails}</Link></div>
-                <Link className={`${styles.applyButton} fk-button fk-button--career self-start`} href={`${localeHref(locale, `/careers/${job.slug}`)}#apply`}>{dict.careers.applyNow}<ArrowRightCircle size={16} aria-hidden className="icon-flip" /></Link>
+                <CareerApplication job={job} locale={locale} dict={dict} />
               </div>
             </details>
           })} /> : <p>{dict.careers.empty}</p>}
