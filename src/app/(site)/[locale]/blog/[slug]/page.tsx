@@ -38,17 +38,17 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const post = await findDoc<PostDoc>('posts', slug, locale, 2)
   if (!post) return notFoundMetadata
 
-  // Large previews and Discover need ≥1200px wide, and WebP is not shown everywhere (T-03):
-  // a smaller or WebP cover falls back to the blog share card.
+  // Covers are WebP, which LinkedIn won't show (T-03): share a 1200×630 JPEG of
+  // the cover instead; no cover falls back to the blog share card.
   const cover = post.meta?.image?.url ? post.meta.image : post.heroImage
-  const image = cover?.url && (cover.width ?? 0) >= 1200 && !/\.webp(\?|$)/i.test(cover.url) ? cover : null
+  const image = cover?.url ? { url: `/og/post/${locale}/${slug}.jpg`, width: 1200, height: 630 } : null
   return buildMetadata({
     title: post.meta?.title ?? post.title,
     description: post.meta?.description ?? post.excerpt ?? undefined,
     path: `/blog/${slug}`,
     locale,
     availableLocales: post.availableLocales,
-    image: image ? { url: image.url!, width: image.width ?? undefined, height: image.height ?? undefined } : null,
+    image,
     template: 'blog',
     noindex: post.meta?.noindex,
     canonicalOverride: post.meta?.canonicalOverride,
