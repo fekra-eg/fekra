@@ -110,6 +110,28 @@ export async function findDocs<T = unknown>({
       if ('location' in doc && typeof doc.location === 'string') doc.location = localizeJobLocation(doc.location, locale) ?? doc.location
     }
   }
+  if (collection === 'posts') {
+    // Posts load without fallback, so the populated category does too: an
+    // untranslated category arrived without a title and its filter chip
+    // and badge vanished. Fill it from the English title.
+    type Cat = { id?: string | number; title?: string | null }
+    const untitled = docs
+      .map((doc) => (doc as { category?: unknown }).category)
+      .filter((c): c is Cat => typeof c === 'object' && c !== null && !(c as Cat).title && (c as Cat).id != null)
+    if (untitled.length) {
+      const { docs: cats } = await payload.find({
+        collection: 'categories',
+        locale,
+        fallbackLocale: 'en',
+        depth: 0,
+        pagination: false,
+        where: { id: { in: [...new Set(untitled.map((c) => c.id!))] } },
+        select: { title: true },
+      })
+      const titles = new Map(cats.map((c) => [c.id, (c as Cat).title]))
+      for (const c of untitled) c.title = titles.get(Number(c.id)) ?? c.title
+    }
+  }
   return { docs: docs as T[] }
 }
 
