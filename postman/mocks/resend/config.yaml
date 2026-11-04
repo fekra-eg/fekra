@@ -1,0 +1,7 @@
+version: 1
+name: resend
+scenarios:
+  - name: default
+    path: default.js
+origin: api.resend.com
+interceptRequests: true

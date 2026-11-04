@@ -9,7 +9,7 @@ export type ButtonVariant = 'primary' | 'secondary' | 'ghost'
 export type ButtonSize = 'sm' | 'md' | 'lg'
 
 const base =
-  'fk-button inline-flex items-center justify-center gap-2 rounded-pill font-semibold whitespace-nowrap transition-colors duration-200 ' +
+  'fk-button inline-flex max-w-full min-w-0 items-center justify-center gap-2 rounded-pill text-center font-semibold whitespace-normal [overflow-wrap:anywhere] transition-colors duration-200 [&_svg]:shrink-0 ' +
   // 16.6 — 44px minimum touch target on every size.
   'min-h-11 disabled:opacity-50 ' +
   'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring'

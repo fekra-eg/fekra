@@ -98,6 +98,10 @@ export function Footer({
     { href: availableHref(locale, '/terms-and-conditions', availability), label: labels.terms },
     { href: availableHref(locale, '/cookie-policy', availability), label: labels.cookies },
   ]
+  const englishOnly: Record<Locale, string> = { en: 'English', ar: 'بالإنجليزية', de: 'auf Englisch', fr: 'en anglais', es: 'en inglés' }
+  for (const link of requiredLegal) {
+    if (locale !== 'en' && !link.href.startsWith(`/${locale}/`)) link.label += ` (${englishOnly[locale]})`
+  }
   const legal = [...requiredLegal, ...(data.legalLinks ?? []).map((l) => resolveLink(l.link, locale)).filter((link) => link && !requiredLegal.some((required) => required.href === link.href))]
   // The comp's "Contact Us" column is the head office's phone and email.
   const contact = offices?.find((o) => o.isHeadquarters) ?? offices?.[0]
@@ -107,7 +111,7 @@ export function Footer({
      * Figma 1:14023. No top margin: the navy band sits directly on the footer
      * in the design, so any gap here breaks that join.
      */
-    <footer className="border-t border-border bg-brand-50 dark:bg-background-subtle">
+    <footer id="contact-details" tabIndex={-1} className="scroll-mt-24 border-t border-border bg-brand-50 dark:bg-background-subtle">
       <div className="container-site grid gap-10 py-12 sm:gap-12 sm:py-16 lg:grid-cols-[minmax(0,1fr)_auto_auto] lg:gap-20">
         <div className="max-w-[340px]">
           <Link href={localeHref(locale, '/')} className="inline-flex min-h-11 items-center" aria-label={siteName}>

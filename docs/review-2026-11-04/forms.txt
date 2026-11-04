@@ -1,0 +1,7 @@
+PASS en: contact, consultation, job, internship, future, private CV, newsletter dedup/confirmation/unsubscribe
+PASS ar: contact, consultation, job, internship, future, private CV, newsletter dedup/confirmation/unsubscribe
+PASS de: contact, consultation, job, internship, future, private CV, newsletter dedup/confirmation/unsubscribe
+PASS fr: contact, consultation, job, internship, future, private CV, newsletter dedup/confirmation/unsubscribe
+PASS es: contact, consultation, job, internship, future, private CV, newsletter dedup/confirmation/unsubscribe
+PASS missing consent and tampered confirmation are rejected
+PASS provider simulation: 35 accepted messages, 15 HR notifications with CV attachments; no real inbox delivery claimed

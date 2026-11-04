@@ -41,7 +41,11 @@
     ".next-qa-review/types/**/*.ts",
     ".next-qa-review/dev/types/**/*.ts",
     ".next-fontcheck/types/**/*.ts",
-    ".next-fontcheck/dev/types/**/*.ts"
+    ".next-fontcheck/dev/types/**/*.ts",
+    ".next-review/types/**/*.ts",
+    ".next-review/dev/types/**/*.ts",
+    ".next-review-build/types/**/*.ts",
+    ".next-review-build/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

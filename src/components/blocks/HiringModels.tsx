@@ -10,9 +10,9 @@ import type { BlockProps } from './types'
 
 /* Column tints sampled from the comp's rendered frame. */
 const MODEL_TONE = {
-  amber: { header: 'bg-[#ffda9b] dark:bg-[#493c2b] dark:text-[#ffda9b]', card: 'border-[#ffda9b] dark:border-[#756044]', value: 'text-[#ffda9b]' },
-  lavender: { header: 'bg-[#aaabfc] dark:bg-[#343650] dark:text-[#cdcfff]', card: 'border-[#aaabfc] dark:border-[#5a5d88]', value: 'text-[#aaabfc]' },
-  blue: { header: 'bg-[#7bb6fc] dark:bg-[#273e57] dark:text-[#a8d0ff]', card: 'border-[#7bb6fc] dark:border-[#47698f]', value: 'text-[#7bb6fc]' },
+  amber: { header: 'bg-[#ffda9b] dark:bg-[#493c2b] dark:text-[#ffda9b]', card: 'border-[#ffda9b] dark:border-[#756044]', value: 'text-[#80520b] dark:text-[#ffda9b]' },
+  lavender: { header: 'bg-[#aaabfc] dark:bg-[#343650] dark:text-[#cdcfff]', card: 'border-[#aaabfc] dark:border-[#5a5d88]', value: 'text-[#5555a6] dark:text-[#cdcfff]' },
+  blue: { header: 'bg-[#7bb6fc] dark:bg-[#273e57] dark:text-[#a8d0ff]', card: 'border-[#7bb6fc] dark:border-[#47698f]', value: 'text-[#245a9a] dark:text-[#a8d0ff]' },
 } as const
 
 /**

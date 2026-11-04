@@ -1,0 +1,15 @@
+simulation: review-forms
+id: 968c0a47-b2b9-49c1-bfad-16648ca1ad01
+name: review-forms
+routing: path
+mocks:
+  - name: turnstile
+    id: a110cce5-78b0-42e4-a9e2-2a5eb13ff7e7
+    routeKey: turnstile
+    origin: [challenges.cloudflare.com]
+    path: ../mocks/turnstile
+  - name: resend
+    id: 95e2d43f-20ad-48ca-b775-b9945cfe582c
+    routeKey: resend
+    origin: [api.resend.com]
+    path: ../mocks/resend

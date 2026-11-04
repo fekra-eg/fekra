@@ -4,7 +4,7 @@ import Script from 'next/script'
 import { useTheme } from 'next-themes'
 import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import type { Locale } from '@/i18n/routing'
-import { botCopy } from '@/i18n/bot-protection'
+import { botCopy, botSupportCopy } from '@/i18n/bot-protection'
 import type { BotAction } from '@/lib/bot-protection'
 
 type Turnstile = {
@@ -85,7 +85,7 @@ export function BotVerification({ locale, action, onReady, error, compact = fals
   useEffect(() => { onReady(Boolean(token && correct && !failed)) }, [token, correct, failed, onReady])
 
   return <fieldset ref={root} className={compact ? 'min-w-0 space-y-2' : 'min-w-0 space-y-3'} data-bot-verification>
-    <legend className={compact ? 'sr-only' : 'mb-2 text-sm font-medium'}>{copy.title}</legend>
+    <legend className={compact ? 'sr-only' : 'mb-2 text-sm font-medium text-foreground'}>{copy.title}</legend>
     {sitekey && visible ? <Script id="fekra-turnstile" src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" onReady={() => setLoaded(true)} onError={() => setFailed(true)} /> : null}
     <div ref={container} className="min-w-0" />
     <input type="hidden" name="botToken" value={token} />
@@ -99,6 +99,7 @@ export function BotVerification({ locale, action, onReady, error, compact = fals
     </div> : null}
     {failed || !sitekey ? <div role="alert" className="text-sm text-danger-600">{copy.unavailable}
       <button type="button" onClick={() => { invalidate(); setFailed(false); setChallenge(null); setAnswer(''); setAttempt((value) => value + 1) }} className="fk-link ms-2 min-h-11 underline underline-offset-4">{copy.retry}</button>
+      <a href="#contact-details" className="inline-flex min-h-11 items-center text-foreground underline underline-offset-4">{botSupportCopy[locale]}</a>
     </div> : null}
     {error && !(token && correct && !failed) ? <p role="alert" className="text-sm text-danger-600">{copy.required}</p> : null}
   </fieldset>

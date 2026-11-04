@@ -20,7 +20,7 @@ for (const file of ['.env.local', '.env']) {
   if (!existsSync(file)) continue
   for (const line of readFileSync(file, 'utf8').split('\n')) {
     const match = /^\s*([A-Z0-9_]+)\s*=\s*(.*)\s*$/.exec(line)
-    if (match && !process.env[match[1]]) {
+    if (match && !(match[1] in process.env)) {
       process.env[match[1]] = match[2].replace(/^["']|["']$/g, '')
     }
   }
@@ -30,7 +30,7 @@ const url = process.env.DATABASE_URL?.trim() ?? ''
 
 if (url && !/^postgres(ql)?:\/\//.test(url)) {
   console.error(
-    `\n  DATABASE_URL is not a Postgres connection string: ${url.slice(0, 40)}…\n` +
+    '\n  DATABASE_URL is not a Postgres connection string.\n' +
       '  It must start with postgres:// or postgresql://\n' +
       '  Supabase: Settings > Database > Connection string > Transaction pooler (port 6543).\n' +
       '  The https://<ref>.supabase.co project URL is the REST API, not the database.\n',

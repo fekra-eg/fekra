@@ -59,7 +59,7 @@ export function CookiePreferences({ locale, className, availability }: { locale:
           <p className="mt-1 text-sm/6 text-muted-foreground">{copy.necessaryBody}</p>
         </div>
         {(['analytics', 'marketing'] as const).map((category) => <div key={category} className="py-4">
-          <label className="flex cursor-pointer items-center justify-between gap-4 text-base font-semibold">
+          <label className="flex min-h-11 cursor-pointer items-center justify-between gap-4 text-base font-semibold">
             <span>{labels[category]} <span className="text-sm font-normal text-muted-foreground">— {copy.optional}</span></span>
             <input type="checkbox" checked={choice[category]} onChange={(event) => setChoice((state) => ({ ...state, [category]: event.target.checked }))} className="size-5 shrink-0 accent-primary" />
           </label>

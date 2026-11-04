@@ -1,0 +1,7 @@
+version: 1
+name: turnstile
+scenarios:
+  - name: default
+    path: default.js
+origin: challenges.cloudflare.com
+interceptRequests: true

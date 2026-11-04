@@ -3,6 +3,8 @@
  * docs/ANALYTICS.md is generated from this object — if you add an event, add it
  * here and it is documented.
  */
+import { readConsent } from './consent'
+
 export const EVENTS = {
   contactSubmit: 'contact_form_submit',
   applicationSubmit: 'job_application_submit',
@@ -21,9 +23,13 @@ export type EventName = (typeof EVENTS)[keyof typeof EVENTS]
  * (11.7 / 22.6 / 22.7).
  */
 export function track(event: EventName, params: Record<string, string | number | boolean> = {}) {
-  if (typeof window === 'undefined') return
+  if (typeof window === 'undefined' || readConsent()?.analytics !== true) return
+  // Only non-personal, bounded labels belong in conversion events.
+  const allowed = new Set(['locale', 'kind', 'mode', 'form', 'job_id', 'analytics_id'])
+  const safe = Object.fromEntries(Object.entries(params).filter(([key]) => allowed.has(key)))
   window.dataLayer = window.dataLayer || []
-  window.dataLayer.push({ event, ...params })
+  if (document.querySelector('#ga4')) window.gtag?.('event', event, safe)
+  else window.dataLayer.push({ event, ...safe })
 }
 
 /** UTM values captured on entry and attached to the lead, not to the event (22.9). */

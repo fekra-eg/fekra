@@ -3,6 +3,9 @@ node_modules
 
 .next
 .next-qa-review
+.next-review
+.next-review-build
+.env.vercel-prod
 out
 build
 dist

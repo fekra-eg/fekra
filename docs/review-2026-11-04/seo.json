@@ -1,0 +1,1215 @@
+{
+  "canonicalEntries": 58,
+  "results": [
+    {
+      "path": "/",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/services",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/services",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/services",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/services",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/services",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/blog",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/blog",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/blog",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/blog",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/blog",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/contact",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/contact",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/contact",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/contact",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/contact",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/careers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/careers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/careers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/careers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/careers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/services/hire-wpf-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/services/hire-wpf-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/services/hire-wpf-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/services/hire-wpf-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/services/hire-wpf-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/services/hire-dotnet-core-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/services/hire-dotnet-core-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/services/hire-dotnet-core-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/services/hire-dotnet-core-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/services/hire-dotnet-core-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/services/hire-aspnet-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/services/hire-aspnet-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/services/hire-aspnet-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/services/hire-aspnet-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/services/hire-aspnet-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/services/hire-automation-qa-engineers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/services/hire-automation-qa-engineers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/services/hire-automation-qa-engineers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/services/hire-automation-qa-engineers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/services/hire-automation-qa-engineers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/services/hire-manual-qa-testers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/services/hire-manual-qa-testers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/services/hire-manual-qa-testers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/services/hire-manual-qa-testers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/services/hire-manual-qa-testers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/services/hire-react-native-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/services/hire-react-native-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/services/hire-react-native-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/services/hire-react-native-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/services/hire-react-native-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/services/hire-pwa-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/services/hire-pwa-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/services/hire-pwa-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/services/hire-pwa-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/services/hire-pwa-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/services/hire-flutter-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/services/hire-flutter-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/services/hire-flutter-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/services/hire-flutter-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/services/hire-flutter-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/services/hire-android-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/services/hire-android-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/services/hire-android-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/services/hire-android-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/services/hire-android-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/services/hire-ios-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/services/hire-ios-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/services/hire-ios-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/services/hire-ios-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/services/hire-ios-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/services/hire-nodejs-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/services/hire-nodejs-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/services/hire-nodejs-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/services/hire-nodejs-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/services/hire-nodejs-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/services/hire-nextjs-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/services/hire-nextjs-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/services/hire-nextjs-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/services/hire-nextjs-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/services/hire-nextjs-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/services/hire-vuejs-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/services/hire-vuejs-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/services/hire-vuejs-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/services/hire-vuejs-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/services/hire-vuejs-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/services/hire-mern-stack-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/services/hire-mern-stack-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/services/hire-mern-stack-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/services/hire-mern-stack-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/services/hire-mern-stack-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/services/hire-mean-stack-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/services/hire-mean-stack-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/services/hire-mean-stack-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/services/hire-mean-stack-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/services/hire-mean-stack-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/services/hire-python-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/services/hire-python-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/services/hire-python-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/services/hire-python-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/services/hire-python-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/services/hire-php-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/services/hire-php-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/services/hire-php-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/services/hire-php-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/services/hire-php-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/services/hire-laravel-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/services/hire-laravel-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/services/hire-laravel-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/services/hire-laravel-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/services/hire-laravel-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/services/hire-yii-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/services/hire-yii-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/services/hire-yii-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/services/hire-yii-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/services/hire-yii-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/services/hire-react-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/services/hire-react-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/services/hire-react-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/services/hire-react-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/services/hire-react-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/services/hire-angular-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/services/hire-angular-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/services/hire-angular-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/services/hire-angular-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/services/hire-angular-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/services/hire-microsoft-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/services/hire-microsoft-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/services/hire-microsoft-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/services/hire-microsoft-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/services/hire-microsoft-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/services/hire-quality-assurance-testers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/services/hire-quality-assurance-testers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/services/hire-quality-assurance-testers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/services/hire-quality-assurance-testers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/services/hire-quality-assurance-testers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/services/hire-javascript-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/services/hire-javascript-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/services/hire-javascript-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/services/hire-javascript-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/services/hire-javascript-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/services/hire-web-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/services/hire-web-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/services/hire-web-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/services/hire-web-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/services/hire-web-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/services/design-development",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/services/design-development",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/services/design-development",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/services/design-development",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/services/design-development",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/services/enterprise-resources",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/services/enterprise-resources",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/services/enterprise-resources",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/services/enterprise-resources",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/services/enterprise-resources",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/services/qa-testing-support",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/services/qa-testing-support",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/services/qa-testing-support",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/services/qa-testing-support",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/services/qa-testing-support",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/services/consulting-training",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/services/consulting-training",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/services/consulting-training",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/services/consulting-training",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/services/consulting-training",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/services/outsource",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/services/outsource",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/services/outsource",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/services/outsource",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/services/outsource",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/services/hire-qa-engineers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/services/hire-qa-engineers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/services/hire-qa-engineers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/services/hire-qa-engineers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/services/hire-qa-engineers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/services/hire-ai-data-experts",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/services/hire-ai-data-experts",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/services/hire-ai-data-experts",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/services/hire-ai-data-experts",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/services/hire-ai-data-experts",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/services/hire-back-end-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/services/hire-back-end-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/services/hire-back-end-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/services/hire-back-end-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/services/hire-back-end-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/services/hire-front-end-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/services/hire-front-end-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/services/hire-front-end-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/services/hire-front-end-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/services/hire-front-end-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/services/hire-devops-cloud-engineers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/services/hire-devops-cloud-engineers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/services/hire-devops-cloud-engineers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/services/hire-devops-cloud-engineers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/services/hire-devops-cloud-engineers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/services/hire-full-stack-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/services/hire-full-stack-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/services/hire-full-stack-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/services/hire-full-stack-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/services/hire-full-stack-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/services/hire-dedicated-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/services/hire-dedicated-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/services/hire-dedicated-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/services/hire-dedicated-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/services/hire-dedicated-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/services/hire-mobile-app-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/services/hire-mobile-app-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/services/hire-mobile-app-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/services/hire-mobile-app-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/services/hire-mobile-app-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/services/hire-in-demand-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/services/hire-in-demand-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/services/hire-in-demand-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/services/hire-in-demand-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/services/hire-in-demand-developers",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/blog/what-is-staff-augmentation",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/blog/what-is-staff-augmentation",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/blog/what-is-staff-augmentation",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/blog/what-is-staff-augmentation",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/blog/what-is-staff-augmentation",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/blog/dedicated-team-model",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/blog/dedicated-team-model",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/blog/dedicated-team-model",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/blog/dedicated-team-model",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/blog/dedicated-team-model",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/blog/building-qa-culture-that-ships",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/blog/nearshore-vs-offshore",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/blog/software-outsourcing-in-2026",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/ar/blog/software-outsourcing-in-2026",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/de/blog/software-outsourcing-in-2026",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/fr/blog/software-outsourcing-in-2026",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/es/blog/software-outsourcing-in-2026",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/blog/how-we-vet-the-top-3-percent",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/blog/scaling-engineering-teams-with-ai",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/careers/future-opportunities",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/careers/internship-program",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/careers/devops-engineer",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/careers/business-development-specialist",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/careers/product-owner-qa",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/careers/ai-engineer",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/careers/senior-wordpress-developer",
+      "status": 200,
+      "pass": true
+    }
+  ]
+}

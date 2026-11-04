@@ -1,0 +1,29 @@
+version: 1
+simulation: review-forms
+assumptions:
+  - id: turnstile-binding
+    status: supported
+    claim: The application requires a successful verification response bound to its challenge nonce, action and hostname.
+    reason: Local security tests and HTTP journeys exercise the caller checks. The mock models success for synthetic tokens and does not establish real browser challenge behavior.
+    verification: Local tests passed for all four actions, including malformed, expired, wrong-answer, wrong-action, wrong-host and provider-error rejection. Five-language form journeys reached the stand-in as shown by the proxy log.
+    source: src/lib/bot-protection.ts; scripts/check-batch-four-security.ts; scripts/check-review-forms.ts; postman/mocks/turnstile
+    updated_at: '2026-11-04'
+  - id: provider-acceptance-versus-delivery
+    status: unknown
+    claim: An accepted email reaches FEKRA's approved HR or contact inbox.
+    reason: The stand-in returns provider IDs and records synthetic payloads; only real provider delivery events and recipient receipt can establish inbox arrival.
+    verification: Local form journeys observed 35 synthetic accepted messages and 15 HR messages with CV attachments. No real FEKRA inbox or appointment was contacted.
+    source: src/lib/notify.ts; scripts/check-review-forms.ts; postman/mocks/resend; docs/review-2026-11-04/forms.txt
+    updated_at: '2026-11-04'
+  - id: failed-notifications-preserve-records
+    status: supported
+    claim: Contact submissions remain stored when internal notification email fails.
+    reason: An initial simulated provider failure occurred after successful contact writes; the application returned success for stored contacts and logged the email error.
+    verification: Observed during local provider-parser correction. This does not establish retry or eventual-delivery guarantees; no durable email outbox is implemented.
+    source: src/app/api/contact/route.ts; src/lib/notify.ts
+    updated_at: '2026-11-04'
+fingerprints:
+  - id: review-local
+    date: '2026-11-04'
+    commit: db05a57 with uncommitted review implementation
+    cli: Postman 1.75.0

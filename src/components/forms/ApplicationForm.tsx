@@ -19,7 +19,7 @@ type Status = 'idle' | 'sending' | 'success' | 'error'
 
 export function ApplicationForm({
   jobId,
-  jobTitle,
+  jobTitle: _jobTitle,
   dict,
   locale,
   disabled,
@@ -135,7 +135,7 @@ export function ApplicationForm({
         return
       }
       // 22.7 — no candidate PII in the event payload, only the role.
-      track(EVENTS.applicationSubmit, { job: jobTitle, locale })
+      track(EVENTS.applicationSubmit, { job_id: jobId, locale })
       form.reset()
       setCvName('')
       setStatus('success')

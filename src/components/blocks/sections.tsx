@@ -1919,6 +1919,7 @@ export function TalentShowcaseSection({ block, locale }: { block: BlockProps; lo
       <li
         key={key}
         aria-hidden={hidden || undefined}
+        inert={hidden || undefined}
         /* The track is dir="ltr" so the loop's geometry is stable; the card
            restores the page direction for its own text and pill order. */
         dir={dir(locale)}

@@ -1,0 +1,1 @@
+PASS saved manual Arabic body with an unchanged English technical title survives automatic translation; no provider calls

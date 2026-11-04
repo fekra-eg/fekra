@@ -19,6 +19,21 @@ If public accounts are ever in scope, the collection to extend is folder 4.
 
 ## Run it
 
+For the November review, use the local-only scripts/check-review-forms.ts with
+postman/simulations/review-forms.sim.yaml and an isolated PostgreSQL database.
+The local mocks accept synthetic @example.invalid recipients only. The caller
+must trust the proxy CA printed by the installed Postman CLI; set proxy variables
+before starting the Next process. REVIEW_RESEND_MOCK_URL must point to the
+printed local Resend member address for receipt assertions. The test never
+establishes real FEKRA inbox delivery.
+
+Newsletter signup now requires explicit consent and fresh, challenge-bound
+Turnstile proof. Set newsletterBotChallenge, newsletterBotAnswer and
+newsletterBotToken when manually using the older collection. A successful signup
+is pending opt-in; confirmation and unsubscribe are documented in forms.openapi.yaml.
+Never seed, run successful submissions, or use provider stand-ins against a
+production database. The review runners enforce a local database guard.
+
 ```bash
 pnpm dev          # app on :3000
 pnpm seed         # needs at least one open job for folder 3

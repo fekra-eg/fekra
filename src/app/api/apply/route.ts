@@ -65,6 +65,12 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'verification_failed', fields: { botToken: 'required' } }, { status: 422 })
   }
 
+  // Fail closed rather than accepting a CV into a bucket configured for
+  // public media. Operators must migrate existing objects before switching.
+  if (process.env.S3_PUBLIC_HOST && (!process.env.S3_PRIVATE_BUCKET || process.env.S3_PRIVATE_BUCKET === process.env.S3_BUCKET)) {
+    return NextResponse.json({ error: 'server_error' }, { status: 503 })
+  }
+
   const payload = await payloadClient()
   const buffer = Buffer.from(await file.arrayBuffer())
   const extension = file.name.slice(file.name.lastIndexOf('.')).toLowerCase()
@@ -112,6 +118,7 @@ export async function POST(request: Request) {
     const job = await payload.findByID({
       collection: 'jobs',
       id: jobId,
+      locale: data.locale && ['en', 'ar', 'de', 'fr', 'es'].includes(data.locale) ? data.locale as 'en' | 'ar' | 'de' | 'fr' | 'es' : 'en',
       depth: 0,
       select: { title: true, roleStatus: true, _status: true },
     })
@@ -184,6 +191,11 @@ export async function POST(request: Request) {
     if (message.includes('dedupeKey') || message.includes('duplicate key')) {
       notifyTeam(jobTitle, '/admin/collections/job-applications', true)
       return NextResponse.json({ ok: true, duplicate: true })
+    }
+    // Payload also validates file contents, beyond our extension/MIME checks.
+    const uploadError = error as { data?: { errors?: { path?: string }[] } }
+    if (uploadError.data?.errors?.some((issue) => issue.path === 'file')) {
+      return NextResponse.json({ error: 'invalid', fields: { cv: 'fileType' } }, { status: 422 })
     }
     payload.logger.error({ err: error }, 'application submission failed')
     return NextResponse.json({ error: 'server_error' }, { status: 500 })

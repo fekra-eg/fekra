@@ -3,6 +3,8 @@
 Covers checklist section 25.9 (technical handover documentation) and the environment,
 integration and ownership items it depends on.
 
+**November 2026 implementation update:** see [review status](review-2026-11-04/STATUS.md) and [production operating procedure](REVIEW-OPERATIONS.md). The changes have been verified locally and are not deployed. Production account ownership and the release prerequisites remain open.
+
 **Live site:** https://www.fekra-egy.com · **Repository:** github.com/fekra-eg/fekra ·
 **Hosting:** Vercel project `fekra` · **Updated:** 14 Oct 2026 (master `280f493`)
 
@@ -34,7 +36,7 @@ One Next.js application contains both the public site and the CMS.
 
 Rendering: public pages are designed to be statically generated and revalidated on a timer,
 plus an immediate purge when an editor publishes (`src/payload/hooks/revalidate.ts`).
-**Known regression (14 Oct 2026):** production currently serves every HTML page as
+**Historical finding (14 Oct 2026, requires production re-verification):** production served every HTML page as
 `private, no-store`, so pages render per request. See severity register S-02. Nothing on a
 public page requires client-side data fetching to be readable (19.2).
 
@@ -62,6 +64,7 @@ settings; nothing secret is committed. Summary:
 | `PAYLOAD_SECRET` | yes | 32+ random chars. Rotating logs everyone out. |
 | `PREVIEW_SECRET` | yes | Guards `/api/preview`. |
 | `S3_BUCKET`, `S3_REGION`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY` | prod | Bucket is `fekra_assets`. Empty bucket name = local disk, which Vercel wipes on every deploy. Region must be the real one (`eu-north-1`), never `auto`. Keys come from Supabase > Storage > S3 Access Keys. Verify with `pnpm check:storage`. |
+| `S3_PRIVATE_BUCKET` | prod with public media | Must be a distinct PRIVATE bucket. Copy and verify existing CVs before switching, then retire public originals after the approved backup/retention check. The application route returns 503 if public media has no separate private bucket. |
 | `S3_ENDPOINT` | prod | `https://<project-ref>.supabase.co/storage/v1/s3`. Omit only for real AWS. |
 | `S3_PUBLIC_HOST` | prod | Added to `next/image` `remotePatterns`. |
 | `RESEND_API_KEY`, `EMAIL_FROM` | prod | Without it, submissions still save but no email is sent. |

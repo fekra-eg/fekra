@@ -1,6 +1,9 @@
 """Build the FEKRA CMS manual with the bundled Codex Python runtime."""
 from pathlib import Path
 import json
+import tempfile
+from zipfile import ZipFile
+from xml.etree import ElementTree as ET
 from docx import Document
 from docx.shared import Inches, Pt, RGBColor
 from docx.enum.text import WD_ALIGN_PARAGRAPH
@@ -72,7 +75,7 @@ SECTIONS = [
  'Paste the markup into HTML content or choose an .html file using the import control. Keep the file smaller than 500 KB.',
  'Use inline CSS or a style block and absolute image URLs. JavaScript and forms are disabled in the rendered article.',
  'Review both Desktop and Mobile under HTML preview. Save the draft, check the complete article preview, then publish.'
- ],'Put article markup in HTML content, not Excerpt. Excerpt is a short plain language summary for article cards.'),
+ ],'Use H2 to H4 inside the body. The page title supplies H1; imported H1 headings become H2. Match the article title to its body heading and SEO. Keep Excerpt a short plain language summary.'),
 ('Translate blog articles','23-translate',
  'The custom Translate empty languages button creates draft translations from the English article for languages that are still empty.',[
  'Select EN and complete the article. Save the English changes first; the translation button is disabled while the form has unsaved changes.',
@@ -144,9 +147,26 @@ def note(doc,text):
  p=doc.add_paragraph();p.paragraph_format.space_before=Pt(10)
  r=p.add_run('Remember  ');r.bold=True;p.add_run(text)
  pr=p._p.get_or_add_pPr(); sh=OxmlElement('w:shd');sh.set(qn('w:fill'),'EEF7F4');pr.append(sh)
+SHOT_ROOT = ROOT / 'screenshots'
+if not (SHOT_ROOT / '02-dashboard.png').exists():
+ # The original screenshot directory is absent in some checkouts. Preserve
+ # the actual screenshots embedded in the previous manual when rebuilding.
+ SHOT_ROOT = Path(tempfile.mkdtemp(prefix='fekra-guide-shots-'))
+ names = {title: image for title, image, *_ in SECTIONS}
+ names['Sign in using your individual CMS account.'] = 'login-detail'
+ ns = {'w':'http://schemas.openxmlformats.org/wordprocessingml/2006/main','wp':'http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing','a':'http://schemas.openxmlformats.org/drawingml/2006/main','r':'http://schemas.openxmlformats.org/officeDocument/2006/relationships'}
+ with ZipFile(ROOT / 'FEKRA-CMS-User-Guide.docx') as archive:
+  rels = {x.attrib['Id']: x.attrib['Target'] for x in ET.fromstring(archive.read('word/_rels/document.xml.rels'))}
+  for drawing in ET.fromstring(archive.read('word/document.xml')).findall('.//w:drawing', ns):
+   info, blip = drawing.find('.//wp:docPr', ns), drawing.find('.//a:blip', ns)
+   name = names.get(info.attrib.get('descr','')) if info is not None else None
+   if name and blip is not None:
+    target = rels[blip.attrib['{'+ns['r']+'}embed']]
+    (SHOT_ROOT / f'{name}.png').write_bytes(archive.read('word/' + target))
+
 def shot(doc,name,caption,width=6.85):
  p=doc.add_paragraph();p.paragraph_format.space_after=Pt(4)
- r=p.add_run();r.add_picture(str(ROOT/'screenshots'/f'{name}.png'),width=Inches(width))
+ r=p.add_run();r.add_picture(str(SHOT_ROOT/f'{name}.png'),width=Inches(width))
  p.paragraph_format.keep_with_next=True
  pic=r._r.xpath('.//wp:docPr')[0];pic.set('descr',caption)
  p=doc.add_paragraph(caption,'Caption');p.paragraph_format.space_after=Pt(10)
@@ -188,10 +208,12 @@ fld=OxmlElement('w:fldSimple');fld.set(qn('w:instr'),'PAGE');foot._p.append(fld)
 doc.add_paragraph('FEKRA', 'Subtitle')
 doc.add_paragraph('CMS User Guide','Title')
 doc.add_paragraph('Content editing and website administration','Subtitle')
-doc.add_paragraph('October 2026  |  English edition')
+doc.add_paragraph('November 2026  |  English edition')
 doc.add_paragraph('Use this guide to update the FEKRA website, prepare and publish content, manage translations, and review incoming enquiries and applications. Start by signing in, then follow the workflow for the content you need to change.')
-im=Image.open(ROOT/'screenshots/01-login.png');w,h=im.size
-im.crop((int(w*.30),int(h*.27),int(w*.70),int(h*.70))).save(ROOT/'screenshots/login-detail.png')
+doc.add_paragraph('Screenshots show an isolated demo CMS. Production previews must open on https://www.fekra-egy.com with the selected locale and page path. A localhost URL is expected only in the local demo; report it if it appears in production.')
+if (SHOT_ROOT / '01-login.png').exists():
+ im=Image.open(SHOT_ROOT/'01-login.png');w,h=im.size
+ im.crop((int(w*.30),int(h*.27),int(w*.70),int(h*.70))).save(SHOT_ROOT/'login-detail.png')
 shot(doc,'login-detail','Sign in using your individual CMS account.',3.5)
 doc.add_heading('Start with a small update',2)
 for t in ['Open https://www.fekra-egy.com/admin and sign in with the account supplied by your administrator.','Choose a collection, open a record, and confirm the editing Locale.','Make the change, save a draft, and review Preview.','Publish approved content and check the public page. Sitewide globals use Save directly.']:
@@ -204,7 +226,7 @@ for i,(title,*_) in enumerate(SECTIONS):
  p.add_run(f'{i+3:02d}   ').bold=True;p.add_run(title)
 doc.add_paragraph('21   Publishing checklist and troubleshooting')
 
-md=['# FEKRA CMS User Guide','', 'English edition | October 2026','', 'CMS: https://www.fekra-egy.com/admin','']
+md=['# FEKRA CMS User Guide','', 'English edition | November 2026','', 'CMS: https://www.fekra-egy.com/admin','', 'Screenshots show an isolated demo CMS. Production previews must use https://www.fekra-egy.com, the selected locale, and the page path. A localhost URL is expected only in the demo; report it if it appears in production.','']
 for idx,(title,image,intro,steps,reminder) in enumerate(SECTIONS,1):
  doc.add_page_break();doc.add_paragraph(f'WORKFLOW {idx:02d}','Subtitle');doc.add_heading(title,1)
  doc.add_paragraph(intro)

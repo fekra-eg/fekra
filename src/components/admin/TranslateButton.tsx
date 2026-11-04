@@ -13,6 +13,7 @@ export function TranslateButton() {
   if (!id) return <p style={{ marginBottom: 24 }}>Save the English version first, then translate it.</p>
 
   async function translate() {
+    if (!window.confirm('Translate only empty languages and save drafts for review? Existing translations will be kept.')) return
     setBusy(true)
     setMessage('Translating the languages that are still empty… this can take a minute.')
     try {

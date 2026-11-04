@@ -1,0 +1,166 @@
+[
+  {
+    "locale": "en",
+    "test": "field errors clear; blocked verification keeps submit disabled and provides retry/contact",
+    "pass": true
+  },
+  {
+    "locale": "en",
+    "test": "language switch preserves service path and refresh state",
+    "pass": true
+  },
+  {
+    "locale": "ar",
+    "test": "field errors clear; blocked verification keeps submit disabled and provides retry/contact",
+    "pass": true
+  },
+  {
+    "locale": "ar",
+    "test": "language switch preserves service path and refresh state",
+    "pass": true
+  },
+  {
+    "locale": "en",
+    "theme": "light",
+    "test": "process dwell, final state, loop, manual resume, reduced motion",
+    "states": [
+      {
+        "active": 0,
+        "ms": 3
+      },
+      {
+        "active": 1,
+        "ms": 3116
+      },
+      {
+        "active": 2,
+        "ms": 6022
+      },
+      {
+        "active": 3,
+        "ms": 9057
+      },
+      {
+        "active": 4,
+        "ms": 12066
+      },
+      {
+        "active": 5,
+        "ms": 15100
+      },
+      {
+        "active": 0,
+        "ms": 18126
+      }
+    ],
+    "pass": true
+  },
+  {
+    "locale": "en",
+    "theme": "dark",
+    "test": "process dwell, final state, loop, manual resume, reduced motion",
+    "states": [
+      {
+        "active": 0,
+        "ms": 1
+      },
+      {
+        "active": 1,
+        "ms": 3127
+      },
+      {
+        "active": 2,
+        "ms": 6030
+      },
+      {
+        "active": 3,
+        "ms": 9061
+      },
+      {
+        "active": 4,
+        "ms": 12087
+      },
+      {
+        "active": 5,
+        "ms": 15118
+      },
+      {
+        "active": 0,
+        "ms": 18153
+      }
+    ],
+    "pass": true
+  },
+  {
+    "locale": "ar",
+    "theme": "light",
+    "test": "process dwell, final state, loop, manual resume, reduced motion",
+    "states": [
+      {
+        "active": 0,
+        "ms": 2
+      },
+      {
+        "active": 1,
+        "ms": 3106
+      },
+      {
+        "active": 2,
+        "ms": 6129
+      },
+      {
+        "active": 3,
+        "ms": 9145
+      },
+      {
+        "active": 4,
+        "ms": 12057
+      },
+      {
+        "active": 5,
+        "ms": 15070
+      },
+      {
+        "active": 0,
+        "ms": 18079
+      }
+    ],
+    "pass": true
+  },
+  {
+    "locale": "ar",
+    "theme": "dark",
+    "test": "process dwell, final state, loop, manual resume, reduced motion",
+    "states": [
+      {
+        "active": 0,
+        "ms": 1
+      },
+      {
+        "active": 1,
+        "ms": 3113
+      },
+      {
+        "active": 2,
+        "ms": 6146
+      },
+      {
+        "active": 3,
+        "ms": 9056
+      },
+      {
+        "active": 4,
+        "ms": 12078
+      },
+      {
+        "active": 5,
+        "ms": 15104
+      },
+      {
+        "active": 0,
+        "ms": 18122
+      }
+    ],
+    "pass": true
+  }
+]

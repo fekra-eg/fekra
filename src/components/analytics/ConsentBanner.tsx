@@ -20,6 +20,13 @@ export function ConsentBanner({ dict, locale, enabled, availability }: { dict: D
   if (!enabled || consent !== null) return null
 
   const decide = (analytics: boolean, marketing: boolean) => writeConsent({ analytics, marketing })
+  const summary: Record<Locale, string> = {
+    en: 'Optional cookies help us measure visits and marketing. You choose.',
+    ar: 'الكوكيز الاختيارية تساعدنا في قياس الزيارات والتسويق. القرار لك.',
+    de: 'Optionale Cookies helfen bei Besuchsstatistiken und Marketing. Sie entscheiden.',
+    fr: 'Les cookies facultatifs servent aux statistiques et au marketing. À vous de choisir.',
+    es: 'Las cookies opcionales ayudan a medir visitas y marketing. Tú eliges.',
+  }
 
   return (
     <div
@@ -35,7 +42,7 @@ export function ConsentBanner({ dict, locale, enabled, availability }: { dict: D
         <p id={titleId} className="font-display text-base font-bold sm:text-lg">{dict.consent.title}</p>
       </div>
       <p id={descriptionId} className="mt-2 text-sm/6 text-muted-foreground">
-        {dict.consent.body}{' '}
+        {summary[locale]}{' '}
         {/* Consent is not informed without the detail behind it (1.10 / 21.8). */}
         <Link href={availableHref(locale, '/cookie-policy', availability)} className="rounded-sm font-semibold text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring">
           {dict.consent.cookiePolicy}

@@ -74,6 +74,10 @@ export default async function ArticlePage({ params }: { params: Promise<{ locale
   // Depth 2 so the author's photo arrives populated with the author (FK-38).
   const author = post.author?.name ? post.author : null
   const authorPhoto = author && typeof author.photo === 'object' && author.photo?.url ? author.photo.url : null
+  const cover = post.meta?.image?.url ? post.meta.image : post.heroImage
+  const rasterCover = cover?.url && /\.svg(?:\?|$)/i.test(cover.url)
+    ? { ...cover, url: `/og/post/${locale}/${slug}.jpg` }
+    : cover
 
   // Related posts: same category first, falling back to most recent, and never
   // the article you are already reading.
@@ -122,14 +126,14 @@ export default async function ArticlePage({ params }: { params: Promise<{ locale
           </nav>
 
           <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
-            <header>
+            <header className="min-w-0">
               {category ? (
                 <span className={cn('inline-block rounded-full px-3 py-1 text-xs font-semibold', theme.tag)}>
                   {category}
                 </span>
               ) : null}
 
-              <h1 className="mt-4 text-[clamp(2.1rem,4.2vw,3.4rem)] leading-[1.12] font-extrabold tracking-tight text-balance text-slate-900 dark:text-white">
+              <h1 className="mt-4 [overflow-wrap:anywhere] text-[clamp(2.1rem,4.2vw,3.4rem)] leading-[1.12] font-extrabold tracking-tight text-balance text-slate-900 dark:text-white">
                 {post.title}
               </h1>
 
@@ -164,7 +168,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ locale
             <Cover
               category={category || 'FEKRA'}
               title={post.title}
-              image={post.heroImage}
+              image={rasterCover}
               priority
               sizes="(min-width: 1024px) 50vw, 100vw"
               className="aspect-[16/10] w-full rounded-[1.75rem] shadow-[0_30px_70px_-40px_rgba(15,23,42,0.5)] ring-1 ring-white/60 dark:ring-white/10"
@@ -303,7 +307,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ locale
             excerpt: post.excerpt,
             path: `/blog/${slug}`,
             locale,
-            imageUrl: post.heroImage?.url ?? null,
+            imageUrl: cover?.url ? absoluteUrl(`/og/post/${locale}/${slug}.jpg`) : null,
             publishedAt: post.publishedAt,
             updatedAt: post.updatedAt,
             author: author ? { name: author.name!, jobTitle: author.role, url: author.linkedin, image: authorPhoto } : null,

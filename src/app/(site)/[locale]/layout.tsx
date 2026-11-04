@@ -140,7 +140,7 @@ export default async function SiteLayout({
             availability={availability}
           />
 
-          <main id="main"><LocaleStatusProvider messages={{ loading: dict.common.loading, error: dict.error }}>{children}</LocaleStatusProvider></main>
+          <main id="main" tabIndex={-1}><LocaleStatusProvider messages={{ loading: dict.common.loading, error: dict.error }}>{children}</LocaleStatusProvider></main>
 
           <Footer
             data={footer}

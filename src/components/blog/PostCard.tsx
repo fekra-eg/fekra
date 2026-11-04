@@ -1,7 +1,7 @@
 import Link from 'next/link'
 
 import type { MediaDoc } from '@/components/blocks/types'
-import { type Locale, LOCALE_META } from '@/i18n/routing'
+import { type Locale } from '@/i18n/routing'
 import { cn } from '@/lib/cn'
 import { documentHref } from '@/lib/urls'
 
@@ -26,15 +26,19 @@ export const categoryTitle = (post: PostSummary): string =>
 export function formatDate(value: string, locale: Locale): string {
   const date = new Date(value)
   if (Number.isNaN(date.getTime())) return value
-  return new Intl.DateTimeFormat(LOCALE_META[locale].hreflang, {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    // FK-73: Western digits on every locale, Arabic included.
-    numberingSystem: 'latn',
-    // The CMS date picker saves midnight Cairo time; in UTC that is the day before.
-    timeZone: 'Africa/Cairo',
-  }).format(date)
+  // ICU punctuation differs between Node and WebKit (Arabic gained a comma
+  // in Safari), even with the same timezone. Format date parts explicitly.
+  const months: Record<Locale, string[]> = {
+    en: 'January February March April May June July August September October November December'.split(' '),
+    ar: 'يناير فبراير مارس أبريل مايو يونيو يوليو أغسطس سبتمبر أكتوبر نوفمبر ديسمبر'.split(' '),
+    de: 'Januar Februar März April Mai Juni Juli August September Oktober November Dezember'.split(' '),
+    fr: 'janvier février mars avril mai juin juillet août septembre octobre novembre décembre'.split(' '),
+    es: 'enero febrero marzo abril mayo junio julio agosto septiembre octubre noviembre diciembre'.split(' '),
+  }
+  const parts = new Intl.DateTimeFormat('en', { timeZone: 'Africa/Cairo', year: 'numeric', month: 'numeric', day: 'numeric', numberingSystem: 'latn' }).formatToParts(date)
+  const part = (type: string) => parts.find((item) => item.type === type)!.value
+  const day = part('day'), year = part('year'), month = months[locale][Number(part('month')) - 1]
+  return locale === 'en' ? `${month} ${day}, ${year}` : locale === 'de' ? `${day}. ${month} ${year}` : locale === 'es' ? `${day} de ${month} de ${year}` : `${day} ${month} ${year}`
 }
 
 export function PostCard({
@@ -78,7 +82,7 @@ export function PostCard({
             <span />
           )}
           {post.publishedAt ? (
-            <time dateTime={post.publishedAt} className="text-sm text-slate-400">
+            <time dateTime={post.publishedAt} className="text-sm text-slate-600 dark:text-slate-400">
               {formatDate(post.publishedAt, locale)}
             </time>
           ) : null}

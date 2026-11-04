@@ -229,18 +229,18 @@ export function buildServicesMenu(services: Service[], locale: Locale, availabil
     return [{ title: service.title, slug: service.slug, roles }]
   })
 
-  /*
-   * The approved comp repeats role pages across groups — In-Demand cross-links
-   * the popular ones — so those stay. A role without its own page falls back
-   * to its own group's heading, and that link is dropped: the heading already
-   * says it (FK-25).
-   */
+  // Each destination belongs to its specific group. The popular group keeps
+  // roles that do not already appear in a specialist category.
+  const owner = new Map(menu.map((group) => [group.slug, group.slug]))
+  for (const group of [...menu.filter((g) => g.slug !== 'hire-in-demand-developers'), ...menu.filter((g) => g.slug === 'hire-in-demand-developers')]) {
+    for (const role of group.roles) if (!owner.has(role.slug)) owner.set(role.slug, group.slug)
+  }
   return menu.map((group) => ({
     title: group.title,
     slug: group.slug,
     href: href(group.slug),
     roles: group.roles
-      .filter((role, i, roles) => role.slug !== group.slug && roles.findIndex((r) => r.slug === role.slug) === i)
+      .filter((role, i, roles) => role.slug !== group.slug && owner.get(role.slug) === group.slug && roles.findIndex((r) => r.slug === role.slug) === i)
       .map((role) => ({ title: label(role.slug, role.title), slug: role.slug, href: href(role.slug) })),
   }))
 }

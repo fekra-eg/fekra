@@ -23,13 +23,31 @@ export function translateEndpoint(
       })
       const body = (await req.json?.().catch(() => ({}))) as { overwrite?: unknown } | undefined
       const overwrite = new Set(Array.isArray(body?.overwrite) ? body.overwrite.map(String) : [])
-      // Every locale's title at once: a translation exists once it is published or differs from English.
-      const titles = (await req.payload.findByID({
-        collection, id, locale: 'all', fallbackLocale: false, draft: true, depth: 0, select: { title: true },
-      })).title as unknown as Partial<Record<Locale, string>>
+      // Any saved localized copy is protected, even when an editor kept an
+      // English technical title or has only translated the body so far.
+      const localized = await req.payload.findByID({
+        collection, id, locale: 'all', fallbackLocale: false, draft: true, depth: 0,
+        select: collection === 'posts'
+          ? { title: true, excerpt: true, htmlContent: true, content: true, tags: true, meta: true }
+          : { title: true, summary: true, description: true, requirements: true, benefits: true, department: true, location: true, meta: true },
+      }) as unknown as Record<string, unknown>
+      const meaningful = (value: unknown): boolean => {
+        if (typeof value === 'string') return Boolean(value.trim())
+        if (Array.isArray(value)) return value.some(meaningful)
+        if (value && typeof value === 'object') {
+          const node = value as { root?: unknown; children?: unknown[]; text?: string }
+          return node.root ? meaningful(node.root) : Boolean(node.text?.trim()) || Boolean(node.children?.some(meaningful))
+        }
+        return false
+      }
+      const savedCopy = (locale: Locale) => Object.entries(localized).some(([key, value]) => {
+        if (!value || typeof value !== 'object') return false
+        if (key === 'meta') return Object.values(value).some((field) => field && typeof field === 'object' && meaningful((field as Record<string, unknown>)[locale]))
+        return meaningful((value as Record<string, unknown>)[locale])
+      })
       const others = LOCALES.filter((locale): locale is Target => locale !== 'en')
       const hasTranslation = (locale: Locale) =>
-        (doc.availableLocales ?? []).includes(locale) || Boolean(titles?.[locale]?.trim() && titles[locale]!.trim() !== doc.title.trim())
+        (doc.availableLocales ?? []).includes(locale) || savedCopy(locale)
       const skipped = others.filter((locale) => !overwrite.has(locale) && hasTranslation(locale))
       const targets = others.filter((locale) => !skipped.includes(locale))
       if (!targets.length) return Response.json({ translated: [], failed: [], skipped })
