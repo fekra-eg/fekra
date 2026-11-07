@@ -13,6 +13,7 @@ import { ReadingProgress } from '@/components/blog/ReadingProgress'
 import { ShareButtons } from '@/components/blog/ShareButtons'
 import { TableOfContents } from '@/components/blog/TableOfContents'
 import { categoryTheme } from '@/components/blog/theme'
+import { LiveBody, LiveExcerpt, LivePost, LiveTitle } from '@/components/blog/LivePost'
 import { JsonLd } from '@/components/JsonLd'
 import { RichText } from '@/components/RichText'
 import { getDictionary, t } from '@/i18n/getDictionary'
@@ -104,6 +105,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ locale
   ]
 
   return (
+    <LivePost initial={{ id: post.id, title: post.title, excerpt: post.excerpt }}>
     <div className="bg-blog-surface dark:bg-blog-ink">
       <ReadingProgress />
 
@@ -120,7 +122,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ locale
                 </li>
               ))}
               <li aria-current="page" className="line-clamp-1 font-medium text-slate-700 dark:text-slate-200">
-                {post.title}
+                <LiveTitle />
               </li>
             </ol>
           </nav>
@@ -134,7 +136,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ locale
               ) : null}
 
               <h1 className="mt-4 [overflow-wrap:anywhere] text-[clamp(2.1rem,4.2vw,3.4rem)] leading-[1.12] font-extrabold tracking-tight text-balance text-slate-900 dark:text-white">
-                {post.title}
+                <LiveTitle />
               </h1>
 
               <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3 text-sm text-slate-500 dark:text-slate-400">
@@ -213,13 +215,13 @@ export default async function ArticlePage({ params }: { params: Promise<{ locale
                 </span>
                 <p className="text-[1.0625rem] leading-8 text-slate-700 sm:text-[1.125rem] dark:text-slate-200">
                   <span className="font-bold text-slate-900 dark:text-white">{dict.blog.quickSummary}: </span>
-                  {post.excerpt}
+                  <LiveExcerpt />
                 </p>
               </div>
             ) : null}
 
             {isHtml ? <InlineHtmlArticle source={post.htmlContent!} locale={locale} /> :
-              <RichText data={post.content} anchors variant="article" locale={locale} />}
+              <LiveBody locale={locale}><RichText data={post.content} anchors variant="article" locale={locale} /></LiveBody>}
 
             {post.tags?.length ? (
               <ul className="mt-10 flex flex-wrap gap-2">
@@ -316,6 +318,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ locale
         ]}
       />
     </div>
+    </LivePost>
   )
 }
 
