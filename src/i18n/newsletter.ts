@@ -1,0 +1,9 @@
+import type { Locale } from './routing'
+
+export const newsletterCopy: Record<Locale, { check: string; confirm: string; unsubscribe: string; confirmed: string; unsubscribed: string; consent: string }> = {
+  en: { check: 'Check your email to confirm your newsletter subscription.', confirm: 'Confirm subscription', unsubscribe: 'Unsubscribe', confirmed: 'Your subscription is confirmed.', unsubscribed: 'You have been unsubscribed.', consent: 'I agree to receive the FEKRA newsletter by email. I can unsubscribe at any time.' },
+  ar: { check: 'راجع بريدك الإلكتروني لتأكيد الاشتراك في النشرة.', confirm: 'تأكيد الاشتراك', unsubscribe: 'إلغاء الاشتراك', confirmed: 'تم تأكيد اشتراكك.', unsubscribed: 'تم إلغاء اشتراكك.', consent: 'أوافق على تلقي نشرة فكرة عبر البريد الإلكتروني، ويمكنني إلغاء الاشتراك في أي وقت.' },
+  de: { check: 'Bestätigen Sie Ihr Newsletter-Abonnement über die E-Mail.', confirm: 'Abonnement bestätigen', unsubscribe: 'Abmelden', confirmed: 'Ihr Abonnement ist bestätigt.', unsubscribed: 'Sie wurden abgemeldet.', consent: 'Ich möchte den FEKRA-Newsletter per E-Mail erhalten und kann mich jederzeit abmelden.' },
+  fr: { check: 'Consultez votre e-mail pour confirmer votre abonnement.', confirm: 'Confirmer l’abonnement', unsubscribe: 'Se désabonner', confirmed: 'Votre abonnement est confirmé.', unsubscribed: 'Vous êtes désabonné.', consent: 'J’accepte de recevoir la newsletter FEKRA par e-mail. Je peux me désabonner à tout moment.' },
+  es: { check: 'Revisa tu correo para confirmar la suscripción.', confirm: 'Confirmar suscripción', unsubscribe: 'Cancelar suscripción', confirmed: 'Tu suscripción está confirmada.', unsubscribed: 'Se ha cancelado tu suscripción.', consent: 'Acepto recibir la newsletter de FEKRA por correo. Puedo cancelar la suscripción en cualquier momento.' },
+}

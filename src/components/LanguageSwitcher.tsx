@@ -39,7 +39,7 @@ export function LanguageSwitcher({
   useEffect(() => {
     // Only on change: any cookie write keeps the page out of the back/forward cache.
     if (document.cookie.split('; ').includes(`NEXT_LOCALE=${current}`)) return
-    document.cookie = `NEXT_LOCALE=${current}; path=/; max-age=31536000; samesite=lax`
+    document.cookie = `NEXT_LOCALE=${current}; path=/; max-age=31536000; samesite=lax${location.protocol === 'https:' ? '; secure' : ''}`
   }, [current, pathname])
 
   // Warm only the language the visitor points to, not four complete pages
@@ -135,7 +135,7 @@ export function LanguageSwitcher({
                 if (locale === current) return
                 // Explicit choice must beat the remembered locale, or the "/"
                 // redirect in proxy.ts bounces English home back to the old one.
-                document.cookie = `NEXT_LOCALE=${locale}; path=/; max-age=31536000; samesite=lax`
+                document.cookie = `NEXT_LOCALE=${locale}; path=/; max-age=31536000; samesite=lax${location.protocol === 'https:' ? '; secure' : ''}`
                 setTargetLocale(locale)
                 startTransition(() => router.push(localeHref(locale, rest) + window.location.search + window.location.hash))
               }}

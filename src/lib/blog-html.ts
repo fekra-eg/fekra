@@ -100,16 +100,21 @@ export function blogHtmlInline(source: string, locale: Locale): { html: string; 
   })
   const styles = [...cleaned.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/gi)].map((m) => m[1]).join('\n')
   const body = cleaned.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+  const tableLabel: Record<Locale, string> = { en: 'Scrollable table', ar: 'جدول قابل للتمرير', de: 'Scrollbare Tabelle', fr: 'Tableau défilant', es: 'Tabla desplazable' }
   const html = (body.match(/<body[^>]*>([\s\S]*)<\/body>/i)?.[1] ?? body).replace(/<\/?html[^>]*>/gi, '')
+    .replace(/<table\b[\s\S]*?<\/table>/gi, (table) => `<div class="fk-table-scroll" tabindex="0" role="region" aria-label="${tableLabel[locale]}">${table}</div>`)
   const scoped = styles.replace(/([^{}]+)\{/g, (_, selector: string) =>
     `${selector.replace(/:root\b|\bhtml\b|\bbody\b/g, ':scope').replace(/\bh1\b/g, '.fk-article-title')}{`,
   )
   const css =
     `@layer fk-article-reset{.${ARTICLE_CLASS} *{all:revert}}` +
-    `.${ARTICLE_CLASS}{position:relative;overflow:clip;background:#fff;color:#000;overflow-wrap:break-word}.${ARTICLE_CLASS} img{max-width:100%;height:auto}` +
+    `.${ARTICLE_CLASS}{position:relative;overflow:clip;background:var(--card,#fff);color:var(--foreground,#000);overflow-wrap:break-word}.${ARTICLE_CLASS} img{max-width:100%;height:auto}` +
     `@scope (.${ARTICLE_CLASS}){${scoped}}` +
     // An article's own "On this page" links are one line of text tall; 44px tap targets (T-19 / 16.2).
-    `.${ARTICLE_CLASS} nav a[href^="#"]{display:inline-flex;align-items:center;min-height:44px}`
+    `.${ARTICLE_CLASS} nav a[href^="#"]{display:inline-flex;align-items:center;min-height:44px}` +
+    `.${ARTICLE_CLASS} .fk-table-scroll{max-width:100%;overflow-x:auto;margin-block:1rem}.${ARTICLE_CLASS} .fk-table-scroll:focus-visible{outline:3px solid var(--ring,#146676);outline-offset:3px}` +
+    `.dark .${ARTICLE_CLASS},.dark .${ARTICLE_CLASS} :is(div,section,aside,header,footer,nav,table,thead,tbody,tr,th,td){background-color:var(--card)!important;color:var(--foreground)!important;border-color:var(--border)!important}` +
+    `.dark .${ARTICLE_CLASS} :is(p,li,h2,h3,h4,strong,span,summary){color:var(--foreground)!important}.dark .${ARTICLE_CLASS} a{color:var(--primary)!important}.dark .${ARTICLE_CLASS} .sa-cta a{background:var(--primary)!important;color:var(--primary-foreground)!important}.dark .${ARTICLE_CLASS} :is(code,pre){background:var(--background-subtle)!important;color:var(--foreground)!important}`
   return { html, css }
 }
 

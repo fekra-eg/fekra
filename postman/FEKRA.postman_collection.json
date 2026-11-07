@@ -1,13 +1,13 @@
 {
   "info": {
     "_postman_id": "6f63f3bc-5d6d-4c7f-bdd9-c3549223308c",
-    "name": "FEKRA — Sign-up & Content Journeys",
-    "description": "End-to-end API tests for the FEKRA website.\n\n**There is no public user registration in this project.** `users` is admin-only (`create: isAdmin`) and the agreed scope has no visitor accounts. The sign-up surface that does exist is covered here:\n\n1. Newsletter signup\n2. Contact enquiry\n3. Careers application (with CV upload)\n4. CMS authentication\n5. Content publish lifecycle\n\nLeave ~60s between full runs — the rate limiters are per-IP and per-minute.\n\nRun the folders **in order** — the rate-limit assertions depend on how many requests preceded them, and the content folder threads an id between requests.\n\nSetup:\n- Import `FEKRA.local.postman_environment.json`\n- `pnpm dev` and `pnpm seed` must have run\n- Postman → Settings → **disable** 'Automatically follow redirects'\n- Re-attach the two files in the Careers folder if Postman drops the relative paths",
+    "name": "FEKRA \u2014 Sign-up & Content Journeys",
+    "description": "End-to-end API tests for the FEKRA website.\n\n**There is no public user registration in this project.** `users` is admin-only (`create: isAdmin`) and the agreed scope has no visitor accounts. The sign-up surface that does exist is covered here:\n\n1. Newsletter signup\n2. Contact enquiry\n3. Careers application (with CV upload)\n4. CMS authentication\n5. Content publish lifecycle\n\nLeave ~60s between full runs \u2014 the rate limiters are per-IP and per-minute.\n\nRun the folders **in order** \u2014 the rate-limit assertions depend on how many requests preceded them, and the content folder threads an id between requests.\n\nSetup:\n- Import `FEKRA.local.postman_environment.json`\n- `pnpm dev` and `pnpm seed` must have run\n- Postman \u2192 Settings \u2192 **disable** 'Automatically follow redirects'\n- Re-attach the two files in the Careers folder if Postman drops the relative paths",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
     {
-      "name": "0 · Smoke",
+      "name": "0 \u00b7 Smoke",
       "item": [
         {
           "name": "Health",
@@ -70,7 +70,7 @@
                   "  pm.test('search engines are allowed', () => pm.expect(body).to.include('Googlebot'));",
                   "  pm.test('admin surface is disallowed (21.10)', () => pm.expect(body).to.include('/admin'));",
                   "} else {",
-                  "  // 3.4 — staging must be un-indexable, so it deliberately omits the sitemap.",
+                  "  // 3.4 \u2014 staging must be un-indexable, so it deliberately omits the sitemap.",
                   "  pm.test('non-production is disallow-all', () => pm.expect(body).to.match(/User-Agent: \\*\\s*\\nDisallow: \\//));",
                   "  pm.test('does not advertise a sitemap', () => pm.expect(body).to.not.include('Sitemap:'));",
                   "}"
@@ -138,7 +138,7 @@
       "description": "Is the app up, and is this environment safe to index?"
     },
     {
-      "name": "1 · Newsletter signup",
+      "name": "1 \u00b7 Newsletter signup",
       "item": [
         {
           "name": "Sign up",
@@ -162,7 +162,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"{{signupEmail}}\",\n  \"locale\": \"en\",\n  \"path\": \"/blog\"\n}",
+              "raw": "{\n  \"email\": \"{{signupEmail}}\",\n  \"locale\": \"en\",\n  \"path\": \"/blog\",\n  \"consent\": true,\n  \"botChallenge\": \"{{newsletterBotChallenge}}\",\n  \"botAnswer\": \"{{newsletterBotAnswer}}\",\n  \"botToken\": \"{{newsletterBotToken}}\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -214,7 +214,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"not-an-email\"\n}",
+              "raw": "{\n  \"email\": \"not-an-email\",\n  \"consent\": true\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -254,10 +254,10 @@
                 "newsletter"
               ]
             },
-            "description": "A filled honeypot must look identical to success — telling a bot it was caught teaches it to pass next time.",
+            "description": "A filled honeypot must look identical to success \u2014 telling a bot it was caught teaches it to pass next time.",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"bot@example.com\",\n  \"website\": \"http://spam.example\"\n}",
+              "raw": "{\n  \"email\": \"bot@example.com\",\n  \"website\": \"http://spam.example\",\n  \"consent\": true\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -279,13 +279,13 @@
           ]
         }
       ],
-      "description": "Footer and blog signup — POST /api/newsletter."
+      "description": "POST /api/newsletter requires explicit consent and fresh bound Turnstile proof. Success means pending opt-in; confirm by email. Use check-review-forms.ts for the isolated lifecycle and deduplication tests."
     },
     {
-      "name": "2 · Contact enquiry",
+      "name": "2 \u00b7 Contact enquiry",
       "item": [
         {
-          "name": "Submit — valid",
+          "name": "Submit \u2014 valid",
           "request": {
             "method": "POST",
             "header": [
@@ -333,7 +333,7 @@
                 "exec": [
                   "pm.test('200', () => pm.response.to.have.status(200));",
                   "pm.test('stored', () => pm.expect(pm.response.json().ok).to.be.true);",
-                  "// 11.7 / 22.6 — the GA4 conversion fires client-side only after this 2xx."
+                  "// 11.7 / 22.6 \u2014 the GA4 conversion fires client-side only after this 2xx."
                 ]
               }
             }
@@ -536,7 +536,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "// Inside MIN_FILL_SECONDS — the time trap should swallow this.",
+                  "// Inside MIN_FILL_SECONDS \u2014 the time trap should swallow this.",
                   "pm.collectionVariables.set('startedAt', Date.now());"
                 ]
               }
@@ -553,10 +553,10 @@
           ]
         }
       ],
-      "description": "POST /api/contact — validation, bot traps, attribution. Exactly five calls, which is the full per-minute budget; the 429 case lives in folder 7."
+      "description": "POST /api/contact \u2014 validation, bot traps, attribution. Exactly five calls, which is the full per-minute budget; the 429 case lives in folder 7."
     },
     {
-      "name": "3 · Careers application",
+      "name": "3 \u00b7 Careers application",
       "item": [
         {
           "name": "Find an open role",
@@ -742,7 +742,7 @@
           ]
         },
         {
-          "name": "Apply — valid PDF",
+          "name": "Apply \u2014 valid PDF",
           "request": {
             "method": "POST",
             "header": [],
@@ -943,13 +943,13 @@
           ]
         }
       ],
-      "description": "POST /api/apply — CV allow-list, dedupe. Exactly three apply calls, which is the full per-minute budget; the 429 case lives in folder 7."
+      "description": "POST /api/apply \u2014 CV allow-list, dedupe. Exactly three apply calls, which is the full per-minute budget; the 429 case lives in folder 7."
     },
     {
-      "name": "4 · CMS authentication",
+      "name": "4 \u00b7 CMS authentication",
       "item": [
         {
-          "name": "Login — wrong password",
+          "name": "Login \u2014 wrong password",
           "request": {
             "method": "POST",
             "header": [
@@ -1134,7 +1134,7 @@
       "description": "Payload session auth and the CSRF origin guard."
     },
     {
-      "name": "5 · Content publish lifecycle",
+      "name": "5 \u00b7 Content publish lifecycle",
       "item": [
         {
           "name": "Create a draft",
@@ -1255,7 +1255,7 @@
                 }
               ]
             },
-            "description": "Sent without the Origin header, but the cookie still authenticates the read — an anonymous client sees nothing."
+            "description": "Sent without the Origin header, but the cookie still authenticates the read \u2014 an anonymous client sees nothing."
           },
           "event": [
             {
@@ -1342,7 +1342,7 @@
                 "{{postSlug}}"
               ]
             },
-            "description": "No restart, no waiting for the 15-minute timer — the publish hook purged the path."
+            "description": "No restart, no waiting for the 15-minute timer \u2014 the publish hook purged the path."
           },
           "event": [
             {
@@ -1537,7 +1537,7 @@
       "description": "Draft is private -> publish -> live -> unpublish -> delete."
     },
     {
-      "name": "6 · Localisation & security",
+      "name": "6 \u00b7 Localisation & security",
       "item": [
         {
           "name": "/en/* redirects to the unprefixed canonical (18.3)",
@@ -1698,11 +1698,11 @@
       "description": "Locale routing, RTL, headers, preview guard."
     },
     {
-      "name": "7 · Rate limiting",
+      "name": "7 \u00b7 Rate limiting",
       "description": "Runs LAST on purpose. These probes deliberately exhaust the per-IP budget, so anything scheduled after them would get spurious 429s.\n\nThe limiters are 5/60s for contact and newsletter, 3/60s for apply. Leave ~60 seconds between full collection runs, or the functional folders will start with an empty budget and fail.",
       "item": [
         {
-          "name": "Contact — 6th submission in a minute",
+          "name": "Contact \u2014 6th submission in a minute",
           "request": {
             "method": "POST",
             "header": [
@@ -1769,7 +1769,7 @@
           ]
         },
         {
-          "name": "Apply — 4th application in a minute",
+          "name": "Apply \u2014 4th application in a minute",
           "request": {
             "method": "POST",
             "header": [],
@@ -1871,7 +1871,7 @@
       ]
     },
     {
-      "name": "8 · Logout",
+      "name": "8 \u00b7 Logout",
       "item": [
         {
           "name": "Logout",
@@ -1972,7 +1972,7 @@
           "// Error responses must never carry a stack trace (21.11).",
           "// Scoped to API/JSON responses: Next's *dev* server injects inline",
           "// scripts full of node_modules paths into every HTML page, which is a",
-          "// dev artefact, not a leak — asserting on HTML here only produces noise.",
+          "// dev artefact, not a leak \u2014 asserting on HTML here only produces noise.",
           "const type = pm.response.headers.get('Content-Type') || '';",
           "if (type.includes('application/json')) {",
           "  const body = pm.response.text();",

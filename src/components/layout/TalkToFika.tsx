@@ -36,7 +36,7 @@ export function TalkToFika({ locale, dict, consentRequired = true }: { locale: L
     // Bottom corner on phones — parked mid-viewport it sat on top of the hero
     // CTA. Desktop sits 50px above centre, which is what clears the hero
     // collage instead of crowding the tile directly beneath it.
-    'fixed end-4 bottom-4 z-40 rounded-2xl border border-border bg-white p-2 shadow-lift dark:bg-card'
+    'relative ms-auto me-4 my-4 w-fit rounded-2xl border border-border bg-white p-2 shadow-lift sm:fixed sm:end-4 sm:bottom-[max(1rem,env(safe-area-inset-bottom))] sm:z-40 sm:m-0 dark:bg-card'
 
   if (!open) {
     return (

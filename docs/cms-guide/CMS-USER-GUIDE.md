@@ -1,8 +1,10 @@
 # FEKRA CMS User Guide
 
-English edition | October 2026
+English edition | November 2026
 
 CMS: https://www.fekra-egy.com/admin
+
+Screenshots show an isolated demo CMS. Production previews must use https://www.fekra-egy.com, the selected locale, and the page path. A localhost URL is expected only in the demo; report it if it appears in production.
 
 ## Find your way around the CMS
 
@@ -119,7 +121,7 @@ Use the custom HTML editor when an article has already been prepared as HTML. Th
 3. Use inline CSS or a style block and absolute image URLs. JavaScript and forms are disabled in the rendered article.
 4. Review both Desktop and Mobile under HTML preview. Save the draft, check the complete article preview, then publish.
 
-**Remember:** Put article markup in HTML content, not Excerpt. Excerpt is a short plain language summary for article cards.
+**Remember:** Use H2 to H4 inside the body. The page title supplies H1; imported H1 headings become H2. Match the article title to its body heading and SEO. Keep Excerpt a short plain language summary.
 
 ## Translate blog articles
 

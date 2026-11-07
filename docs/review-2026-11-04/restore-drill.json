@@ -1,0 +1,6 @@
+{
+  "scope": "isolated local database with synthetic submissions; not production backup proof",
+  "dumpBytes": 4215514,
+  "sha256": "6ebe5500aee504014430751479589a2bf0bda5627ea65e1cf2dfbe2d758bab9e",
+  "restoreExitCode": 0
+}

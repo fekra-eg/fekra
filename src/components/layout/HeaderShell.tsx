@@ -15,7 +15,7 @@ import { useEffect, useRef, type ReactNode } from 'react'
  * all, so it costs nothing on the main thread (17.8).
  */
 export function HeaderShell({ children }: { children: ReactNode }) {
-  const shell = useRef<HTMLDivElement>(null)
+  const shell = useRef<HTMLElement>(null)
 
   useEffect(() => {
     let frame = 0
@@ -47,7 +47,7 @@ export function HeaderShell({ children }: { children: ReactNode }) {
   }, [])
 
   return (
-    <div
+    <header
       ref={shell}
       data-scrolled="false"
       // The height is pinned to --header-block and never animates. It used to
@@ -83,6 +83,6 @@ export function HeaderShell({ children }: { children: ReactNode }) {
       >
         {children}
       </div>
-    </div>
+    </header>
   )
 }

@@ -77,6 +77,7 @@ export interface Config {
     'applicant-files': ApplicantFile;
     'job-applications': JobApplication;
     'contact-submissions': ContactSubmission;
+    'newsletter-subscribers': NewsletterSubscriber;
     users: User;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
@@ -95,6 +96,7 @@ export interface Config {
     'applicant-files': ApplicantFilesSelect<false> | ApplicantFilesSelect<true>;
     'job-applications': JobApplicationsSelect<false> | JobApplicationsSelect<true>;
     'contact-submissions': ContactSubmissionsSelect<false> | ContactSubmissionsSelect<true>;
+    'newsletter-subscribers': NewsletterSubscribersSelect<false> | NewsletterSubscribersSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -328,8 +330,6 @@ export interface Media {
   decorative?: boolean | null;
   caption?: string | null;
   credit?: string | null;
-  prefix?: string | null;
-  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -1504,8 +1504,6 @@ export interface Author {
 export interface ApplicantFile {
   id: number;
   originalName?: string | null;
-  prefix?: string | null;
-  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -1561,6 +1559,23 @@ export interface ContactSubmission {
   utmMedium?: string | null;
   utmCampaign?: string | null;
   referrer?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "newsletter-subscribers".
+ */
+export interface NewsletterSubscriber {
+  id: number;
+  email: string;
+  status: 'pending' | 'subscribed' | 'unsubscribed';
+  consentAt: string;
+  consentVersion: string;
+  confirmedAt?: string | null;
+  unsubscribedAt?: string | null;
+  locale?: string | null;
+  sourcePath?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1658,6 +1673,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'contact-submissions';
         value: number | ContactSubmission;
+      } | null)
+    | ({
+        relationTo: 'newsletter-subscribers';
+        value: number | NewsletterSubscriber;
       } | null)
     | ({
         relationTo: 'users';
@@ -2477,8 +2496,6 @@ export interface MediaSelect<T extends boolean = true> {
   decorative?: T;
   caption?: T;
   credit?: T;
-  prefix?: T;
-  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -2551,8 +2568,6 @@ export interface MediaSelect<T extends boolean = true> {
  */
 export interface ApplicantFilesSelect<T extends boolean = true> {
   originalName?: T;
-  prefix?: T;
-  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -2606,6 +2621,22 @@ export interface ContactSubmissionsSelect<T extends boolean = true> {
   utmMedium?: T;
   utmCampaign?: T;
   referrer?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "newsletter-subscribers_select".
+ */
+export interface NewsletterSubscribersSelect<T extends boolean = true> {
+  email?: T;
+  status?: T;
+  consentAt?: T;
+  consentVersion?: T;
+  confirmedAt?: T;
+  unsubscribedAt?: T;
+  locale?: T;
+  sourcePath?: T;
   updatedAt?: T;
   createdAt?: T;
 }

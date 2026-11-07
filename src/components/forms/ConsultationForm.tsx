@@ -123,7 +123,7 @@ export function ConsultationForm({
             <legend className="text-sm font-medium text-ink-900 dark:text-foreground">{dict.form.hiringModel}</legend>
             <div className="mt-1 flex flex-wrap gap-x-4">
               {MODELS.map((model) => (
-                <label key={model} className="flex min-h-8 items-center gap-1.5 text-sm text-ink-900 dark:text-foreground">
+                <label key={model} className="flex min-h-11 items-center gap-1.5 text-sm text-ink-900 dark:text-foreground">
                   <input type="radio" name="model" required value={{ fullTime: 'Full Time', partTime: 'Part Time', hourly: 'Hourly Time' }[model]} className="size-4 accent-primary" />
                   {dict.form.hiringModels[model]}
                 </label>
@@ -132,7 +132,7 @@ export function ConsultationForm({
             {errors.model ? <p id="consult-model-error" role="alert" className="text-sm text-danger-600">{messageFor('model')}</p> : null}
           </fieldset>
 
-          <label className="mt-1 flex items-start gap-2 py-1 text-xs/5 text-muted-foreground">
+          <label className="mt-1 flex min-h-11 items-start gap-2 py-2 text-xs/5 text-muted-foreground">
             <input type="checkbox" name="consent" aria-invalid={Boolean(errors.consent)} aria-describedby={errors.consent ? 'consult-consent-error' : undefined} required className="mt-0.5 size-4 shrink-0" />
             <span>{dict.form.consent}</span>
           </label>

@@ -84,6 +84,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     docs.map((d) => d.updatedAt).filter((d): d is string => Boolean(d)).sort().at(-1)
   const pageUpdated = (slug: string) => pages.find((p) => p.slug === slug)?.updatedAt
   const LISTINGS: [path: string, priority: number, lastModified: string | undefined][] = [
+    ['/services', 0.9, latest(services)],
     ['/blog', 0.9, latest(posts)],
     ['/contact', 0.9, pageUpdated('contact')],
     ['/careers', 0.9, latest(jobs)],
@@ -102,7 +103,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .map((doc) => entry(documentPath(collection, doc.slug), localesOf(doc), doc.updatedAt, priority))
 
   return [
-    entry('/', [...PUBLIC_LOCALES], pageUpdated('home'), 1),
+    entry('/', pages.some((page) => page.slug === 'home') ? localesOf(pages.find((page) => page.slug === 'home')!) : [...PUBLIC_LOCALES], pageUpdated('home'), 1),
     ...listings,
     ...fromCollection(pages.filter((p) => p.slug === 'about'), 'pages', 0.9),
     ...fromCollection(

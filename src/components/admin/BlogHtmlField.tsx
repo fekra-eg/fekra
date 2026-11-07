@@ -18,6 +18,8 @@ export const BlogHtmlField: TextareaFieldClientComponent = ({ path, readOnly }) 
   return <div style={{ marginBottom: 24 }}>
     <label htmlFor={`field-${path}`} style={{ display: 'block', marginBottom: 8 }}>HTML content</label>
     <p>Paste HTML with its CSS, or import an .html file. Use inline styles or a &lt;style&gt; block and absolute image URLs. JavaScript and forms are disabled.</p>
+    <p>Use H2–H4 for section headings. The article title already supplies the page’s H1; imported H1 headings are displayed as H2.</p>
+    {/<h1\b/i.test(deferred) ? <p role="status">This import contains an H1. Check that its title matches the article title above.</p> : null}
     <input type="file" accept=".html,.htm,text/html" aria-label="Import HTML file" disabled={locked}
       onChange={async (event) => {
         const input = event.currentTarget

@@ -1,6 +1,6 @@
 # FEKRA CMS documentation
 
-The English CMS manual covers 18 editor and administrator workflows with screenshots, a publishing checklist, and troubleshooting guidance.
+The English CMS manual covers 18 editor and administrator workflows with screenshots, a publishing checklist, and troubleshooting guidance. The November 2026 text adds HTML heading guidance and distinguishes demo preview URLs from production URLs. [Arabic editor notes](EDITOR-AR.md) cover the same publishing checks.
 
 - [PDF manual](FEKRA-CMS-User-Guide.pdf) for reading and sharing
 - [Editable Word manual](FEKRA-CMS-User-Guide.docx)
@@ -9,7 +9,7 @@ The English CMS manual covers 18 editor and administrator workflows with screens
 
 ## Scope and screenshot environment
 
-The manual follows the collection definitions, custom editor components, access rules, and globals in this checkout. Screenshots were captured from the actual CMS running with an isolated local demo database on 22 October 2026. They contain demo content rather than live applicant or contact data. No live content was published or changed while preparing the guide.
+The manual follows the collection definitions, custom editor components, access rules, and globals in this checkout. Screenshots were captured from the actual CMS running with an isolated local demo database on 22 October 2026 and retained as historical illustrations. The November revision does not claim new production CMS screenshots or an editor rehearsal. Production previews must use https://www.fekra-egy.com. No live applicant or contact data appears in the manual.
 
 The initial local startup against the configured database failed because the running Payload version expected `users.reset_password_requested_at`, which was absent. The documentation database was created separately; this task did not migrate or repair the configured database. A developer should investigate version and migration compatibility before changing that database.
 

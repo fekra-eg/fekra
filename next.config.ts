@@ -96,7 +96,7 @@ const nextConfig: NextConfig = {
    */
   // Keep prerendered routes in the client cache for five minutes. Dynamic
   // routes use Next's default so the Payload CMS does not delay transitions or its admin.
-  experimental: { globalNotFound: true, inlineCss: true, cpus: 2, staticGenerationMaxConcurrency: 1, staleTimes: { static: 300 } },
+  experimental: { globalNotFound: true, cpus: 2, staticGenerationMaxConcurrency: 1, staleTimes: { static: 300 } },
   // Isolated output allows QA builds without interfering with an open dev server.
   distDir: process.env.NEXT_DIST_DIR || '.next',
   // Trailing-slash policy is a canonical signal — keep it fixed forever (18.1/18.3).
@@ -114,7 +114,7 @@ const nextConfig: NextConfig = {
     minimumCacheTTL: 2678400, // 31 days
     // Setting localPatterns at all makes it an allow-list: anything not listed
     // is a 400 from /_next/image. Both CMS uploads and static brand assets.
-    localPatterns: [{ pathname: '/cms-api/media/file/**' }, { pathname: '/images/**' }],
+    localPatterns: [{ pathname: '/cms-api/media/file/**' }, { pathname: '/images/**' }, { pathname: '/og/post/**' }],
     /*
      * Payload returns ABSOLUTE media URLs (it knows its serverURL), so uploads
      * are matched here rather than by localPatterns. The protocol has to come
@@ -174,11 +174,23 @@ const nextConfig: NextConfig = {
    * with no runtime DB lookup. Regenerate with `pnpm check:links`.
    */
   async redirects() {
+    const resolve = (destination: string) => {
+      const visited = new Set<string>()
+      while (!visited.has(destination)) {
+        visited.add(destination)
+        const next = redirectMap.find((entry) => entry.from === destination)
+        if (!next) break
+        destination = next.to
+      }
+      // Hosting must also send HTTP/apex straight here before its own
+      // protocol redirects. This makes every app-owned legacy mapping final.
+      return process.env.VERCEL_ENV === 'production' && destination.startsWith('/') ? new URL(destination, SITE_URL).href : destination
+    }
     return [
       ...redirectMap.map((r) => ({
         source: r.from,
-        destination: r.to,
-        permanent: r.permanent !== false,
+        destination: resolve(r.to),
+        statusCode: r.permanent === false ? 307 : 301,
       })),
       /*
        * Media is served straight from the bucket now (see payload.config.ts), so

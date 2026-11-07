@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
 import type { Dictionary } from '@/i18n/getDictionary'
 import { EVENTS, track } from '@/lib/analytics'
@@ -17,11 +17,12 @@ import { useConsent } from '@/lib/useConsent'
  */
 export function CalendlyEmbed({ url, dict }: { url: string; dict: Dictionary }) {
   const allowed = useConsent()?.marketing === true
+  const frame = useRef<HTMLIFrameElement>(null)
 
   useEffect(() => {
     if (!allowed) return
     const onMessage = (event: MessageEvent) => {
-      if (typeof event.origin !== 'string' || !event.origin.endsWith('calendly.com')) return
+      if (!/^https:\/\/(?:[a-z0-9-]+\.)?calendly\.com$/.test(event.origin) || event.source !== frame.current?.contentWindow) return
       const eventName = (event.data as { event?: string })?.event
       if (eventName === 'calendly.event_type_viewed') track(EVENTS.bookingClick)
       if (eventName === 'calendly.event_scheduled') track(EVENTS.bookingComplete)
@@ -53,6 +54,7 @@ export function CalendlyEmbed({ url, dict }: { url: string; dict: Dictionary }) 
 
   return (
     <iframe
+      ref={frame}
       src={embedUrl}
       title={dict.meeting.title}
       loading="lazy"

@@ -1,0 +1,16 @@
+name: Production health
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '7,22,37,52 * * * *'
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Check application and database health
+        run: |
+          response=$(curl --fail --silent --show-error --max-time 25 --retry 2 https://www.fekra-egy.com/api/health)
+          printf '%s' "$response" | jq -e '.status == "ok"'

@@ -6,7 +6,7 @@ const escapeHtml = (value: string) =>
   value.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!)
 
 // Brand tokens from globals.css — email clients ignore CSS variables.
-const BRAND = '#20a2bc'
+const BRAND = '#146676'
 const NAVY = '#273969'
 const MUTED = '#687170'
 const FONT = "font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif"
@@ -78,13 +78,15 @@ export async function notify(
   }
 
   try {
-    await payload.sendEmail({
+    if (!process.env.RESEND_API_KEY) throw new Error('Notification email adapter is not configured')
+    const result = await payload.sendEmail({
       to: to.join(','),
       subject,
       replyTo,
       html: render({ heading: subject, rows, replyTo, adminPath }),
       attachments,
     })
+    payload.logger.info({ providerMessageId: (result as { id?: string } | undefined)?.id, adminPath }, 'Notification accepted by email provider')
   } catch (error) {
     payload.logger.error({ err: error }, `Failed to send notification "${subject}"`)
   }

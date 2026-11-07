@@ -1,0 +1,1 @@
+PASS normalized email, resubscription reuses one record, clears old confirmation, rejects stale confirmation and records fresh opt-in

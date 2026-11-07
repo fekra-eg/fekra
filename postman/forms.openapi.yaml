@@ -1,0 +1,84 @@
+openapi: 3.1.0
+info:
+  title: FEKRA form contracts
+  version: 2026.11.04
+  description: CAPTCHA-protected website forms. A 200 stores a lead; internal email acceptance and inbox delivery are separate checks.
+servers:
+  - url: http://localhost:3012
+paths:
+  /api/newsletter:
+    post:
+      operationId: subscribeNewsletter
+      description: Explicit consent is mandatory. One lowercased-email record is kept. New subscriptions remain pending until email confirmation. Existing subscribed addresses return the same success response. Delivery failure returns 500 and leaves a retryable pending record.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/Verification'
+                - type: object
+                  required: [email, consent]
+                  properties:
+                    email: { type: string, format: email, maxLength: 254 }
+                    consent: { const: true }
+                    locale: { type: string, enum: [en, ar, de, fr, es] }
+                    path: { type: string, maxLength: 512 }
+      responses:
+        '200': { description: Accepted or already subscribed; no record ID or email address returned }
+        '422': { description: Invalid input, missing consent or failed verification }
+        '429': { description: Rate limited; honor Retry-After }
+        '500': { description: Persistence or email failure; retry with fresh verification }
+  /api/newsletter/confirm:
+    parameters:
+      - $ref: '#/components/parameters/Token'
+    get:
+      operationId: showNewsletterConfirmation
+      responses:
+        '200': { description: No-store confirmation form; GET does not change the subscription }
+        '400': { description: Invalid or expired signed token }
+        '410': { description: An unsubscribed recipient must request a new subscription }
+        '429': { description: Rate limited }
+        '503': { description: Storage unavailable }
+    post:
+      operationId: confirmNewsletter
+      responses:
+        '200': { description: Subscribed; repeated valid confirmation is idempotent }
+        '400': { description: Invalid or expired signed token }
+        '410': { description: Previously unsubscribed }
+        '429': { description: Rate limited }
+        '503': { description: Storage unavailable }
+  /api/newsletter/unsubscribe:
+    parameters:
+      - $ref: '#/components/parameters/Token'
+    get:
+      operationId: showNewsletterUnsubscribe
+      responses:
+        '200': { description: No-store unsubscribe form; GET does not change the subscription }
+        '400': { description: Invalid or expired signed token }
+        '429': { description: Rate limited }
+        '503': { description: Storage unavailable }
+    post:
+      operationId: unsubscribeNewsletter
+      responses:
+        '200': { description: Unsubscribed; suppress from future campaigns }
+        '400': { description: Invalid or expired signed token }
+        '429': { description: Rate limited }
+        '503': { description: Storage unavailable }
+components:
+  parameters:
+    Token:
+      name: token
+      in: query
+      required: true
+      schema: { type: string, maxLength: 1024 }
+      description: Signed purpose-specific token. Confirmation expires after 48 hours. Never forward this token to analytics.
+  schemas:
+    Verification:
+      type: object
+      required: [botChallenge, botAnswer, botToken]
+      properties:
+        botChallenge: { type: string, description: Signed challenge from /api/bot-challenge?action=newsletter }
+        botAnswer: { type: string, description: Answer to the challenge }
+        botToken: { type: string, description: Fresh Turnstile token bound to the challenge nonce and action }
+        website: { type: string, description: Honeypot; genuine submissions leave empty }

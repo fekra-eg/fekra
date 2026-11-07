@@ -10,6 +10,7 @@ import { correctQaDocument } from '@/i18n/qa-copy'
 import { localizeJobLocation } from '@/i18n/job-copy'
 import { isComingSoon } from './site-mode'
 import { documentPath } from './urls'
+import { correctReviewPost } from './review-content'
 
 /** One Payload instance per server process. */
 export const payloadClient = async () => getPayload({ config: configPromise })
@@ -111,6 +112,7 @@ export async function findDocs<T = unknown>({
     }
   }
   if (collection === 'posts') {
+    for (const doc of docs) Object.assign(doc, correctReviewPost(doc, locale))
     // Posts load without fallback, so the populated category does too: an
     // untranslated category arrived without a title and its filter chip
     // and badge vanished. Fill it from the English title.

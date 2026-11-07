@@ -66,7 +66,7 @@ export const contactSchema = z
   .merge(attribution)
 
 export const newsletterSchema = z
-  .object({ email: z.email().max(254), path: z.string().max(512).optional(), locale: z.string().max(5).optional() })
+  .object({ email: z.email().max(254), consent: z.literal(true), path: z.string().max(512).optional(), locale: z.string().max(5).optional() })
   .merge(botTraps)
 
 export const consultationSchema = z.object({

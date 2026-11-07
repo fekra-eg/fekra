@@ -27,6 +27,7 @@ import { Posts } from './payload/collections/Posts'
 import { Services } from './payload/collections/Services'
 import { ApplicantFiles, ContactSubmissions, JobApplications } from './payload/collections/Submissions'
 import { Users } from './payload/collections/Users'
+import { NewsletterSubscribers } from './payload/collections/NewsletterSubscribers'
 import { Footer, Header, SiteSettings } from './payload/globals'
 import { documentPath, siteUrl, type LinkableCollection } from './lib/urls'
 import { isLocalDatabase } from './lib/site-mode'
@@ -144,6 +145,7 @@ export default buildConfig({
     ApplicantFiles,
     JobApplications,
     ContactSubmissions,
+    NewsletterSubscribers,
     Users,
   ],
 
@@ -252,7 +254,7 @@ export default buildConfig({
       ),
     },
     // Only ever auto-push against a local throwaway database (see isLocalDatabase).
-    push: process.env.NODE_ENV !== 'production' && isLocalDatabase(),
+    push: process.env.DATABASE_AUTO_PUSH !== 'false' && process.env.NODE_ENV !== 'production' && isLocalDatabase(),
   }),
 
   email: process.env.RESEND_API_KEY
@@ -315,8 +317,6 @@ export default buildConfig({
                     }
                   : {}),
               },
-              // 21.4 — CVs are never public objects; links expire.
-              'applicant-files': { prefix: 'applications', signedDownloads: { expiresIn: 300 } },
             },
             bucket: process.env.S3_BUCKET!,
             config: {
@@ -327,6 +327,18 @@ export default buildConfig({
                 accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
                 secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '',
               },
+            },
+          }),
+          // A public bucket exposes every prefix. A separate private bucket
+          // is mandatory when media has a public URL; signed links alone do
+          // not make an object in a public bucket private.
+          s3Storage({
+            collections: { 'applicant-files': { prefix: 'applications', signedDownloads: { expiresIn: 300 } } },
+            bucket: process.env.S3_PRIVATE_BUCKET || process.env.S3_BUCKET!,
+            config: {
+              region: process.env.S3_REGION || 'auto', endpoint: process.env.S3_ENDPOINT,
+              forcePathStyle: Boolean(process.env.S3_ENDPOINT),
+              credentials: { accessKeyId: process.env.S3_ACCESS_KEY_ID || '', secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '' },
             },
           }),
         ]

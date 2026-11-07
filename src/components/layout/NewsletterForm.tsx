@@ -8,6 +8,8 @@ import type { Dictionary } from '@/i18n/getDictionary'
 import type { Locale } from '@/i18n/routing'
 import { BotVerification } from '@/components/forms/BotVerification'
 import { useFormValidation } from '@/components/forms/useFormValidation'
+import { EVENTS, track } from '@/lib/analytics'
+import { newsletterCopy } from '@/i18n/newsletter'
 
 export function NewsletterForm({ dict, locale }: { dict: Dictionary; locale: Locale }) {
   const [state, setState] = useState<'idle' | 'sending' | 'done' | 'error'>('idle')
@@ -28,7 +30,7 @@ export function NewsletterForm({ dict, locale }: { dict: Dictionary; locale: Loc
       body: JSON.stringify({ ...data, locale, path: window.location.pathname }),
     })
     setState(res.ok ? 'done' : 'error')
-    if (res.ok) form.reset()
+    if (res.ok) { form.reset(); track(EVENTS.newsletterSubmit, { locale }) }
     } catch { setState('error') }
     setBotReady(false)
     setVerification((value) => value + 1)
@@ -37,7 +39,7 @@ export function NewsletterForm({ dict, locale }: { dict: Dictionary; locale: Loc
   if (state === 'done') {
     return (
       <p role="status" className="text-sm font-medium text-primary">
-        {dict.form.success}
+        {newsletterCopy[locale].check}
       </p>
     )
   }
@@ -65,6 +67,11 @@ export function NewsletterForm({ dict, locale }: { dict: Dictionary; locale: Loc
         <ArrowRight className="icon-flip size-4" aria-hidden />
       </Button>
       {errors.email ? <p id="newsletter-email-error" role="alert" className="w-full text-sm text-danger-600">{dict.form.errors.email}</p> : null}
+      <label className="flex min-h-11 w-full items-start gap-3 py-2 text-sm text-muted-foreground">
+        <input name="consent" type="checkbox" required aria-invalid={Boolean(errors.consent)} aria-describedby={errors.consent ? 'newsletter-consent-error' : undefined} className="mt-1 size-5 shrink-0" />
+        <span>{newsletterCopy[locale].consent}</span>
+      </label>
+      {errors.consent ? <p id="newsletter-consent-error" role="alert" className="w-full text-sm text-danger-600">{dict.form.errors.required}</p> : null}
       <div className="mt-2 w-full"><BotVerification key={verification} locale={locale} action="newsletter" onReady={setBotReady} /></div>
       {state === 'error' ? (
         <p role="alert" className="w-full text-sm text-danger-600">

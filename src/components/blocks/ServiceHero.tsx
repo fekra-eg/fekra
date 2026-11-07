@@ -39,7 +39,9 @@ export function ServiceHeroSection({
   isFirst: boolean
 }) {
   const Title = isFirst ? 'h1' : 'h2'
-  const paragraphs = (block.body ?? '').split('\n').filter(Boolean)
+  const normalize = (text: string) => text.replace(/\breact\b/gi, 'React').trim()
+  const paragraphs = [...new Set((block.body ?? '').split('\n').map(normalize).filter(Boolean))]
+  const closer = block.closer ? normalize(block.closer) : ''
 
   return (
     <section
@@ -61,8 +63,8 @@ export function ServiceHeroSection({
             </div>
           ) : null}
 
-          {block.closer ? (
-            <p className="mt-1 text-base/6 font-bold text-[#001033] dark:text-foreground"><BidiText>{block.closer}</BidiText></p>
+          {closer && !paragraphs.includes(closer) ? (
+            <p className="mt-1 text-base/6 font-bold text-[#001033] dark:text-foreground"><BidiText>{closer}</BidiText></p>
           ) : null}
 
           {block.highlights?.length ? (
