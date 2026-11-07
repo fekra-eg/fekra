@@ -330,6 +330,8 @@ export interface Media {
   decorative?: boolean | null;
   caption?: string | null;
   credit?: string | null;
+  prefix?: string | null;
+  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -1504,6 +1506,8 @@ export interface Author {
 export interface ApplicantFile {
   id: number;
   originalName?: string | null;
+  prefix?: string | null;
+  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -2496,6 +2500,8 @@ export interface MediaSelect<T extends boolean = true> {
   decorative?: T;
   caption?: T;
   credit?: T;
+  prefix?: T;
+  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -2568,6 +2574,8 @@ export interface MediaSelect<T extends boolean = true> {
  */
 export interface ApplicantFilesSelect<T extends boolean = true> {
   originalName?: T;
+  prefix?: T;
+  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
