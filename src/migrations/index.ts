@@ -24,6 +24,7 @@ import * as migration_20261020_091002_authors from './20261020_091002_authors';
 import * as migration_20261020_120000_s3_object_key from './20261020_120000_s3_object_key';
 import * as migration_20261022_081850_payload_3_90_auth from './20261022_081850_payload_3_90_auth';
 import * as migration_20261103_140415_review_newsletter from './20261103_140415_review_newsletter';
+import * as migration_20261107_170000_restore_storage_columns from './20261107_170000_restore_storage_columns';
 
 export const migrations = [
   {
@@ -155,5 +156,10 @@ export const migrations = [
     up: migration_20261103_140415_review_newsletter.up,
     down: migration_20261103_140415_review_newsletter.down,
     name: '20261103_140415_review_newsletter'
+  },
+  {
+    up: migration_20261107_170000_restore_storage_columns.up,
+    down: migration_20261107_170000_restore_storage_columns.down,
+    name: '20261107_170000_restore_storage_columns',
   },
 ];

@@ -319,11 +319,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "site_settings_offices_locales_parent_id_idx" ON "site_settings_offices_locales" USING btree ("_parent_id");
   CREATE INDEX "site_settings_locales_parent_id_idx" ON "site_settings_locales" USING btree ("_parent_id");
   CREATE INDEX "_site_settings_v_version_offices_locales_parent_id_idx" ON "_site_settings_v_version_offices_locales" USING btree ("_parent_id");
-  CREATE INDEX "_site_settings_v_locales_parent_id_idx" ON "_site_settings_v_locales" USING btree ("_parent_id");
-  ALTER TABLE "media" DROP COLUMN "prefix";
-  ALTER TABLE "media" DROP COLUMN "_objectkey";
-  ALTER TABLE "applicant_files" DROP COLUMN "prefix";
-  ALTER TABLE "applicant_files" DROP COLUMN "_objectkey";`)
+  CREATE INDEX "_site_settings_v_locales_parent_id_idx" ON "_site_settings_v_locales" USING btree ("_parent_id");`)
 }
 
 export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
@@ -630,10 +626,6 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP INDEX "site_settings_locales_parent_id_idx";
   DROP INDEX "_site_settings_v_version_offices_locales_parent_id_idx";
   DROP INDEX "_site_settings_v_locales_parent_id_idx";
-  ALTER TABLE "media" ADD COLUMN "prefix" varchar DEFAULT 'media';
-  ALTER TABLE "media" ADD COLUMN "_objectkey" varchar;
-  ALTER TABLE "applicant_files" ADD COLUMN "prefix" varchar DEFAULT 'applications';
-  ALTER TABLE "applicant_files" ADD COLUMN "_objectkey" varchar;
   ALTER TABLE "payload_locked_documents_rels" DROP COLUMN "newsletter_subscribers_id";
   DROP TYPE "public"."enum_newsletter_subscribers_status";`)
 }
