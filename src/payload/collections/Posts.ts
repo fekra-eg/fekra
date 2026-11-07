@@ -17,8 +17,8 @@ export const Posts: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'category', 'publishedAt', '_status'],
     group: 'Content',
-    livePreview: { url: ({ data, locale }) => previewUrl('posts', data?.slug, locale?.code) },
-    preview: (data, { locale }) => previewUrl('posts', data?.slug as string, locale),
+    livePreview: { url: ({ data, locale }) => previewUrl('posts', data, locale?.code) },
+    preview: (data, { locale }) => previewUrl('posts', data, locale),
   },
   access: {
     read: publishedOrAuthenticated,

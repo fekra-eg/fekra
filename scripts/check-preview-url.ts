@@ -9,7 +9,7 @@ try {
   for (const origin of ['http://localhost:3000', 'https://www.example.com', 'https://preview.example.com']) {
     for (const collection of ['pages', 'posts', 'services', 'jobs'] as const) {
       for (const locale of ['en', 'ar']) {
-        const url = new URL(previewUrl(collection, 'example-article', locale), `${origin}/admin/collections/${collection}/1`)
+        const url = new URL(previewUrl(collection, { slug: 'example-article' }, locale), `${origin}/admin/collections/${collection}/1`)
         assert.equal(url.origin, origin)
         assert.equal(url.pathname, '/api/preview')
         assert.equal(url.searchParams.get('secret'), 'test-preview-token')
@@ -18,7 +18,8 @@ try {
       }
     }
   }
-  assert.equal(new URL(previewUrl('pages', 'home', undefined), 'https://example.com').searchParams.get('path'), '/')
+  assert.equal(new URL(previewUrl('pages', { slug: 'home' }, undefined), 'https://example.com').searchParams.get('path'), '/')
+  assert.equal(new URL(previewUrl('posts', { slug: '', title: 'My Draft' }, 'en'), 'https://example.com').searchParams.get('path'), '/blog/my-draft')
   console.log('Preview URLs remain on the editor origin across collections and locales.')
 } finally {
   if (previousSite === undefined) delete process.env.NEXT_PUBLIC_SITE_URL

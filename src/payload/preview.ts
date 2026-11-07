@@ -1,4 +1,5 @@
 import { DEFAULT_LOCALE, isLocale } from '@/i18n/routing'
+import { slugify } from '@/lib/slug'
 import { documentHref, type LinkableCollection } from '@/lib/urls'
 
 /**
@@ -8,11 +9,15 @@ import { documentHref, type LinkableCollection } from '@/lib/urls'
  */
 export function previewUrl(
   collection: LinkableCollection,
-  slug: string | undefined,
+  data: { slug?: unknown; title?: unknown } | undefined,
   locale: string | undefined,
 ): string {
   const resolved = isLocale(locale) ? locale : DEFAULT_LOCALE
-  const path = documentHref(collection, slug ?? '', resolved)
+  // The slug field fills itself from the title on save, but the form still
+  // shows it empty until reload — so the preview derives it the same way
+  // instead of pointing at the index page.
+  const slug = typeof data?.slug === 'string' && data.slug ? data.slug : slugify(String(data?.title ?? ''))
+  const path = documentHref(collection, slug, resolved)
   const params = new URLSearchParams({
     secret: process.env.PREVIEW_SECRET ?? '',
     path,
