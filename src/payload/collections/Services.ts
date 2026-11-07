@@ -13,8 +13,8 @@ export const Services: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'parent', '_status'],
     group: 'Content',
-    livePreview: { url: ({ data, locale }) => previewUrl('services', data?.slug, locale?.code) },
-    preview: (data, { locale }) => previewUrl('services', data?.slug as string, locale),
+    livePreview: { url: ({ data, locale }) => previewUrl('services', data, locale?.code) },
+    preview: (data, { locale }) => previewUrl('services', data, locale),
   },
   access: {
     read: publishedOrAuthenticated,

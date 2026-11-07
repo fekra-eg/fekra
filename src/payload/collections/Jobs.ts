@@ -14,8 +14,8 @@ export const Jobs: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'department', 'location', 'roleStatus', '_status'],
     group: 'Content',
-    livePreview: { url: ({ data, locale }) => previewUrl('jobs', data?.slug, locale?.code) },
-    preview: (data, { locale }) => previewUrl('jobs', data?.slug as string, locale),
+    livePreview: { url: ({ data, locale }) => previewUrl('jobs', data, locale?.code) },
+    preview: (data, { locale }) => previewUrl('jobs', data, locale),
   },
   access: {
     read: publishedOrAuthenticated,

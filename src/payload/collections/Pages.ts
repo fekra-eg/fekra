@@ -13,8 +13,8 @@ export const Pages: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', '_status', 'updatedAt'],
     group: 'Content',
-    livePreview: { url: ({ data, locale }) => previewUrl('pages', data?.slug, locale?.code) },
-    preview: (data, { locale }) => previewUrl('pages', data?.slug as string, locale),
+    livePreview: { url: ({ data, locale }) => previewUrl('pages', data, locale?.code) },
+    preview: (data, { locale }) => previewUrl('pages', data, locale),
   },
   access: {
     read: publishedOrAuthenticated,

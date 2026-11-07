@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { notFound } from 'next/navigation'
 
 import { LocaleStatusProvider } from '@/components/LocaleStatusProvider'
+import { LivePreviewRefresh } from '@/components/LivePreviewRefresh'
 import { Analytics } from '@/components/analytics/Analytics'
 import { ConsentBanner } from '@/components/analytics/ConsentBanner'
 import { buildServicesMenu } from '@/lib/services-menu'
@@ -128,6 +129,7 @@ export default async function SiteLayout({
         />
       </head>
       <body className="min-h-dvh antialiased">
+        <LivePreviewRefresh />
         <SmoothScroll />
         <ScrollReveal />
         <ThemeProvider>
