@@ -1,5 +1,6 @@
 'use client'
 
+import { CircleArrowDown } from 'lucide-react'
 import { useDeferredValue, useMemo, useState } from 'react'
 
 import type { Dictionary } from '@/i18n/getDictionary'
@@ -40,6 +41,8 @@ export function BlogIndex({
   const liveTopics = topics.filter((topic) => posts.some((post) => matchesTopic(post, topic)))
   const [active, setActive] = useState('all')
   const [query, setQuery] = useState('')
+  // Show 9 cards (3 rows), 9 more per click; a new filter or search starts over.
+  const [shown, setShown] = useState(PAGE)
   const articleWord = articleNoun(posts.length, locale)
   // Keeps typing responsive when the list is long.
   const deferredQuery = useDeferredValue(query)
@@ -84,7 +87,7 @@ export function BlogIndex({
               <input
                 type="search"
                 value={query}
-                onChange={(event) => setQuery(event.target.value)}
+                onChange={(event) => { setQuery(event.target.value); setShown(PAGE) }}
                 placeholder={dict.blog.searchPlaceholder}
                 aria-label={dict.blog.searchPlaceholder}
                 className="w-full rounded-full border border-slate-200 bg-white py-3 ps-11 pe-4 text-base text-slate-700 shadow-sm transition-colors outline-none placeholder:text-slate-400 focus:border-blog-500 focus:ring-2 focus:ring-blog-500/20 dark:border-white/10 dark:bg-white/5 dark:text-slate-200"
@@ -99,7 +102,7 @@ export function BlogIndex({
                 allLabel={dict.blog.allCategories}
                 moreLabel={dict.blog.more}
                 active={active}
-                onSelect={setActive}
+                onSelect={(topic) => { setActive(topic); setShown(PAGE) }}
               />
             </div>
           ) : null}
@@ -116,9 +119,25 @@ export function BlogIndex({
 
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {grid.map((post, index) => (
-              <PostCard key={post.id} post={post} locale={locale} priority={index < 3} />
+              // Hidden, not removed: crawlers and no-JS visitors still get every post (19.2).
+              <div key={post.id} className={index < shown ? 'contents' : 'hidden'}>
+                <PostCard post={post} locale={locale} priority={index < 3} />
+              </div>
             ))}
           </div>
+
+          {grid.length > shown ? (
+            <div className="mt-12 flex justify-center">
+              <button
+                type="button"
+                onClick={() => setShown((count) => count + PAGE)}
+                className="inline-flex min-h-11 cursor-pointer items-center gap-3 rounded-pill bg-[#f16122] px-8 py-4 text-sm font-semibold tracking-wider text-white uppercase shadow-lift transition-colors hover:bg-[#d9531a]"
+              >
+                {dict.blog.loadMore}
+                <CircleArrowDown className="size-6 fill-white text-[#f16122]" aria-hidden />
+              </button>
+            </div>
+          ) : null}
 
           {grid.length === 0 ? (
             <p className="mt-16 text-center text-slate-500 dark:text-slate-400">{dict.blog.empty}</p>
@@ -128,6 +147,8 @@ export function BlogIndex({
     </>
   )
 }
+
+const PAGE = 9
 
 /** "1 article", "2 articles", Arabic dual/few — CLDR plural rules, never "1 articles" (T-13). */
 const ARTICLE_NOUN: Record<Locale, Partial<Record<Intl.LDMLPluralRule, string>> & { other: string }> = {
