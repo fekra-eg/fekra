@@ -76,9 +76,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ locale
   const author = post.author?.name ? post.author : null
   const authorPhoto = author && typeof author.photo === 'object' && author.photo?.url ? author.photo.url : null
   const cover = post.meta?.image?.url ? post.meta.image : post.heroImage
-  const rasterCover = cover?.url && /\.svg(?:\?|$)/i.test(cover.url)
-    ? { ...cover, url: `/og/post/${locale}/${slug}.jpg` }
-    : cover
 
   // Related posts: same category first, falling back to most recent, and never
   // the article you are already reading.
@@ -170,7 +167,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ locale
             <Cover
               category={category || 'FEKRA'}
               title={post.title}
-              image={rasterCover}
+              image={cover}
               priority
               sizes="(min-width: 1024px) 50vw, 100vw"
               className="aspect-[16/10] w-full rounded-[1.75rem] shadow-[0_30px_70px_-40px_rgba(15,23,42,0.5)] ring-1 ring-white/60 dark:ring-white/10"

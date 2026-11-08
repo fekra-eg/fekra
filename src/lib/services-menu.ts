@@ -229,24 +229,20 @@ export function buildServicesMenu(services: Service[], locale: Locale, availabil
     return [{ title: service.title, slug: service.slug, roles }]
   })
 
-  // Each destination belongs to its specific group. The popular group keeps
-  // roles that do not already appear in a specialist category.
-  const owner = new Map(menu.map((group) => [group.slug, group.slug]))
-  for (const group of [...menu.filter((g) => g.slug !== 'hire-in-demand-developers'), ...menu.filter((g) => g.slug === 'hire-in-demand-developers')]) {
-    for (const role of group.roles) if (!owner.has(role.slug)) owner.set(role.slug, group.slug)
-  }
+  // The approved comp lists every role in its group, In-Demand included, even
+  // when the role also appears in a specialist group.
   return menu.map((group) => ({
     title: group.title,
     slug: group.slug,
     href: href(group.slug),
     roles: group.roles
-      .filter((role, i, roles) => role.slug !== group.slug && owner.get(role.slug) === group.slug && roles.findIndex((r) => r.slug === role.slug) === i)
+      .filter((role, i, roles) => roles.findIndex((r) => r.slug === role.slug) === i)
       .map((role) => ({ title: label(role.slug, role.title), slug: role.slug, href: href(role.slug) })),
   }))
 }
 
 /** Other roles in the same approved menu group: React relates to Angular and Vue, not Yii (T-17). */
 export function relatedRoleSlugs(services: Service[], slug: string): string[] | null {
-  const group = buildServicesMenu(services, 'en').find((g) => g.roles.some((role) => role.slug === slug))
-  return group ? group.roles.map((role) => role.slug).filter((other) => other !== slug) : null
+  const group = buildServicesMenu(services, 'en').find((g) => g.slug !== 'hire-in-demand-developers' && g.roles.some((role) => role.slug === slug))
+  return group ? group.roles.map((role) => role.slug).filter((other) => other !== slug && other !== group.slug) : null
 }
