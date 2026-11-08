@@ -30,7 +30,9 @@ export function NavLink({ link, hasChildren }: { link: ResolvedLink; hasChildren
 
   // A parent item (e.g. Services) only opens its dropdown; it is not a page.
   if (hasChildren) {
-    return <button type="button" aria-haspopup="true" data-analytics-id={link.analyticsId} className={cn(className, 'cursor-pointer')}>{label}</button>
+    // fk-link: hover like the other nav links, not the global button fill.
+    // No focus on mouse click, so the panel follows hover only; Tab still opens it.
+    return <button type="button" aria-haspopup="true" onMouseDown={(event) => event.preventDefault()} data-analytics-id={link.analyticsId} className={cn(className, 'fk-link cursor-pointer bg-transparent hover:!text-primary')}>{label}</button>
   }
 
   return (
