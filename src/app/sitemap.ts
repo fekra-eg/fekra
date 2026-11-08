@@ -84,7 +84,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     docs.map((d) => d.updatedAt).filter((d): d is string => Boolean(d)).sort().at(-1)
   const pageUpdated = (slug: string) => pages.find((p) => p.slug === slug)?.updatedAt
   const LISTINGS: [path: string, priority: number, lastModified: string | undefined][] = [
-    ['/services', 0.9, latest(services)],
     ['/blog', 0.9, latest(posts)],
     ['/contact', 0.9, pageUpdated('contact')],
     ['/careers', 0.9, latest(jobs)],

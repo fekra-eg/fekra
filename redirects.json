@@ -1,4 +1,9 @@
 [
+  { "from": "/services", "to": "/services/hire-dedicated-developers", "permanent": true },
+  { "from": "/ar/services", "to": "/ar/services/hire-dedicated-developers", "permanent": true },
+  { "from": "/de/services", "to": "/de/services/hire-dedicated-developers", "permanent": true },
+  { "from": "/fr/services", "to": "/fr/services/hire-dedicated-developers", "permanent": true },
+  { "from": "/es/services", "to": "/es/services/hire-dedicated-developers", "permanent": true },
   { "from": "/home", "to": "/", "permanent": true },
   { "from": "/contact-us", "to": "/contact", "permanent": true },
   { "from": "/book-a-call", "to": "/meeting", "permanent": true },

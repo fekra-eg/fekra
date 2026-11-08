@@ -82,7 +82,7 @@ export function PostCard({
             <span />
           )}
           {post.publishedAt ? (
-            <time dateTime={post.publishedAt} className="text-sm text-slate-600 dark:text-slate-400">
+            <time dateTime={post.publishedAt} className="text-sm text-slate-400">
               {formatDate(post.publishedAt, locale)}
             </time>
           ) : null}

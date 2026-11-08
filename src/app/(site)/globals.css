@@ -33,7 +33,7 @@
   --color-blog-300: #6fb4d4;
   --color-blog-400: #5cb1db;
   --color-blog-500: #489bc2;
-  --color-blog-600: #226b8e;
+  --color-blog-600: #2f7fb0;
   --color-blog-700: #2f6d8c;
   --color-blog-800: #3a8ab0;
   --color-blog-surface: #f5f9fc;
@@ -191,7 +191,7 @@
   --elevated: #ffffff;
   --border: #d9dcdf;
   --input: #d9dcdf;
-  --primary: var(--color-brand-700);
+  --primary: var(--color-brand-500);
   --primary-hover: var(--color-brand-600);
   --primary-foreground: #ffffff;
   --accent: var(--color-navy-800);
@@ -221,7 +221,6 @@
   --ring: var(--color-brand-300);
   --overlay: rgb(3 8 15 / 0.76);
   --color-blog-ink: var(--background);
-  --color-blog-600: #6fb4d4;
   --color-danger-600: #fda4af;
   --shadow-card: 0 1px 0 rgb(255 255 255 / 0.04), 0 8px 24px rgb(0 0 0 / 0.18);
   --shadow-lift: 0 1px 0 rgb(255 255 255 / 0.06), 0 16px 40px rgb(0 0 0 / 0.28);
@@ -741,9 +740,6 @@
   --button-hover-ink: #146c80;
   --button-hover-border: #20a2bc;
 }
-/* Keep the decorative palette while giving small CTA text AA contrast. */
-.fk-button--primary { background-color: var(--primary); color: var(--primary-foreground); }
-.fk-button--career { background-color: #b83d08; color: #fff; }
 :is(.fk-button, button) { max-width: 100%; overflow-wrap: anywhere; }
 .fk-button { white-space: normal; text-align: center; }
 #main:focus-visible { outline: 2px solid var(--ring); outline-offset: -2px; }
@@ -801,10 +797,7 @@ summary:active .fk-button {
 :is(button[data-process-control], button[role="tab"], summary):active { filter: brightness(0.85); }
 :is(button:disabled, .fk-button[aria-disabled="true"], [role="button"][aria-disabled="true"]) {
   cursor: not-allowed;
-  opacity: 1;
-  color: var(--muted-foreground);
-  background: var(--background-subtle);
-  border-color: var(--border);
+  opacity: 0.5;
   filter: none;
 }
 

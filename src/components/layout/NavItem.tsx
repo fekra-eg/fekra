@@ -16,12 +16,12 @@ export function NavItem({ children }: { children: React.ReactNode }) {
       className="group relative"
       onKeyDown={(event) => {
         if (event.key !== 'Escape') return
-        ref.current?.querySelector('a')?.focus()
+        ref.current?.querySelector<HTMLElement>('a, button')?.focus()
         ref.current?.classList.add('nav-closed')
       }}
       onClick={(e) => {
         if ((e.target as HTMLElement).closest('[data-nav-close]')) {
-          ref.current?.querySelector('a')?.focus()
+          ref.current?.querySelector<HTMLElement>('a, button')?.focus()
           ref.current?.classList.add('nav-closed')
           return
         }

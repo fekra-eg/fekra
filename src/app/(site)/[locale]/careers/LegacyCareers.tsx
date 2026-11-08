@@ -82,7 +82,7 @@ export function LegacyCareers({ jobs, dict, locale }: { jobs: JobDoc[]; dict: Di
           <Image className={styles.coffeeRight} src="/images/careers/Group-1.png" width={106} height={141} alt="" />
           <h2>{copy.family}</h2>
           <ul className={styles.people}>
-            {people.map(([name, arabicName, asset, color], index) => <li key={name} className={styles.person} style={{ '--person-color': color, '--person-ink': color === '#407f88' ? '#fff' : '#080f1a' } as CSSProperties}>
+            {people.map(([name, arabicName, asset, color], index) => <li key={name} className={styles.person} style={{ '--person-color': color } as CSSProperties}>
               <div className={styles.portrait}><Image src={`/images/careers/${asset}`} alt={locale === 'ar' ? arabicName : name} fill sizes="(max-width: 600px) 40vw, 210px" /></div>
               <div className={styles.personCaption}><h3>{locale === 'ar' ? arabicName : name}</h3><p>{copy.roles[index]}</p></div>
             </li>)}

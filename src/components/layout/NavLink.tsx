@@ -15,13 +15,7 @@ import type { ResolvedLink } from '@/lib/resolveLink'
 export function NavLink({ link, hasChildren }: { link: ResolvedLink; hasChildren?: boolean }) {
   const isActive = isActivePath(usePathname() ?? '/', link.activeHref ?? link.href)
 
-  return (
-    <Link
-      href={link.href}
-      prefetch={link.external ? false : true}
-      aria-current={isActive ? 'page' : undefined}
-      data-analytics-id={link.analyticsId}
-      className={cn(
+  const className = cn(
         /*
          * Figma 1:10283: 14px navy with 4px padding and no pill behind it —
          * the item's own weight is the only chrome. h-11 is kept anyway so the
@@ -31,10 +25,25 @@ export function NavLink({ link, hasChildren }: { link: ResolvedLink; hasChildren
         'inline-flex h-11 min-w-11 items-center justify-center gap-1 px-1 text-sm text-navy-800 transition-colors hover:text-primary dark:text-foreground',
         // Preserve light-mode weight; dark mode adds a branded underline and colour.
         isActive ? 'font-bold dark:text-primary dark:underline dark:decoration-2 dark:underline-offset-8' : 'font-normal',
-      )}
+      )
+  const label = <>{link.label}{hasChildren ? <ChevronDown className="size-[13px]" aria-hidden /> : null}</>
+
+  // A parent item (e.g. Services) only opens its dropdown; it is not a page.
+  if (hasChildren) {
+    // fk-link: hover like the other nav links, not the global button fill.
+    // No focus on mouse click, so the panel follows hover only; Tab still opens it.
+    return <button type="button" aria-haspopup="true" onMouseDown={(event) => event.preventDefault()} data-analytics-id={link.analyticsId} className={cn(className, 'fk-link cursor-pointer bg-transparent hover:!text-primary')}>{label}</button>
+  }
+
+  return (
+    <Link
+      href={link.href}
+      prefetch={link.external ? false : true}
+      aria-current={isActive ? 'page' : undefined}
+      data-analytics-id={link.analyticsId}
+      className={className}
     >
-      {link.label}
-      {hasChildren ? <ChevronDown className="size-[13px]" aria-hidden /> : null}
+      {label}
     </Link>
   )
 }

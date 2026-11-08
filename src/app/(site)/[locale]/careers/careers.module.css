@@ -12,20 +12,20 @@
 .container { width: min(1250px, calc(100% - 40px)); margin-inline: auto; }
 .careers h2 { font-size: 32px; line-height: 1.25; font-weight: 600; color: #000; }
 .shortcuts { display: flex; gap: 12px; flex-wrap: wrap; }
-.shortcuts a { min-height: 44px; display: inline-flex; align-items: center; --button-hover-ink: #b83d08; --button-hover-border: #f16122; padding: 10px 18px; border-radius: 50px; background: #b83d08; color: white; font-size: 14px; font-weight: 500; }
-.shortcuts a:nth-child(2) { --button-hover-ink: #226b8e; --button-hover-border: #226b8e; background: #226b8e; }
+.shortcuts a { min-height: 44px; display: inline-flex; align-items: center; --button-hover-ink: #b83d08; --button-hover-border: #f16122; padding: 10px 18px; border-radius: 50px; background: #f16122; color: white; font-size: 14px; font-weight: 500; }
+.shortcuts a:nth-child(2) { --button-hover-ink: #226b8e; --button-hover-border: #489bc2; background: #489bc2; }
 .shortcuts a:nth-child(3) { --button-hover-ink: #263a6f; --button-hover-border: #263a6f; background: #263a6f; }
-.teamIntro { max-width: 840px; margin-top: 8px; font-size: 16px; line-height: 1.6; color: #626262; }
+.teamIntro { max-width: 840px; margin-top: 8px; font-size: 16px; line-height: 1.6; color: #777; }
 .family { position: relative; margin: 28px 70px; padding: 28px 66px 34px; border-radius: 24px; background: #fff; box-shadow: 0 0 5px 2px #0003; }
 .family > h2 { text-align: center; margin-bottom: 28px; }
 .people { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 16px 42px; list-style: none; padding: 0; }
 .person { border: 5px solid var(--person-color); border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; background: #fff; }
 .portrait { position: relative; height: 182px; }
 .portrait img { object-fit: contain; object-position: center bottom; }
-.personCaption { background: var(--person-color); color: var(--person-ink, #080f1a); padding: 10px 12px 14px; min-height: 94px; border-start-start-radius: 18px; }
+.personCaption { background: var(--person-color); color: #fff; padding: 10px 12px 14px; min-height: 94px; border-start-start-radius: 18px; }
 .personCaption h3 { font-size: 21px; line-height: 1.2; font-weight: 500; }
 .personCaption p { font-size: 16px; line-height: 1.12; margin-top: 8px; }
-.you { display: flex; align-items: center; justify-content: center; padding: 18px; border-radius: 20px; background: #8b7df8; text-align: center; color: #080f1a; }
+.you { display: flex; align-items: center; justify-content: center; padding: 18px; border-radius: 20px; background: #8b7df8; text-align: center; color: #fff; }
 .you > div { display: block; cursor: default; }
 .you h3 { font-size: 32px; font-weight: 400; }
 .you p { font-size: 15px; line-height: 1.5; }
@@ -45,7 +45,7 @@
 .badge { display: inline-block; vertical-align: middle; border-radius: 8px; padding: 2px 6px; background: #ed0000; color: white; font-size: 11px; margin-inline-start: 5px; }
 .meta { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 10px; font-size: 13px; }
 .meta > span + span { border-inline-start: 1px solid #e5e5e5; padding-inline-start: 14px; }
-.applyButton { --button-hover-ink: #b83d08; --button-hover-border: #f16122; display: flex; align-items: center; justify-content: center; gap: 5px; background: #b83d08; color: white; border-radius: 8px; padding: 13px 22px; min-width: 170px; font-size: 15px; }
+.applyButton { --button-hover-ink: #b83d08; --button-hover-border: #f16122; display: flex; align-items: center; justify-content: center; gap: 5px; background: #f16122; color: white; border-radius: 8px; padding: 13px 22px; min-width: 170px; font-size: 15px; }
 
 .jobBody { display: grid; grid-template-columns: minmax(0,1fr) 360px; gap: 36px; padding: 25px 50px 45px; border-top: 1px solid #f2edf4; align-items: start; }
 .description { font-family: 'Segoe UI', var(--font-inter), sans-serif; font-size: 16px; line-height: 1.65; }
@@ -63,7 +63,7 @@
 .application :global(.career-upload) { display: block; border: 1px solid #ccc; background: #fff; border-radius: 40px; padding: 12px; min-height: 44px; font-size: 14px; text-align: center; cursor: pointer; overflow-wrap: anywhere; }
 .application :global(.career-upload):focus-within { outline: 2px solid #489bc2; outline-offset: 3px; }
 .application [data-career-form] > label { font-size: 12px; line-height: 1.6; }
-.application [data-career-form] button[type=submit] { --button-hover-ink: #b83d08; --button-hover-border: #f16122; width: 100%; border-radius: 10px; background: #b83d08; color: #fff; font-family: inherit; font-size: 15px; font-weight: 400; padding: 12px 18px; min-height: 44px; }
+.application [data-career-form] button[type=submit] { --button-hover-ink: #b83d08; --button-hover-border: #f16122; width: 100%; border-radius: 10px; background: #f16122; color: #fff; font-family: inherit; font-size: 15px; font-weight: 400; padding: 12px 18px; min-height: 44px; }
 .opportunity { border-radius: 30px; margin-top: 60px; padding: 50px 80px; scroll-margin-top: 120px; }
 .internship { background: #dff9e9; }
 .future { background: #d4e4f8; }
@@ -147,7 +147,7 @@
 
 .pagination { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
 .pagination button { min-width: 44px; min-height: 44px; display: inline-grid; place-items: center; border-radius: 12px; background: #fff; color: #000; font-weight: 600; box-shadow: 0 0 10px #0000000f; cursor: pointer; }
-.pagination button[aria-current="page"] { background: #b83d08; color: #fff; }
+.pagination button[aria-current="page"] { background: #f16122; color: #fff; }
 .pagination button:disabled { opacity: .4; cursor: default; }
 .pagination button:focus-visible { outline: 3px solid #489bc2; outline-offset: 2px; }
 :global(.dark) .pagination button:not([aria-current="page"]) { background: #202024; color: inherit; }
