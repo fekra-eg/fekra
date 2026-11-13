@@ -184,7 +184,10 @@ const nextConfig: NextConfig = {
       }
       // Hosting must also send HTTP/apex straight here before its own
       // protocol redirects. This makes every app-owned legacy mapping final.
-      return process.env.VERCEL_ENV === 'production' && destination.startsWith('/') ? new URL(destination, SITE_URL).href : destination
+      // Same guard as siteUrl() in src/lib/urls.ts: production's env still holds
+      // the *.vercel.app alias, which sent every legacy redirect to a 404 host.
+      const origin = /\.vercel\.app/i.test(SITE_URL) ? 'https://www.fekra-egy.com' : SITE_URL
+      return process.env.VERCEL_ENV === 'production' && destination.startsWith('/') ? new URL(destination, origin).href : destination
     }
     return [
       ...redirectMap.map((r) => ({

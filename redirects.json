@@ -119,6 +119,8 @@
   { "from": "/career/:slug", "to": "/careers", "permanent": true },
   { "from": "/life-at-fekra-egy", "to": "/careers", "permanent": true },
   { "from": "/meet-the-team", "to": "/careers", "permanent": true },
+  { "from": "/about-us", "to": "/about", "permanent": true },
+  { "from": "/our-team", "to": "/about", "permanent": true },
   { "from": "/certificates", "to": "/about", "permanent": true },
   { "from": "/news", "to": "/about", "permanent": true },
   { "from": "/news/:slug", "to": "/about", "permanent": true },
