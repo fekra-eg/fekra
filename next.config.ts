@@ -101,6 +101,10 @@ const nextConfig: NextConfig = {
   distDir: process.env.NEXT_DIST_DIR || '.next',
   // Trailing-slash policy is a canonical signal — keep it fixed forever (18.1/18.3).
   trailingSlash: false,
+  // Next's built-in slash-strip redirect always runs before ours, so a legacy
+  // URL with a trailing slash took two hops (/contact-us/ -> /contact-us ->
+  // /contact). It is re-added as the LAST rule in redirects() below instead.
+  skipTrailingSlashRedirect: true,
 
   images: {
     formats: ['image/avif', 'image/webp'],
@@ -190,11 +194,14 @@ const nextConfig: NextConfig = {
       return process.env.VERCEL_ENV === 'production' && destination.startsWith('/') ? new URL(destination, origin).href : destination
     }
     return [
-      ...redirectMap.map((r) => ({
-        source: r.from,
-        destination: resolve(r.to),
-        statusCode: r.permanent === false ? 307 : 301,
-      })),
+      // Each legacy path with and without a trailing slash, so both are one hop.
+      ...redirectMap.flatMap((r) =>
+        [r.from, `${r.from}/`].map((source) => ({
+          source,
+          destination: resolve(r.to),
+          statusCode: r.permanent === false ? 307 : 301,
+        })),
+      ),
       /*
        * Media is served straight from the bucket now (see payload.config.ts), so
        * Payload no longer answers on /cms-api/media/file/... — and every URL it
@@ -212,6 +219,9 @@ const nextConfig: NextConfig = {
             },
           ]
         : []),
+      // Next's own trailingSlash:false redirect (same pattern), now last so it
+      // can't shadow the legacy map above.
+      { source: '/:path((?!\\.well-known(?:/.*)?)(?:[^/]+/)*[^/]+)/', destination: '/:path', permanent: true },
     ]
   },
 
